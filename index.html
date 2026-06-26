@@ -7,1551 +7,702 @@
 <link rel="icon" type="image/png" href="https://llm-d.ai/img/llm-d-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700;900&family=Red+Hat+Text:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700;900&family=Red+Hat+Text:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   CSS Custom Properties
-   ============================================================ */
 :root {
-  --bg-body: #0a0a0f;
-  --bg-card: #12121a;
-  --bg-header: #0d0d14;
-  --border-card: #1e1e32;
-  --text-primary: #e8e8f0;
-  --text-secondary: #9898b0;
-  --text-muted: #6a6a80;
+  --bg: #0a0e17;
+  --bg-card: #0f1525;
+  --border: #1a2038;
+  --text: #e2e8f4;
+  --text2: #8b98b8;
+  --text3: #5a6580;
   --blue: #3b82f6;
-  --green: #00e676;
-  --amber: #ffab00;
-  --red: #ff1744;
-  --purple: #7c4dff;
-  --font-heading: 'Red Hat Display', sans-serif;
-  --font-body: 'Red Hat Text', sans-serif;
-  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
-  --radius: 12px;
-  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --green: #10b981;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --purple: #8b5cf6;
+  --font-h: 'Red Hat Display', sans-serif;
+  --font-b: 'Red Hat Text', sans-serif;
+  --font-m: 'SF Mono','Fira Code',Consolas,monospace;
+  --r: 14px;
+  --t: .3s cubic-bezier(.4,0,.2,1);
 }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#ambientCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
-/* ============================================================
-   Reset & Base
-   ============================================================ */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--font-body);
-  background: var(--bg-body);
-  color: var(--text-primary);
-  min-height: 100vh;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+/* Header */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(10,14,23,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.hdr-logo img{width:30px;height:30px}
+.hdr-logo span{font-family:var(--font-h);font-weight:900;font-size:1.1rem;color:var(--text)}
+.hdr-sep{width:1px;height:24px;background:var(--border)}
+.hdr-sub{font-family:var(--font-h);font-weight:700;font-size:.88rem;color:var(--text2);letter-spacing:.01em}
+.hdr-r{display:flex;align-items:center;gap:16px}
+.hdr-r a{font-size:.82rem;font-weight:500;color:var(--text2);text-decoration:none;transition:color var(--t);display:inline-flex;align-items:center;gap:5px}
+.hdr-r a:hover{color:var(--blue)}
+.hdr-r a svg{width:15px;height:15px}
 
-/* ============================================================
-   Header
-   ============================================================ */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(13, 13, 20, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-card);
-  padding: 0 32px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.header-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-.header-logo img { width: 32px; height: 32px; }
-.header-logo span {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: 1.15rem;
-  color: var(--text-primary);
-}
-.header-divider {
-  width: 1px;
-  height: 28px;
-  background: var(--border-card);
-}
-.header-title {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-}
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.header-link {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: color var(--transition);
-}
-.header-link:hover { color: var(--blue); }
-.header-link svg {
-  width: 16px;
-  height: 16px;
-  vertical-align: -2px;
-  margin-right: 4px;
-}
+/* Section nav */
+.snav{display:flex;gap:6px;padding:12px 32px;overflow-x:auto;background:rgba(10,14,23,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:60px;z-index:190;scrollbar-width:none}
+.snav::-webkit-scrollbar{display:none}
+.snav button{font-family:var(--font-b);font-size:.78rem;font-weight:500;color:var(--text3);background:transparent;border:1px solid transparent;border-radius:8px;padding:7px 14px;cursor:pointer;white-space:nowrap;transition:all var(--t)}
+.snav button:hover{color:var(--text2);background:rgba(59,130,246,.04)}
+.snav button.active{color:var(--blue);border-color:rgba(59,130,246,.25);background:rgba(59,130,246,.06)}
 
-/* ============================================================
-   Section Nav
-   ============================================================ */
-.section-nav {
-  display: flex;
-  gap: 8px;
-  padding: 16px 32px;
-  overflow-x: auto;
-  background: var(--bg-body);
-  border-bottom: 1px solid var(--border-card);
-  position: sticky;
-  top: 64px;
-  z-index: 90;
-  scrollbar-width: none;
-}
-.section-nav::-webkit-scrollbar { display: none; }
-.section-nav button {
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  background: transparent;
-  border: 1px solid var(--border-card);
-  border-radius: 8px;
-  padding: 8px 16px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all var(--transition);
-}
-.section-nav button:hover {
-  color: var(--text-secondary);
-  border-color: var(--text-muted);
-}
-.section-nav button.active {
-  color: var(--blue);
-  border-color: var(--blue);
-  background: rgba(59, 130, 246, 0.08);
-}
+/* Main container */
+.main{position:relative;z-index:1;max-width:1260px;margin:0 auto;padding:28px 24px 80px;display:flex;flex-direction:column;gap:28px}
 
-/* ============================================================
-   Main Content
-   ============================================================ */
-.main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 24px 64px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
+/* Hero */
+.hero{text-align:center;padding:48px 24px 40px;position:relative}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(59,130,246,.1) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-family:var(--font-h);font-weight:900;font-size:clamp(1.8rem,4.5vw,3rem);letter-spacing:-.02em;background:linear-gradient(135deg,#e2e8f4 10%,#3b82f6 55%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px;line-height:1.15}
+.hero p{font-size:1.02rem;color:var(--text2);max-width:580px;margin:0 auto;line-height:1.65}
 
-/* ============================================================
-   Card
-   ============================================================ */
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius);
-  padding: 32px;
-  transition: border-color var(--transition);
-}
-.card:hover { border-color: rgba(59, 130, 246, 0.25); }
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.card-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-.card-header h2 {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: var(--text-primary);
-}
-.card-header p {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
+/* Card */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:border-color var(--t);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(59,130,246,.12),transparent);opacity:0;transition:opacity var(--t)}
+.card:hover{border-color:rgba(59,130,246,.15)}
+.card:hover::before{opacity:1}
+.card-h{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.card-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.card-h h2{font-family:var(--font-h);font-weight:700;font-size:1.2rem}
+.card-h p{font-size:.8rem;color:var(--text3);margin-top:2px}
 
-/* ============================================================
-   1. Partner Network Graph
-   ============================================================ */
-.graph-container {
-  position: relative;
-  width: 100%;
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: rgba(10, 10, 15, 0.6);
-  border: 1px solid var(--border-card);
-}
-.graph-container canvas {
-  display: block;
-  width: 100%;
-  cursor: crosshair;
-}
-.graph-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 16px;
-}
-.graph-legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
-.graph-legend-line {
-  width: 24px;
-  height: 3px;
-  border-radius: 2px;
-}
-.graph-tooltip {
-  position: absolute;
-  background: rgba(18, 18, 26, 0.95);
-  border: 1px solid var(--border-card);
-  border-radius: 8px;
-  padding: 10px 14px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s;
-  z-index: 10;
-  max-width: 200px;
-}
-.graph-tooltip .tooltip-name {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  margin-bottom: 2px;
-}
-.graph-tooltip .tooltip-role {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-}
+/* Canvas wrappers */
+.cv{position:relative;width:100%;border-radius:var(--r);overflow:hidden;background:rgba(8,12,20,.6);border:1px solid var(--border)}
+.cv canvas{display:block;width:100%}
+.tt{position:absolute;background:rgba(12,16,28,.97);border:1px solid #253050;border-radius:10px;padding:14px 18px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10;max-width:300px;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.tt .tn{font-family:var(--font-h);font-weight:700;font-size:.92rem;margin-bottom:3px}
+.tt .tr{font-size:.76rem;color:var(--blue);margin-bottom:6px}
+.tt .td{font-size:.76rem;color:var(--text3);line-height:1.5}
+.tt .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.tt .tag{font-size:.68rem;padding:2px 8px;border-radius:4px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.12);color:var(--text2)}
 
-/* ============================================================
-   2. Contribution Matrix
-   ============================================================ */
-.matrix-scroll {
-  overflow-x: auto;
-  margin: 0 -8px;
-  padding: 0 8px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-card) transparent;
-}
-.matrix-scroll::-webkit-scrollbar { height: 6px; }
-.matrix-scroll::-webkit-scrollbar-track { background: transparent; }
-.matrix-scroll::-webkit-scrollbar-thumb { background: var(--border-card); border-radius: 3px; }
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}
+.legend-i{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--text2)}
+.legend-l{width:22px;height:3px;border-radius:2px}
 
-.matrix-table {
-  width: 100%;
-  min-width: 700px;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-.matrix-table th,
-.matrix-table td {
-  padding: 10px 12px;
-  text-align: center;
-  border-bottom: 1px solid var(--border-card);
-  font-size: 0.82rem;
-}
-.matrix-table th {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  color: var(--text-secondary);
-  background: rgba(10, 10, 15, 0.5);
-  position: sticky;
-  top: 0;
-  white-space: nowrap;
-}
-.matrix-table th:first-child {
-  text-align: left;
-  position: sticky;
-  left: 0;
-  z-index: 2;
-  background: var(--bg-card);
-}
-.matrix-table td:first-child {
-  text-align: left;
-  font-weight: 500;
-  color: var(--text-primary);
-  position: sticky;
-  left: 0;
-  background: var(--bg-card);
-  white-space: nowrap;
-  z-index: 1;
-}
-.matrix-table th.area-header {
-  writing-mode: vertical-lr;
-  transform: rotate(180deg);
-  padding: 14px 8px;
-  font-size: 0.75rem;
-  min-height: 100px;
-}
-.matrix-table tbody tr:hover td { background: rgba(59, 130, 246, 0.04); }
-.matrix-table tbody tr:hover td:first-child { background: rgba(59, 130, 246, 0.08); }
+/* Explorer panel */
+.eo{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
+.eo.open{opacity:1;pointer-events:auto}
+.ep{position:fixed;top:0;right:0;width:min(480px,92vw);height:100vh;background:var(--bg-card);border-left:1px solid var(--border);z-index:310;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+.eo.open .ep{transform:translateX(0)}
+.ep-close{position:sticky;top:0;z-index:5;display:flex;justify-content:flex-end;padding:16px 16px 0}
+.ep-close button{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text2);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--t)}
+.ep-close button:hover{border-color:var(--blue);color:var(--blue)}
+.ep-head{padding:8px 28px 20px;border-bottom:1px solid var(--border)}
+.ep-badge{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:900;font-size:1.5rem;color:#fff;margin-bottom:16px}
+.ep-head h3{font-family:var(--font-h);font-weight:900;font-size:1.35rem}
+.ep-role{display:inline-block;font-size:.73rem;font-weight:600;padding:3px 10px;border-radius:6px;margin-top:8px}
+.ep-sec{padding:18px 28px;border-bottom:1px solid var(--border)}
+.ep-sec:last-child{border-bottom:none}
+.ep-sec h4{font-family:var(--font-h);font-weight:700;font-size:.85rem;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
+.ep-sec ul{list-style:none}
+.ep-sec li{font-size:.86rem;color:var(--text);padding:6px 0;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(26,32,56,.5)}
+.ep-sec li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0}
+.ep-tags{display:flex;flex-wrap:wrap;gap:6px}
+.ep-tag{font-size:.76rem;padding:4px 12px;border-radius:6px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.12);color:var(--text2)}
 
-.dot-primary {
-  display: inline-block;
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: var(--blue);
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
-}
-.dot-secondary {
-  display: inline-block;
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  border: 2px solid var(--blue);
-  background: transparent;
-}
-.org-badge {
-  display: inline-block;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  margin-right: 8px;
-  flex-shrink: 0;
-}
+/* Timeline */
+.tl-s{overflow-x:auto;padding:20px 0;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.tl-s::-webkit-scrollbar{height:5px}
+.tl-s::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.tl-t{display:flex;align-items:flex-start;position:relative;min-width:max-content;padding:0 24px}
+.tl-line{position:absolute;top:30px;left:24px;right:24px;height:2px;background:linear-gradient(90deg,var(--border),rgba(59,130,246,.3),var(--border))}
+.tl-i{display:flex;flex-direction:column;align-items:center;width:170px;cursor:pointer;position:relative;flex-shrink:0;transition:transform var(--t)}
+.tl-i:hover{transform:translateY(-2px)}
+.tl-dw{width:60px;height:60px;display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
+.tl-d{width:14px;height:14px;border-radius:50%;background:var(--blue);box-shadow:0 0 14px rgba(59,130,246,.5);transition:all var(--t);position:relative}
+.tl-d::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(59,130,246,.18);transition:all var(--t)}
+.tl-i:hover .tl-d,.tl-i.active .tl-d{width:20px;height:20px;box-shadow:0 0 24px rgba(59,130,246,.65)}
+.tl-i.active .tl-d::after{inset:-6px;border-color:rgba(59,130,246,.35)}
+.tl-date{font-size:.72rem;font-weight:700;color:var(--blue);margin-top:10px;font-family:var(--font-m)}
+.tl-lbl{font-size:.82rem;font-weight:700;margin-top:6px;text-align:center;line-height:1.3}
+.tl-det{max-height:0;overflow:hidden;transition:max-height .45s ease,opacity .3s;opacity:0;width:230px;margin-top:0}
+.tl-i.active .tl-det{max-height:220px;opacity:1;margin-top:10px}
+.tl-det-in{background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.12);border-radius:10px;padding:14px;font-size:.78rem;color:var(--text2);line-height:1.55;text-align:center}
 
-/* ============================================================
-   3. Timeline
-   ============================================================ */
-.timeline-scroll {
-  overflow-x: auto;
-  padding: 20px 0 24px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-card) transparent;
-}
-.timeline-scroll::-webkit-scrollbar { height: 6px; }
-.timeline-scroll::-webkit-scrollbar-track { background: transparent; }
-.timeline-scroll::-webkit-scrollbar-thumb { background: var(--border-card); border-radius: 3px; }
+/* Stats */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px}
+.sc{background:rgba(8,12,20,.5);border:1px solid var(--border);border-radius:var(--r);padding:22px 18px 14px;text-align:center;transition:all var(--t);position:relative;overflow:hidden}
+.sc:hover{border-color:rgba(59,130,246,.25);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.sc-num{font-family:var(--font-h);font-weight:900;font-size:2.3rem;color:var(--blue);line-height:1;margin-bottom:4px}
+.sc-lbl{font-size:.8rem;color:var(--text2);line-height:1.4;margin-bottom:8px}
+.sc canvas{display:block;width:100%;height:28px}
 
-.timeline-track {
-  display: flex;
-  align-items: flex-start;
-  position: relative;
-  min-width: max-content;
-  padding: 0 24px;
-}
-.timeline-line {
-  position: absolute;
-  top: 28px;
-  left: 24px;
-  right: 24px;
-  height: 2px;
-  background: var(--border-card);
-}
-.timeline-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 160px;
-  cursor: pointer;
-  position: relative;
-  flex-shrink: 0;
-}
-.timeline-dot-wrap {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 2;
-}
-.timeline-dot {
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: var(--blue);
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
-  transition: all var(--transition);
-}
-.timeline-item:hover .timeline-dot,
-.timeline-item.active .timeline-dot {
-  width: 22px; height: 22px;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
-}
-.timeline-date {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--blue);
-  margin-top: 8px;
-  font-family: var(--font-mono);
-}
-.timeline-label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-top: 6px;
-  text-align: center;
-  line-height: 1.3;
-}
-.timeline-detail {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease, opacity 0.3s ease;
-  opacity: 0;
-  width: 220px;
-  margin-top: 8px;
-}
-.timeline-item.active .timeline-detail {
-  max-height: 200px;
-  opacity: 1;
-}
-.timeline-detail-inner {
-  background: rgba(59, 130, 246, 0.06);
-  border: 1px solid rgba(59, 130, 246, 0.15);
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  text-align: center;
-}
+/* Simulator */
+.sim-ctrl{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:16px}
+.sim-g{display:flex;flex-direction:column;gap:5px}
+.sim-g label{font-size:.73rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+.sim-g select{font-family:var(--font-b);font-size:.85rem;padding:8px 32px 8px 12px;background:rgba(8,12,20,.7);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;min-width:175px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%235a6580' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.sim-g select:focus{outline:none;border-color:var(--blue)}
+.sim-g select option{background:#0f1525;color:var(--text)}
+.sim-btn{font-family:var(--font-b);font-size:.85rem;font-weight:700;padding:9px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:all var(--t)}
+.sim-btn:hover{background:#2563eb;box-shadow:0 4px 16px rgba(59,130,246,.3)}
 
-/* ============================================================
-   4. Ecosystem Map
-   ============================================================ */
-.ecosystem-container {
-  position: relative;
-  width: 100%;
-  min-height: 420px;
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: rgba(10, 10, 15, 0.6);
-  border: 1px solid var(--border-card);
-}
-.ecosystem-container canvas {
-  display: block;
-  width: 100%;
-  cursor: pointer;
-}
-.ecosystem-tooltip {
-  position: absolute;
-  background: rgba(18, 18, 26, 0.95);
-  border: 1px solid var(--border-card);
-  border-radius: 8px;
-  padding: 12px 16px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s;
-  z-index: 10;
-  max-width: 260px;
-}
-.ecosystem-tooltip .tooltip-name {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-.ecosystem-tooltip .tooltip-desc {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
+/* Footer */
+.ftr{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 32px;text-align:center;color:var(--text3);font-size:.82rem}
+.ftr a{color:var(--text2);text-decoration:none;transition:color var(--t)}
+.ftr a:hover{color:var(--blue)}
+.ftr-links{display:flex;gap:20px;justify-content:center;margin-top:10px}
 
-/* ============================================================
-   5. Governance Structure
-   ============================================================ */
-.governance-visual {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  align-items: center;
-  padding: 16px 0;
+/* Responsive */
+@media(max-width:768px){
+  .hdr{padding:0 16px} .hdr-sub,.hdr-sep{display:none} .hdr-r{gap:10px} .hdr-r a span{display:none}
+  .snav{padding:10px 16px} .main{padding:16px 14px 48px;gap:18px} .card{padding:18px 16px}
+  .sg{grid-template-columns:repeat(2,1fr)} .hero{padding:28px 16px}
+  .sim-ctrl{flex-direction:column} .sim-g select{min-width:100%}
+  .ep{width:100%;max-width:100%}
 }
-.gov-layer {
-  width: 100%;
-  max-width: 600px;
-  border: 1px solid;
-  border-radius: var(--radius);
-  padding: 20px 24px;
-  text-align: center;
-  position: relative;
-  transition: all var(--transition);
-}
-.gov-layer:hover {
-  transform: scale(1.02);
-}
-.gov-layer-title {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1rem;
-  margin-bottom: 4px;
-}
-.gov-layer-desc {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-}
-.gov-connector {
-  width: 2px;
-  height: 28px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.gov-connector::before {
-  content: '';
-  position: absolute;
-  width: 2px;
-  height: 100%;
-  background: var(--border-card);
-}
-.gov-arrow-down, .gov-arrow-up {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  background: var(--bg-body);
-  padding: 2px 6px;
-  position: relative;
-  z-index: 1;
-  white-space: nowrap;
-}
-
-.gov-layer-1 {
-  border-color: rgba(66, 109, 225, 0.3);
-  background: rgba(66, 109, 225, 0.06);
-}
-.gov-layer-1 .gov-layer-title { color: #426de1; }
-
-.gov-layer-2 {
-  border-color: rgba(59, 130, 246, 0.3);
-  background: rgba(59, 130, 246, 0.06);
-  width: 90%;
-}
-.gov-layer-2 .gov-layer-title { color: var(--blue); }
-
-.gov-layer-3 {
-  border-color: rgba(0, 230, 118, 0.3);
-  background: rgba(0, 230, 118, 0.06);
-  width: 80%;
-}
-.gov-layer-3 .gov-layer-title { color: var(--green); }
-
-.gov-layer-4 {
-  border-color: rgba(255, 171, 0, 0.3);
-  background: rgba(255, 171, 0, 0.06);
-  width: 70%;
-}
-.gov-layer-4 .gov-layer-title { color: var(--amber); }
-
-.gov-flow-labels {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 600px;
-  margin-top: 20px;
-  padding: 0 12px;
-}
-.gov-flow-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.78rem;
-  color: var(--text-muted);
-}
-.gov-flow-arrow {
-  font-size: 0.9rem;
-}
-
-/* ============================================================
-   6. Community Stats
-   ============================================================ */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 16px;
-}
-.stat-card {
-  background: rgba(10, 10, 15, 0.5);
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius);
-  padding: 24px 20px;
-  text-align: center;
-  transition: all var(--transition);
-}
-.stat-card:hover {
-  border-color: rgba(59, 130, 246, 0.3);
-  transform: translateY(-2px);
-}
-.stat-number {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: 2.2rem;
-  color: var(--blue);
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.stat-label {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-/* ============================================================
-   Footer
-   ============================================================ */
-.footer {
-  border-top: 1px solid var(--border-card);
-  padding: 32px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.82rem;
-}
-.footer a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: color var(--transition);
-}
-.footer a:hover { color: var(--blue); }
-.footer-links {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 12px;
-}
-
-/* ============================================================
-   Responsive
-   ============================================================ */
-@media (max-width: 768px) {
-  .header { padding: 0 16px; }
-  .header-title { display: none; }
-  .header-divider { display: none; }
-  .header-right { gap: 12px; }
-  .header-link span { display: none; }
-  .section-nav { padding: 12px 16px; }
-  .main { padding: 20px 16px 48px; gap: 24px; }
-  .card { padding: 20px; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .gov-layer-2, .gov-layer-3, .gov-layer-4 { width: 100%; }
-  .matrix-table th.area-header { padding: 10px 6px; font-size: 0.7rem; }
-}
-@media (max-width: 480px) {
-  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .stat-card { padding: 16px 12px; }
-  .stat-number { font-size: 1.7rem; }
-}
+@media(max-width:480px){.sg{gap:8px} .sc{padding:14px 10px} .sc-num{font-size:1.8rem}}
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     Header
-     ============================================================ -->
-<header class="header">
-  <div class="header-left">
-    <a href="https://llm-d.ai" class="header-logo">
-      <img src="https://llm-d.ai/img/llm-d-icon.png" width="32" height="32" alt="llm-d">
-      <span>llm-d</span>
-    </a>
-    <div class="header-divider"></div>
-    <div class="header-title">Community Story</div>
+<canvas id="ambientCanvas"></canvas>
+
+<!-- Header -->
+<header class="hdr">
+  <div class="hdr-l">
+    <a href="https://llm-d.ai" class="hdr-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" width="30" height="30" alt="llm-d"><span>llm-d</span></a>
+    <div class="hdr-sep"></div>
+    <div class="hdr-sub">Community Story</div>
   </div>
-  <div class="header-right">
-    <a href="https://github.com/llm-d" class="header-link" target="_blank" rel="noopener">
-      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-      <span>GitHub</span>
-    </a>
-    <a href="https://llm-d.ai" class="header-link" target="_blank" rel="noopener">
-      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1116 0A8 8 0 010 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 005.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 01.64-1.539 6.7 6.7 0 01.597-.933A7.025 7.025 0 002.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 00-.656 2.5h2.49zM4.847 5a12.5 12.5 0 00-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 00-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 00.337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 01-.597-.933A9.268 9.268 0 014.09 12H2.255a7.024 7.024 0 003.072 2.472zM3.82 11a13.652 13.652 0 01-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0013.745 12H11.91a9.27 9.27 0 01-.64 1.539 6.688 6.688 0 01-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 01-.312 2.5zm2.802-3.5a6.959 6.959 0 00-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 00-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 00-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>
-      <span>Website</span>
-    </a>
-    <a href="./blog/" class="header-link">
-      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.75A.75.75 0 01.75 1h4.253c1.227 0 2.317.59 3 1.501A3.744 3.744 0 0111.006 1h4.245a.75.75 0 01.75.75v10.5a.75.75 0 01-.75.75h-4.507a2.25 2.25 0 00-1.591.659l-.622.621a.75.75 0 01-1.06 0l-.622-.621A2.25 2.25 0 005.258 13H.75a.75.75 0 01-.75-.75V1.75zm7.251 10.324l.004-5.073-.002-2.253A2.25 2.25 0 005.003 2.5H1.5v9h3.757a3.75 3.75 0 011.994.574zM8.755 4.75l-.004 7.322a3.752 3.752 0 011.992-.572H14.5v-9h-3.495a2.25 2.25 0 00-2.25 2.25z"/></svg>
-      <span>Read the Blog</span>
-    </a>
+  <div class="hdr-r">
+    <a href="https://github.com/llm-d" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>GitHub</span></a>
+    <a href="https://llm-d.ai" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1116 0A8 8 0 010 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 005.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 01.64-1.539 6.7 6.7 0 01.597-.933A7.025 7.025 0 002.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 00-.656 2.5h2.49zM4.847 5a12.5 12.5 0 00-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 00-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 00.337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 01-.597-.933A9.268 9.268 0 014.09 12H2.255a7.024 7.024 0 003.072 2.472zM3.82 11a13.652 13.652 0 01-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0013.745 12H11.91a9.27 9.27 0 01-.64 1.539 6.688 6.688 0 01-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 01-.312 2.5zm2.802-3.5a6.959 6.959 0 00-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 00-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 00-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg><span>Website</span></a>
+    <a href="./blog/"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.75A.75.75 0 01.75 1h4.253c1.227 0 2.317.59 3 1.501A3.744 3.744 0 0111.006 1h4.245a.75.75 0 01.75.75v10.5a.75.75 0 01-.75.75h-4.507a2.25 2.25 0 00-1.591.659l-.622.621a.75.75 0 01-1.06 0l-.622-.621A2.25 2.25 0 005.258 13H.75a.75.75 0 01-.75-.75V1.75zm7.251 10.324l.004-5.073-.002-2.253A2.25 2.25 0 005.003 2.5H1.5v9h3.757a3.75 3.75 0 011.994.574zM8.755 4.75l-.004 7.322a3.752 3.752 0 011.992-.572H14.5v-9h-3.495a2.25 2.25 0 00-2.25 2.25z"/></svg><span>Read the Blog</span></a>
   </div>
 </header>
 
-<!-- ============================================================
-     Section Navigation
-     ============================================================ -->
-<nav class="section-nav" id="sectionNav">
-  <button class="active" data-target="section-network">Partner Network</button>
-  <button data-target="section-contributions">Contributions</button>
-  <button data-target="section-timeline">Timeline</button>
-  <button data-target="section-ecosystem">Ecosystem Map</button>
-  <button data-target="section-governance">Governance</button>
-  <button data-target="section-stats">Community Stats</button>
+<!-- Section Nav -->
+<nav class="snav" id="sectionNav">
+  <button class="active" data-target="s-network">Partner Network</button>
+  <button data-target="s-timeline">Timeline</button>
+  <button data-target="s-deps">Dependency Map</button>
+  <button data-target="s-governance">Governance</button>
+  <button data-target="s-stats">Metrics</button>
+  <button data-target="s-sim">Simulator</button>
 </nav>
 
-<!-- ============================================================
-     Main Content
-     ============================================================ -->
+<!-- Explorer overlay + panel -->
+<div class="eo" id="eo">
+  <div class="ep" id="ep">
+    <div class="ep-close"><button id="epClose">&times;</button></div>
+    <div class="ep-head" id="epHead"></div>
+    <div id="epBody"></div>
+  </div>
+</div>
+
 <main class="main">
 
-  <!-- Section 1: Partner Network Graph -->
-  <section class="card" id="section-network">
-    <div class="card-header">
-      <div class="card-icon" style="background: rgba(59, 130, 246, 0.12); color: var(--blue);">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a4 4 0 00-4 4c0 1.477.81 2.762 2.009 3.444A5.002 5.002 0 004 14v1a1 1 0 001 1h10a1 1 0 001-1v-1a5.002 5.002 0 00-4.009-4.556A4.001 4.001 0 0010 2zm6 4a3 3 0 01-1.306 2.48 6.012 6.012 0 012.293 3.147A1 1 0 0018 12v-1a4.002 4.002 0 00-3-3.874A2.99 2.99 0 0016 6zM4 6c0-.534.139-1.036.384-1.47A4.002 4.002 0 001 8.5v.5a1 1 0 001 1h.013a6.012 6.012 0 012.293-3.147A2.99 2.99 0 014 6z"/></svg>
-      </div>
-      <div>
-        <h2>Partner Network</h2>
-        <p>Interactive force-directed graph of the llm-d partner ecosystem</p>
-      </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <h1>Building the Future of<br>LLM Inference, Together</h1>
+    <p>An interactive documentary of the open-source community powering Kubernetes-native LLM serving across 15+ organizations worldwide.</p>
+  </section>
+
+  <!-- 1. Partner Network -->
+  <section class="card" id="s-network">
+    <div class="card-h">
+      <div class="card-ico" style="background:rgba(59,130,246,.1);color:var(--blue)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a4 4 0 00-4 4c0 1.477.81 2.762 2.009 3.444A5.002 5.002 0 004 14v1a1 1 0 001 1h10a1 1 0 001-1v-1a5.002 5.002 0 00-4.009-4.556A4.001 4.001 0 0010 2zm6 4a3 3 0 01-1.306 2.48 6.012 6.012 0 012.293 3.147A1 1 0 0018 12v-1a4.002 4.002 0 00-3-3.874A2.99 2.99 0 0016 6z"/></svg></div>
+      <div><h2>Partner Network</h2><p>Force-directed ecosystem graph with contribution flow. Click any node to explore.</p></div>
     </div>
-    <div class="graph-container" id="graphContainer">
-      <canvas id="networkCanvas"></canvas>
-      <div class="graph-tooltip" id="graphTooltip">
-        <div class="tooltip-name"></div>
-        <div class="tooltip-role"></div>
-      </div>
-    </div>
-    <div class="graph-legend">
-      <div class="graph-legend-item"><div class="graph-legend-line" style="background: #3b82f6;"></div>Code collaboration</div>
-      <div class="graph-legend-item"><div class="graph-legend-line" style="background: #10b981;"></div>Hardware optimization</div>
-      <div class="graph-legend-item"><div class="graph-legend-line" style="background: #8b5cf6;"></div>Research</div>
-      <div class="graph-legend-item"><div class="graph-legend-line" style="background: #f59e0b;"></div>Governance</div>
-      <div class="graph-legend-item"><div class="graph-legend-line" style="background: #6b7280;"></div>Ecosystem</div>
+    <div class="cv" id="graphC"><canvas id="netCv"></canvas><div class="tt" id="netTT"><div class="tn"></div><div class="tr"></div><div class="td"></div><div class="tags"></div></div></div>
+    <div class="legend">
+      <div class="legend-i"><div class="legend-l" style="background:#3b82f6"></div>Code</div>
+      <div class="legend-i"><div class="legend-l" style="background:#10b981"></div>Hardware</div>
+      <div class="legend-i"><div class="legend-l" style="background:#8b5cf6"></div>Research</div>
+      <div class="legend-i"><div class="legend-l" style="background:#f59e0b"></div>Governance</div>
+      <div class="legend-i"><div class="legend-l" style="background:#6b7280"></div>Ecosystem</div>
     </div>
   </section>
 
-  <!-- Section 2: Contribution Areas -->
-  <section class="card" id="section-contributions">
-    <div class="card-header">
-      <div class="card-icon" style="background: rgba(0, 230, 118, 0.12); color: var(--green);">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm6-8a2 2 0 00-2 2v2a2 2 0 002 2h4a2 2 0 002-2V5a2 2 0 00-2-2h-4zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h4a2 2 0 002-2v-2a2 2 0 00-2-2h-4z"/></svg>
-      </div>
-      <div>
-        <h2>Contribution Areas</h2>
-        <p>Who contributes what across the llm-d project</p>
-      </div>
+  <!-- 2. Timeline -->
+  <section class="card" id="s-timeline">
+    <div class="card-h">
+      <div class="card-ico" style="background:rgba(245,158,11,.1);color:var(--amber)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg></div>
+      <div><h2>Project Timeline</h2><p>Key milestones in the llm-d journey. Click to expand.</p></div>
     </div>
-    <div class="matrix-scroll">
-      <table class="matrix-table" id="matrixTable">
-        <thead>
-          <tr>
-            <th>Organization</th>
-            <th class="area-header">Routing / EPP</th>
-            <th class="area-header">Gateway API</th>
-            <th class="area-header">Scheduling</th>
-            <th class="area-header">Hardware Opt</th>
-            <th class="area-header">Scale Testing</th>
-            <th class="area-header">Inference Engine</th>
-            <th class="area-header">Caching</th>
-            <th class="area-header">Governance</th>
-            <th class="area-header">Model Support</th>
-          </tr>
-        </thead>
-        <tbody id="matrixBody"></tbody>
-      </table>
-    </div>
+    <div class="tl-s"><div class="tl-t" id="tlTrack"><div class="tl-line"></div></div></div>
   </section>
 
-  <!-- Section 3: Timeline -->
-  <section class="card" id="section-timeline">
-    <div class="card-header">
-      <div class="card-icon" style="background: rgba(255, 171, 0, 0.12); color: var(--amber);">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
-      </div>
-      <div>
-        <h2>Project Timeline</h2>
-        <p>Key milestones in the llm-d journey</p>
-      </div>
+  <!-- 3. Dependency Map -->
+  <section class="card" id="s-deps">
+    <div class="card-h">
+      <div class="card-ico" style="background:rgba(139,92,246,.1);color:var(--purple)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 01.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3.001zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z"/></svg></div>
+      <div><h2>Project Dependency Map</h2><p>How llm-d connects to the cloud-native AI landscape. Hover for compatibility info.</p></div>
     </div>
-    <div class="timeline-scroll">
-      <div class="timeline-track" id="timelineTrack">
-        <div class="timeline-line"></div>
-      </div>
-    </div>
+    <div class="cv" id="depC"><canvas id="depCv"></canvas><div class="tt" id="depTT"><div class="tn"></div><div class="tr"></div><div class="td"></div></div></div>
   </section>
 
-  <!-- Section 4: Ecosystem Map -->
-  <section class="card" id="section-ecosystem">
-    <div class="card-header">
-      <div class="card-icon" style="background: rgba(124, 77, 255, 0.12); color: var(--purple);">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 01.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3.001zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z"/></svg>
-      </div>
-      <div>
-        <h2>Ecosystem Map</h2>
-        <p>How llm-d connects to the cloud-native AI landscape</p>
-      </div>
+  <!-- 4. Governance -->
+  <section class="card" id="s-governance">
+    <div class="card-h">
+      <div class="card-ico" style="background:rgba(16,185,129,.1);color:var(--green)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg></div>
+      <div><h2>Governance Structure</h2><p>Animated org chart showing the CNCF governance hierarchy. Hover for details.</p></div>
     </div>
-    <div class="ecosystem-container" id="ecosystemContainer">
-      <canvas id="ecosystemCanvas"></canvas>
-      <div class="ecosystem-tooltip" id="ecosystemTooltip">
-        <div class="tooltip-name"></div>
-        <div class="tooltip-desc"></div>
-      </div>
-    </div>
+    <div class="cv" id="govC"><canvas id="govCv"></canvas><div class="tt" id="govTT"><div class="tn"></div><div class="td" style="margin-top:4px"></div></div></div>
   </section>
 
-  <!-- Section 5: Governance Structure -->
-  <section class="card" id="section-governance">
-    <div class="card-header">
-      <div class="card-icon" style="background: rgba(255, 23, 68, 0.12); color: var(--red);">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-      </div>
-      <div>
-        <h2>Governance Structure</h2>
-        <p>Vendor-neutral governance under the CNCF</p>
-      </div>
+  <!-- 5. Community Metrics -->
+  <section class="card" id="s-stats">
+    <div class="card-h">
+      <div class="card-ico" style="background:rgba(59,130,246,.1);color:var(--blue)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg></div>
+      <div><h2>Community Metrics</h2><p>Key indicators with trend sparklines</p></div>
     </div>
-    <div class="governance-visual" id="governanceVisual">
-      <div class="gov-layer gov-layer-1">
-        <div class="gov-layer-title">CNCF</div>
-        <div class="gov-layer-desc">Cloud Native Computing Foundation &mdash; vendor-neutral home</div>
-      </div>
-      <div class="gov-connector"><span class="gov-arrow-down">&darr;</span></div>
-      <div class="gov-layer gov-layer-2">
-        <div class="gov-layer-title">CNCF Sandbox</div>
-        <div class="gov-layer-desc">Incubation stage for early-stage projects</div>
-      </div>
-      <div class="gov-connector"><span class="gov-arrow-down">&darr;</span></div>
-      <div class="gov-layer gov-layer-3">
-        <div class="gov-layer-title">Maintainers</div>
-        <div class="gov-layer-desc">Core maintainers from Red Hat, Google Cloud, IBM Research</div>
-      </div>
-      <div class="gov-connector"><span class="gov-arrow-down">&darr;</span></div>
-      <div class="gov-layer gov-layer-4">
-        <div class="gov-layer-title">Contributors</div>
-        <div class="gov-layer-desc">Open contributor base from 15+ organizations</div>
-      </div>
-      <div class="gov-flow-labels">
-        <div class="gov-flow-label"><span class="gov-flow-arrow">&darr;</span> Governance decisions flow down</div>
-        <div class="gov-flow-label">Contributions flow up <span class="gov-flow-arrow">&uarr;</span></div>
-      </div>
-    </div>
+    <div class="sg" id="statsG"></div>
   </section>
 
-  <!-- Section 6: Community Stats -->
-  <section class="card" id="section-stats">
-    <div class="card-header">
-      <div class="card-icon" style="background: rgba(59, 130, 246, 0.12); color: var(--blue);">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
-      </div>
-      <div>
-        <h2>Community Stats</h2>
-        <p>The llm-d community by the numbers</p>
-      </div>
+  <!-- 6. Contribution Simulator -->
+  <section class="card" id="s-sim">
+    <div class="card-h">
+      <div class="card-ico" style="background:rgba(139,92,246,.1);color:var(--purple)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg></div>
+      <div><h2>Contribution Simulator</h2><p>See how contributions flow through project governance</p></div>
     </div>
-    <div class="stats-grid" id="statsGrid"></div>
+    <div class="sim-ctrl">
+      <div class="sim-g"><label>Organization</label><select id="simOrg">
+        <option>Red Hat</option><option>Google Cloud</option><option>IBM Research</option><option>NVIDIA</option>
+        <option>CoreWeave</option><option>AMD</option><option>Cisco</option><option>Hugging Face</option>
+        <option>Intel</option><option>Lambda</option><option>Mistral AI</option><option>UC Berkeley</option><option>UChicago</option>
+      </select></div>
+      <div class="sim-g"><label>Contribution Type</label><select id="simType">
+        <option>Code</option><option>Documentation</option><option>Testing</option><option>Research</option><option>Hardware Optimization</option>
+      </select></div>
+      <button class="sim-btn" id="simBtn">Simulate Flow</button>
+    </div>
+    <div class="cv" id="simC"><canvas id="simCv"></canvas></div>
   </section>
 
 </main>
 
-<!-- ============================================================
-     Footer
-     ============================================================ -->
-<footer class="footer">
+<footer class="ftr">
   <p>llm-d is a <a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Sandbox</a> project</p>
-  <div class="footer-links">
+  <div class="ftr-links">
     <a href="https://github.com/llm-d" target="_blank" rel="noopener">GitHub</a>
     <a href="https://llm-d.ai" target="_blank" rel="noopener">Website</a>
     <a href="./blog/">Blog</a>
   </div>
 </footer>
 
-<!-- ============================================================
-     JavaScript — All inline, no external libraries
-     ============================================================ -->
 <script>
-/* ============================================================
-   Section Navigation
-   ============================================================ */
-(function() {
-  const nav = document.getElementById('sectionNav');
-  const buttons = nav.querySelectorAll('button');
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const target = document.getElementById(btn.dataset.target);
-      if (target) {
-        const headerH = document.querySelector('.header').offsetHeight;
-        const navH = nav.offsetHeight;
-        const y = target.getBoundingClientRect().top + window.pageYOffset - headerH - navH - 16;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-    });
-  });
+/* ================================================================
+   DATA
+   ================================================================ */
+var ORGS = {
+  redhat:    {id:'redhat',   label:'Red Hat',      letter:'R',  color:'#ee0000', role:'Founding partner',
+    contribs:['Routing / EPP framework','Gateway API integration','Scheduling algorithms','Project governance leadership'],
+    components:['llm-d-core','llm-d-epp','Gateway API adapter'],
+    focus:['Routing','EPP','Gateway API','Scheduling','Governance'],
+    related:['KServe','Gateway API','Kubernetes']},
+  google:    {id:'google',   label:'Google Cloud',  letter:'G',  color:'#4285f4', role:'Founding partner',
+    contribs:['Gateway API specification & implementation','Cloud-scale testing','Governance framework'],
+    components:['Gateway API conformance tests','GKE integration'],
+    focus:['Gateway API','Governance'],
+    related:['Gateway API','Kubernetes','KServe']},
+  ibm:       {id:'ibm',      label:'IBM Research',  letter:'I',  color:'#0f62fe', role:'Founding partner',
+    contribs:['Advanced scheduling algorithms','Disaggregated serving research','CNCF donation co-sponsor'],
+    components:['Scheduler module','Research benchmarks'],
+    focus:['Scheduling','Governance','Research'],
+    related:['vLLM','KServe']},
+  nvidia:    {id:'nvidia',   label:'NVIDIA',        letter:'N',  color:'#76b900', role:'Core partner',
+    contribs:['Dynamo integration','NIXL transfer library','GPU-aware scheduling & inference acceleration'],
+    components:['NIXL bridge','Hardware acceleration layer'],
+    focus:['Hardware Optimization','Inference Engine','NIXL'],
+    related:['vLLM','NIXL','CUDA']},
+  coreweave: {id:'coreweave',label:'CoreWeave',     letter:'C',  color:'#00d4aa', role:'Core partner',
+    contribs:['Large-scale GPU cluster testing','Production validation','Performance benchmarks'],
+    components:['Scale test harness','Benchmarking suite'],
+    focus:['Scale Testing','Hardware'],
+    related:['Kubernetes','vLLM']},
+  amd:       {id:'amd',      label:'AMD',           letter:'A',  color:'#ed1c24', role:'Ecosystem',
+    contribs:['ROCm / AMD GPU optimization'],
+    components:['ROCm backend support'],
+    focus:['Hardware Optimization'],
+    related:['vLLM','ROCm']},
+  cisco:     {id:'cisco',    label:'Cisco',         letter:'Ci', color:'#049fd9', role:'Ecosystem',
+    contribs:['Network-scale testing','Infrastructure validation'],
+    components:['Scale testing infrastructure'],
+    focus:['Scale Testing'],
+    related:['Kubernetes','Prometheus']},
+  hf:        {id:'hf',       label:'Hugging Face',  letter:'HF', color:'#ffcd00', role:'Ecosystem',
+    contribs:['Model format support','Model hub integration'],
+    components:['Model loader integration'],
+    focus:['Model Support'],
+    related:['vLLM','Transformers']},
+  intel:     {id:'intel',    label:'Intel',         letter:'In', color:'#0071c5', role:'Ecosystem',
+    contribs:['Intel hardware optimization','Gaudi accelerator support'],
+    components:['Intel accelerator backend'],
+    focus:['Hardware Optimization'],
+    related:['vLLM','OpenVINO']},
+  lambda:    {id:'lambda',   label:'Lambda',        letter:'L',  color:'#8b5cf6', role:'Ecosystem',
+    contribs:['GPU cloud testing','Scale benchmarking'],
+    components:['Cloud testing environments'],
+    focus:['Scale Testing'],
+    related:['NVIDIA','vLLM']},
+  mistral:   {id:'mistral',  label:'Mistral AI',    letter:'M',  color:'#f97316', role:'Ecosystem',
+    contribs:['Model architecture support','Inference pattern optimization'],
+    components:['Mistral model configurations'],
+    focus:['Model Support'],
+    related:['vLLM','Hugging Face']},
+  berkeley:  {id:'berkeley', label:'UC Berkeley',   letter:'B',  color:'#003262', role:'Academic',
+    contribs:['vLLM inference engine','PagedAttention research'],
+    components:['vLLM core engine','PagedAttention'],
+    focus:['Inference Engine','Research'],
+    related:['vLLM','PagedAttention']},
+  uchicago:  {id:'uchicago', label:'UChicago',      letter:'U',  color:'#800000', role:'Academic',
+    contribs:['LMCache caching research','KV-cache optimization'],
+    components:['LMCache integration'],
+    focus:['Caching','Research'],
+    related:['LMCache','vLLM']},
+  cncf:      {id:'cncf',     label:'CNCF',          letter:'CN', color:'#426de1', role:'Governance',
+    contribs:['Vendor-neutral governance framework','IP & trademark management','Build infrastructure'],
+    components:['CNCF Sandbox oversight'],
+    focus:['Governance'],
+    related:['Kubernetes','KServe','Prometheus']}
+};
+var ORG_ARR = Object.keys(ORGS).map(function(k){ return ORGS[k]; });
 
-  /* Highlight active section on scroll */
-  const sections = Array.from(buttons).map(b => document.getElementById(b.dataset.target));
-  let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        const headerH = document.querySelector('.header').offsetHeight;
-        const navH = nav.offsetHeight;
-        const scrollY = window.scrollY + headerH + navH + 60;
-        let activeIdx = 0;
-        sections.forEach((sec, i) => {
-          if (sec && sec.offsetTop <= scrollY) activeIdx = i;
-        });
-        buttons.forEach((b, i) => b.classList.toggle('active', i === activeIdx));
-        ticking = false;
-      });
-      ticking = true;
-    }
-  });
+var EDGES = [
+  {s:'redhat',t:'google',c:'#3b82f6',w:3},{s:'redhat',t:'ibm',c:'#3b82f6',w:3},{s:'redhat',t:'nvidia',c:'#3b82f6',w:2},
+  {s:'redhat',t:'coreweave',c:'#3b82f6',w:2},{s:'google',t:'ibm',c:'#3b82f6',w:2},
+  {s:'nvidia',t:'redhat',c:'#10b981',w:2},{s:'nvidia',t:'coreweave',c:'#10b981',w:2},
+  {s:'amd',t:'redhat',c:'#10b981',w:1},{s:'intel',t:'redhat',c:'#10b981',w:1},
+  {s:'berkeley',t:'redhat',c:'#8b5cf6',w:2},{s:'berkeley',t:'ibm',c:'#8b5cf6',w:1},
+  {s:'uchicago',t:'redhat',c:'#8b5cf6',w:2},{s:'uchicago',t:'ibm',c:'#8b5cf6',w:1},
+  {s:'cncf',t:'redhat',c:'#f59e0b',w:2},{s:'cncf',t:'google',c:'#f59e0b',w:2},{s:'cncf',t:'ibm',c:'#f59e0b',w:2},
+  {s:'hf',t:'redhat',c:'#6b7280',w:1},{s:'cisco',t:'redhat',c:'#6b7280',w:1},
+  {s:'lambda',t:'redhat',c:'#6b7280',w:1},{s:'mistral',t:'redhat',c:'#6b7280',w:1},
+  {s:'nvidia',t:'berkeley',c:'#8b5cf6',w:1},{s:'lambda',t:'nvidia',c:'#10b981',w:1},
+  {s:'hf',t:'mistral',c:'#6b7280',w:1}
+];
+
+/* ================================================================
+   0. AMBIENT PARTICLES
+   ================================================================ */
+(function(){
+  var c=document.getElementById('ambientCanvas'),x=c.getContext('2d'),pts=[],N=55;
+  function resize(){var d=devicePixelRatio||1;c.width=innerWidth*d;c.height=innerHeight*d;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';x.setTransform(d,0,0,d,0,0)}
+  function init(){pts=[];for(var i=0;i<N;i++)pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:.4+Math.random()*1.4,vx:(Math.random()-.5)*.12,vy:-.02+(Math.random()-.5)*.1,a:.04+Math.random()*.25,ph:Math.random()*6.28,ps:.003+Math.random()*.005})}
+  function draw(){x.clearRect(0,0,innerWidth,innerHeight);for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;p.ph+=p.ps;if(p.x<-5)p.x=innerWidth+5;if(p.x>innerWidth+5)p.x=-5;if(p.y<-5)p.y=innerHeight+5;if(p.y>innerHeight+5)p.y=-5;var a=p.a*(.6+.4*Math.sin(p.ph));x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);x.fillStyle='rgba(59,130,246,'+a+')';x.fill()}requestAnimationFrame(draw)}
+  resize();init();draw();window.addEventListener('resize',function(){resize();init()});
 })();
 
-/* ============================================================
-   1. Partner Network Graph — Force-directed on Canvas
-   ============================================================ */
-(function() {
-  const container = document.getElementById('graphContainer');
-  const canvas = document.getElementById('networkCanvas');
-  const ctx = canvas.getContext('2d');
-  const tooltip = document.getElementById('graphTooltip');
-
-  /* Node definitions */
-  const nodeData = [
-    { id: 'redhat',    label: 'Red Hat',       color: '#ee0000', role: 'Founding partner' },
-    { id: 'google',    label: 'Google Cloud',   color: '#4285f4', role: 'Founding partner' },
-    { id: 'ibm',       label: 'IBM Research',   color: '#0f62fe', role: 'Founding partner' },
-    { id: 'coreweave', label: 'CoreWeave',      color: '#00d4aa', role: 'Core partner' },
-    { id: 'nvidia',    label: 'NVIDIA',         color: '#76b900', role: 'Core partner' },
-    { id: 'amd',       label: 'AMD',            color: '#ed1c24', role: 'Ecosystem' },
-    { id: 'cisco',     label: 'Cisco',          color: '#049fd9', role: 'Ecosystem' },
-    { id: 'hf',        label: 'Hugging Face',   color: '#ffcd00', role: 'Ecosystem' },
-    { id: 'intel',     label: 'Intel',          color: '#0071c5', role: 'Ecosystem' },
-    { id: 'lambda',    label: 'Lambda',         color: '#8b5cf6', role: 'Ecosystem' },
-    { id: 'mistral',   label: 'Mistral AI',     color: '#f97316', role: 'Ecosystem' },
-    { id: 'berkeley',  label: 'UC Berkeley',    color: '#003262', role: 'Academic' },
-    { id: 'uchicago',  label: 'UChicago',       color: '#800000', role: 'Academic' },
-    { id: 'cncf',      label: 'CNCF',           color: '#426de1', role: 'Governance' }
-  ];
-
-  /* Edge definitions */
-  const edgeData = [
-    /* Code collaboration — blue */
-    { source: 'redhat', target: 'google',    color: '#3b82f6', type: 'code' },
-    { source: 'redhat', target: 'ibm',       color: '#3b82f6', type: 'code' },
-    { source: 'redhat', target: 'nvidia',    color: '#3b82f6', type: 'code' },
-    { source: 'redhat', target: 'coreweave', color: '#3b82f6', type: 'code' },
-    { source: 'google', target: 'ibm',       color: '#3b82f6', type: 'code' },
-    /* Hardware optimization — green */
-    { source: 'nvidia',  target: 'redhat',    color: '#10b981', type: 'hw' },
-    { source: 'nvidia',  target: 'coreweave', color: '#10b981', type: 'hw' },
-    { source: 'amd',     target: 'redhat',    color: '#10b981', type: 'hw' },
-    { source: 'intel',   target: 'redhat',    color: '#10b981', type: 'hw' },
-    /* Research — purple */
-    { source: 'berkeley', target: 'redhat', color: '#8b5cf6', type: 'research' },
-    { source: 'berkeley', target: 'ibm',    color: '#8b5cf6', type: 'research' },
-    { source: 'uchicago', target: 'redhat', color: '#8b5cf6', type: 'research' },
-    { source: 'uchicago', target: 'ibm',    color: '#8b5cf6', type: 'research' },
-    { source: 'ibm',      target: 'google', color: '#8b5cf6', type: 'research' },
-    /* Governance — amber */
-    { source: 'cncf', target: 'redhat', color: '#f59e0b', type: 'governance' },
-    { source: 'cncf', target: 'google', color: '#f59e0b', type: 'governance' },
-    { source: 'cncf', target: 'ibm',    color: '#f59e0b', type: 'governance' },
-    /* Ecosystem — gray */
-    { source: 'hf',      target: 'redhat', color: '#6b7280', type: 'ecosystem' },
-    { source: 'cisco',   target: 'redhat', color: '#6b7280', type: 'ecosystem' },
-    { source: 'lambda',  target: 'redhat', color: '#6b7280', type: 'ecosystem' },
-    { source: 'mistral', target: 'redhat', color: '#6b7280', type: 'ecosystem' }
-  ];
-
-  /* Build node map */
-  const nodeMap = {};
-  nodeData.forEach(n => { nodeMap[n.id] = n; });
-
-  /* Physics state */
-  let nodes = [];
-  let W, H, dpr;
-  let hoveredNode = null;
-  let mouseX = -1000, mouseY = -1000;
-
-  function resize() {
-    const rect = container.getBoundingClientRect();
-    dpr = window.devicePixelRatio || 1;
-    W = rect.width;
-    H = Math.max(420, Math.min(W * 0.55, 560));
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.height = H + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-
-  function initNodes() {
-    const cx = W / 2, cy = H / 2;
-    nodes = nodeData.map((n, i) => {
-      const angle = (i / nodeData.length) * Math.PI * 2;
-      const r = Math.min(W, H) * 0.3;
-      return {
-        ...n,
-        x: cx + Math.cos(angle) * r + (Math.random() - 0.5) * 40,
-        y: cy + Math.sin(angle) * r + (Math.random() - 0.5) * 40,
-        vx: 0, vy: 0,
-        radius: ['redhat', 'google', 'ibm'].includes(n.id) ? 22 :
-                ['coreweave', 'nvidia'].includes(n.id) ? 18 : 14
-      };
-    });
-  }
-
-  function getNode(id) { return nodes.find(n => n.id === id); }
-
-  function simulate() {
-    const cx = W / 2, cy = H / 2;
-    const damping = 0.92;
-    const repulsion = 2500;
-    const springLength = Math.min(W, H) * 0.25;
-    const springK = 0.004;
-    const centerPull = 0.0003;
-
-    /* Repulsion between all node pairs */
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const a = nodes[i], b = nodes[j];
-        let dx = b.x - a.x, dy = b.y - a.y;
-        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        let force = repulsion / (dist * dist);
-        let fx = (dx / dist) * force;
-        let fy = (dy / dist) * force;
-        a.vx -= fx; a.vy -= fy;
-        b.vx += fx; b.vy += fy;
-      }
-    }
-
-    /* Spring forces along edges */
-    edgeData.forEach(e => {
-      const a = getNode(e.source), b = getNode(e.target);
-      if (!a || !b) return;
-      let dx = b.x - a.x, dy = b.y - a.y;
-      let dist = Math.sqrt(dx * dx + dy * dy) || 1;
-      let displacement = dist - springLength;
-      let force = springK * displacement;
-      let fx = (dx / dist) * force;
-      let fy = (dy / dist) * force;
-      a.vx += fx; a.vy += fy;
-      b.vx -= fx; b.vy -= fy;
-    });
-
-    /* Center pull */
-    nodes.forEach(n => {
-      n.vx += (cx - n.x) * centerPull;
-      n.vy += (cy - n.y) * centerPull;
-    });
-
-    /* Mouse interaction — gentle repulsion */
-    if (mouseX > 0 && mouseY > 0 && !hoveredNode) {
-      nodes.forEach(n => {
-        let dx = n.x - mouseX, dy = n.y - mouseY;
-        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        if (dist < 120) {
-          let force = (120 - dist) * 0.02;
-          n.vx += (dx / dist) * force;
-          n.vy += (dy / dist) * force;
-        }
-      });
-    }
-
-    /* Integration */
-    nodes.forEach(n => {
-      n.vx *= damping;
-      n.vy *= damping;
-      n.x += n.vx;
-      n.y += n.vy;
-      /* Boundary clamping */
-      const pad = n.radius + 10;
-      n.x = Math.max(pad, Math.min(W - pad, n.x));
-      n.y = Math.max(pad, Math.min(H - pad, n.y));
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-
-    /* Draw edges */
-    edgeData.forEach(e => {
-      const a = getNode(e.source), b = getNode(e.target);
-      if (!a || !b) return;
-      const isHighlighted = hoveredNode && (hoveredNode.id === e.source || hoveredNode.id === e.target);
-      ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
-      ctx.strokeStyle = e.color;
-      ctx.globalAlpha = hoveredNode ? (isHighlighted ? 0.8 : 0.08) : 0.3;
-      ctx.lineWidth = isHighlighted ? 2.5 : 1.2;
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-    });
-
-    /* Draw nodes */
-    nodes.forEach(n => {
-      const isHovered = hoveredNode && hoveredNode.id === n.id;
-      const isConnected = hoveredNode && edgeData.some(
-        e => (e.source === hoveredNode.id && e.target === n.id) ||
-             (e.target === hoveredNode.id && e.source === n.id)
-      );
-      const dimmed = hoveredNode && !isHovered && !isConnected;
-
-      /* Glow */
-      if (isHovered || isConnected) {
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.radius + 8, 0, Math.PI * 2);
-        ctx.fillStyle = n.color;
-        ctx.globalAlpha = 0.15;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-
-      /* Circle */
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
-      ctx.fillStyle = n.color;
-      ctx.globalAlpha = dimmed ? 0.2 : 1;
-      ctx.fill();
-      ctx.globalAlpha = 1;
-
-      /* Label */
-      ctx.font = '500 11px "Red Hat Text", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = dimmed ? 'rgba(232, 232, 240, 0.15)' : 'rgba(232, 232, 240, 0.9)';
-      ctx.fillText(n.label, n.x, n.y + n.radius + 6);
-    });
-  }
-
-  function loop() {
-    simulate();
-    draw();
-    requestAnimationFrame(loop);
-  }
-
-  /* Hit testing */
-  function getNodeAt(mx, my) {
-    for (let i = nodes.length - 1; i >= 0; i--) {
-      const n = nodes[i];
-      const dx = mx - n.x, dy = my - n.y;
-      if (dx * dx + dy * dy <= (n.radius + 6) * (n.radius + 6)) return n;
-    }
-    return null;
-  }
-
-  canvas.addEventListener('mousemove', e => {
-    const rect = canvas.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-    hoveredNode = getNodeAt(mouseX, mouseY);
-    if (hoveredNode) {
-      tooltip.querySelector('.tooltip-name').textContent = hoveredNode.label;
-      tooltip.querySelector('.tooltip-role').textContent = hoveredNode.role;
-      tooltip.style.opacity = '1';
-      let tx = mouseX + 16, ty = mouseY - 10;
-      if (tx + 200 > W) tx = mouseX - 200;
-      if (ty < 0) ty = mouseY + 20;
-      tooltip.style.left = tx + 'px';
-      tooltip.style.top = ty + 'px';
-      canvas.style.cursor = 'pointer';
-    } else {
-      tooltip.style.opacity = '0';
-      canvas.style.cursor = 'crosshair';
-    }
-  });
-
-  canvas.addEventListener('mouseleave', () => {
-    mouseX = -1000; mouseY = -1000;
-    hoveredNode = null;
-    tooltip.style.opacity = '0';
-  });
-
-  /* Touch support */
-  canvas.addEventListener('touchstart', e => {
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    mouseX = touch.clientX - rect.left;
-    mouseY = touch.clientY - rect.top;
-    hoveredNode = getNodeAt(mouseX, mouseY);
-    if (hoveredNode) {
-      tooltip.querySelector('.tooltip-name').textContent = hoveredNode.label;
-      tooltip.querySelector('.tooltip-role').textContent = hoveredNode.role;
-      tooltip.style.opacity = '1';
-      tooltip.style.left = (mouseX + 16) + 'px';
-      tooltip.style.top = (mouseY - 10) + 'px';
-    }
-  }, { passive: true });
-
-  canvas.addEventListener('touchend', () => {
-    hoveredNode = null;
-    tooltip.style.opacity = '0';
-  });
-
-  /* Init */
-  resize();
-  initNodes();
-  loop();
-  window.addEventListener('resize', () => { resize(); });
+/* ================================================================
+   SECTION NAV
+   ================================================================ */
+(function(){
+  var nav=document.getElementById('sectionNav'),btns=nav.querySelectorAll('button');
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    var t=document.getElementById(b.dataset.target);
+    if(t){var hh=60,nh=nav.offsetHeight;window.scrollTo({top:t.getBoundingClientRect().top+pageYOffset-hh-nh-16,behavior:'smooth'})}
+  })});
+  var secs=Array.from(btns).map(function(b){return document.getElementById(b.dataset.target)});
+  var tick=false;
+  window.addEventListener('scroll',function(){if(!tick){requestAnimationFrame(function(){
+    var sy=scrollY+60+nav.offsetHeight+60,ai=0;
+    secs.forEach(function(s,i){if(s&&s.offsetTop<=sy)ai=i});
+    btns.forEach(function(b,i){b.classList.toggle('active',i===ai)});tick=false});tick=true}});
 })();
 
-/* ============================================================
-   2. Contribution Matrix
-   ============================================================ */
-(function() {
-  const areas = [
-    'Routing / EPP', 'Gateway API', 'Scheduling', 'Hardware Opt',
-    'Scale Testing', 'Inference Engine', 'Caching', 'Governance', 'Model Support'
-  ];
+/* ================================================================
+   EXPLORER PANEL
+   ================================================================ */
+var eoEl=document.getElementById('eo'),epEl=document.getElementById('ep');
+function openExplorer(id){
+  var o=ORGS[id]; if(!o)return;
+  var rc=o.role==='Founding partner'?'background:rgba(59,130,246,.12);color:#3b82f6;border:1px solid rgba(59,130,246,.2)':o.role==='Core partner'?'background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.2)':o.role==='Academic'?'background:rgba(139,92,246,.12);color:#8b5cf6;border:1px solid rgba(139,92,246,.2)':o.role==='Governance'?'background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.2)':'background:rgba(107,114,128,.12);color:#9ca3af;border:1px solid rgba(107,114,128,.2)';
+  document.getElementById('epHead').innerHTML='<div class="ep-badge" style="background:'+o.color+'">'+o.letter+'</div><h3>'+o.label+'</h3><div class="ep-role" style="'+rc+'">'+o.role+'</div>';
+  var html='<div class="ep-sec"><h4>Contributions</h4><ul>'+o.contribs.map(function(c){return '<li>'+c+'</li>'}).join('')+'</ul></div>';
+  html+='<div class="ep-sec"><h4>Components Maintained</h4><ul>'+o.components.map(function(c){return '<li>'+c+'</li>'}).join('')+'</ul></div>';
+  html+='<div class="ep-sec"><h4>Focus Areas</h4><div class="ep-tags">'+o.focus.map(function(f){return '<span class="ep-tag">'+f+'</span>'}).join('')+'</div></div>';
+  html+='<div class="ep-sec"><h4>Related Projects</h4><ul>'+o.related.map(function(r){return '<li>'+r+'</li>'}).join('')+'</ul></div>';
+  document.getElementById('epBody').innerHTML=html;
+  eoEl.classList.add('open');document.body.style.overflow='hidden';
+}
+function closeExplorer(){eoEl.classList.remove('open');document.body.style.overflow=''}
+document.getElementById('epClose').addEventListener('click',closeExplorer);
+eoEl.addEventListener('click',function(e){if(e.target===eoEl)closeExplorer()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeExplorer()});
 
-  const orgs = [
-    { name: 'Red Hat',       color: '#ee0000', primary: [0,1,2,7], secondary: [] },
-    { name: 'Google Cloud',  color: '#4285f4', primary: [1,7],     secondary: [] },
-    { name: 'IBM Research',  color: '#0f62fe', primary: [2,7],     secondary: [] },
-    { name: 'NVIDIA',        color: '#76b900', primary: [3,5],     secondary: [] },
-    { name: 'CoreWeave',     color: '#00d4aa', primary: [4],       secondary: [3] },
-    { name: 'UC Berkeley',   color: '#003262', primary: [5],       secondary: [] },
-    { name: 'UChicago',      color: '#800000', primary: [6],       secondary: [] },
-    { name: 'AMD',           color: '#ed1c24', primary: [3],       secondary: [] },
-    { name: 'Cisco',         color: '#049fd9', primary: [4],       secondary: [] },
-    { name: 'Hugging Face',  color: '#ffcd00', primary: [8],       secondary: [] },
-    { name: 'Intel',         color: '#0071c5', primary: [3],       secondary: [] },
-    { name: 'Lambda',        color: '#8b5cf6', primary: [4],       secondary: [] },
-    { name: 'Mistral AI',    color: '#f97316', primary: [8],       secondary: [] }
-  ];
+/* ================================================================
+   1. PARTNER NETWORK — Force-directed + Particle Flow + Drag
+   ================================================================ */
+(function(){
+  var container=document.getElementById('graphC'),canvas=document.getElementById('netCv'),ctx=canvas.getContext('2d'),tooltip=document.getElementById('netTT');
+  var nodes=[],W,H,dpr,hovered=null,drag=null,mx=-9e3,my=-9e3;
+  var flowParts=[];
 
-  const tbody = document.getElementById('matrixBody');
-  orgs.forEach(org => {
-    const tr = document.createElement('tr');
-    const nameCell = document.createElement('td');
-    nameCell.innerHTML = '<span class="org-badge" style="background:' + org.color + ';"></span>' + org.name;
-    tr.appendChild(nameCell);
-    areas.forEach((_, i) => {
-      const td = document.createElement('td');
-      if (org.primary.includes(i)) {
-        td.innerHTML = '<span class="dot-primary"></span>';
-      } else if (org.secondary.includes(i)) {
-        td.innerHTML = '<span class="dot-secondary"></span>';
-      }
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
-  });
+  function resize(){var r=container.getBoundingClientRect();dpr=devicePixelRatio||1;W=r.width;H=Math.max(480,Math.min(W*.56,620));canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+
+  function initNodes(){var cx=W/2,cy=H/2;nodes=ORG_ARR.map(function(o,i){
+    var a=(i/ORG_ARR.length)*Math.PI*2-Math.PI/2,rad=Math.min(W,H)*.31;
+    var sz=o.role==='Founding partner'?26:o.role==='Core partner'?21:o.role==='Governance'?23:16;
+    return{id:o.id,label:o.label,letter:o.letter,color:o.color,role:o.role,focus:o.focus,
+      x:cx+Math.cos(a)*rad+(Math.random()-.5)*40,y:cy+Math.sin(a)*rad+(Math.random()-.5)*40,
+      vx:0,vy:0,r:sz,pinned:false}
+  });initFlowParts()}
+
+  function initFlowParts(){flowParts=[];EDGES.forEach(function(e){for(var i=0;i<e.w+1;i++){flowParts.push({edge:e,t:Math.random(),sp:(.002+Math.random()*.003)*(.5+e.w*.3),sz:1+e.w*.4})}})}
+
+  function gn(id){for(var i=0;i<nodes.length;i++)if(nodes[i].id===id)return nodes[i];return null}
+
+  function sim(){var cx=W/2,cy=H/2;
+    for(var i=0;i<nodes.length;i++){if(nodes[i].pinned)continue;for(var j=i+1;j<nodes.length;j++){
+      var a=nodes[i],b=nodes[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=3200/(d*d),fx=dx/d*f,fy=dy/d*f;
+      if(!a.pinned){a.vx-=fx;a.vy-=fy}if(!b.pinned){b.vx+=fx;b.vy+=fy}}}
+    EDGES.forEach(function(e){var a=gn(e.s),b=gn(e.t);if(!a||!b)return;var dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)||1,disp=d-Math.min(W,H)*.23,f=.005*disp,fx=dx/d*f,fy=dy/d*f;if(!a.pinned){a.vx+=fx;a.vy+=fy}if(!b.pinned){b.vx-=fx;b.vy-=fy}});
+    for(var i=0;i<nodes.length;i++){var n=nodes[i];if(n.pinned)continue;n.vx+=(cx-n.x)*.0004;n.vy+=(cy-n.y)*.0004;n.vx*=.88;n.vy*=.88;n.x+=n.vx;n.y+=n.vy;var p=n.r+10;n.x=Math.max(p,Math.min(W-p,n.x));n.y=Math.max(p,Math.min(H-p,n.y))}}
+
+  function draw(){ctx.clearRect(0,0,W,H);
+    /* Edges */
+    EDGES.forEach(function(e){var a=gn(e.s),b=gn(e.t);if(!a||!b)return;
+      var hl=hovered&&(hovered.id===e.s||hovered.id===e.t);
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=e.c;
+      ctx.globalAlpha=hovered?(hl?.65:.05):.18;ctx.lineWidth=hl?e.w*1+1.5:e.w*.7+.5;ctx.stroke();ctx.globalAlpha=1});
+    /* Flow particles along edges */
+    flowParts.forEach(function(p){p.t+=p.sp;if(p.t>1)p.t-=1;var a=gn(p.edge.s),b=gn(p.edge.t);if(!a||!b)return;
+      var hl=hovered&&(hovered.id===p.edge.s||hovered.id===p.edge.t),dim=hovered&&!hl;
+      var x=a.x+(b.x-a.x)*p.t,y=a.y+(b.y-a.y)*p.t;
+      ctx.beginPath();ctx.arc(x,y,p.sz,0,6.28);ctx.fillStyle=p.edge.c;ctx.globalAlpha=dim?.02:(hl?.85:.35);ctx.fill();ctx.globalAlpha=1});
+    /* Nodes */
+    nodes.forEach(function(n){
+      var isH=hovered&&hovered.id===n.id,isC=hovered&&EDGES.some(function(e){return(e.s===hovered.id&&e.t===n.id)||(e.t===hovered.id&&e.s===n.id)}),dim=hovered&&!isH&&!isC;
+      if(isH){var g=ctx.createRadialGradient(n.x,n.y,n.r,n.x,n.y,n.r+18);g.addColorStop(0,n.color+'40');g.addColorStop(1,n.color+'00');ctx.beginPath();ctx.arc(n.x,n.y,n.r+18,0,6.28);ctx.fillStyle=g;ctx.fill()}
+      else if(isC){ctx.beginPath();ctx.arc(n.x,n.y,n.r+7,0,6.28);ctx.fillStyle=n.color+'15';ctx.fill()}
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,6.28);ctx.globalAlpha=dim?.14:1;ctx.fillStyle=n.color;ctx.fill();
+      ctx.font='bold '+(n.r*.78)+'px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=dim?'rgba(255,255,255,.08)':'rgba(255,255,255,.95)';ctx.fillText(n.letter,n.x,n.y+1);ctx.globalAlpha=1;
+      ctx.font='500 '+(dim?'9':'10')+'px "Red Hat Text",sans-serif';ctx.textBaseline='top';ctx.fillStyle=dim?'rgba(226,232,244,.08)':'rgba(226,232,244,.82)';ctx.fillText(n.label,n.x,n.y+n.r+7)});
+    sim();requestAnimationFrame(draw)}
+
+  function hit(mx,my){for(var i=nodes.length-1;i>=0;i--){var n=nodes[i],dx=mx-n.x,dy=my-n.y;if(dx*dx+dy*dy<=(n.r+8)*(n.r+8))return n}return null}
+
+  canvas.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;
+    if(drag){drag.x=mx;drag.y=my;drag.vx=0;drag.vy=0;return}
+    hovered=hit(mx,my);
+    if(hovered){var o=ORGS[hovered.id];tooltip.querySelector('.tn').textContent=hovered.label;tooltip.querySelector('.tr').textContent=hovered.role;
+      tooltip.querySelector('.td').textContent=o?o.contribs.slice(0,2).join(' / '):'';
+      var tagsEl=tooltip.querySelector('.tags');tagsEl.innerHTML='';(hovered.focus||[]).forEach(function(f){var s=document.createElement('span');s.className='tag';s.textContent=f;tagsEl.appendChild(s)});
+      tooltip.style.opacity='1';var tx=mx+18,ty=my-14;if(tx+300>W)tx=mx-300;if(ty<0)ty=my+24;tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';canvas.style.cursor='pointer'}
+    else{tooltip.style.opacity='0';canvas.style.cursor='crosshair'}});
+  canvas.addEventListener('mousedown',function(e){var r=canvas.getBoundingClientRect();var n=hit(e.clientX-r.left,e.clientY-r.top);if(n){drag=n;drag.pinned=true;e.preventDefault()}});
+  canvas.addEventListener('mouseup',function(){if(drag){drag.pinned=false;drag=null}});
+  canvas.addEventListener('mouseleave',function(){mx=-9e3;my=-9e3;hovered=null;tooltip.style.opacity='0';if(drag){drag.pinned=false;drag=null}});
+  canvas.addEventListener('click',function(e){var r=canvas.getBoundingClientRect();var n=hit(e.clientX-r.left,e.clientY-r.top);if(n&&!drag)openExplorer(n.id)});
+  canvas.addEventListener('touchstart',function(e){var t=e.touches[0],r=canvas.getBoundingClientRect();var n=hit(t.clientX-r.left,t.clientY-r.top);if(n)openExplorer(n.id)},{passive:true});
+
+  resize();initNodes();requestAnimationFrame(draw);window.addEventListener('resize',resize);
 })();
 
-/* ============================================================
-   3. Timeline
-   ============================================================ */
-(function() {
-  const milestones = [
-    { date: 'May 2025', title: 'Project Launch', desc: 'llm-d announced with founding coalition of Red Hat, Google Cloud, IBM Research, CoreWeave, NVIDIA' },
-    { date: 'Jun 2025', title: 'First External PRs', desc: 'Community contributors beyond founding partners submit first pull requests' },
-    { date: 'Aug 2025', title: 'KubeCon NA Demo', desc: 'Live demo of llm-d at KubeCon North America showcasing multi-model routing' },
-    { date: 'Nov 2025', title: 'v0.2 Release', desc: 'Major release with EPP v2, improved scheduling algorithms, NVIDIA Dynamo integration' },
-    { date: 'Jan 2026', title: 'CNCF Submission', desc: 'IBM Research, Red Hat, and Google Cloud jointly submit llm-d to CNCF Sandbox' },
-    { date: 'Mar 2026', title: 'CNCF Sandbox Accepted', desc: 'llm-d accepted into CNCF Sandbox, establishing vendor-neutral governance' },
-    { date: 'Jun 2026', title: 'Growing Ecosystem', desc: '15+ partners, multiple production deployments, expanding contributor base' }
+/* ================================================================
+   2. TIMELINE
+   ================================================================ */
+(function(){
+  var ms=[
+    {d:'May 2025',t:'Project Launch',desc:'llm-d announced with founding coalition: Red Hat, Google Cloud, IBM Research, CoreWeave, NVIDIA. Initial EPP routing framework and Gateway API support.'},
+    {d:'Jun 2025',t:'First External PRs',desc:'Community contributors beyond founding partners submit first pull requests. Contribution guidelines and review standards established.'},
+    {d:'Aug 2025',t:'KubeCon NA Demo',desc:'Live demo at KubeCon North America showcasing multi-model routing across heterogeneous GPU pools with measurable throughput gains.'},
+    {d:'Nov 2025',t:'v0.2 Release',desc:'Major release: EPP v2, improved scheduling, NVIDIA Dynamo integration, enhanced prefix-aware routing, production hardening.'},
+    {d:'Jan 2026',t:'CNCF Submission',desc:'IBM Research, Red Hat, and Google Cloud jointly submit llm-d to CNCF Sandbox. Multi-vendor sponsorship underscores neutrality.'},
+    {d:'Mar 2026',t:'CNCF Sandbox Accepted',desc:'Accepted into CNCF Sandbox. IP transferred to foundation. Vendor-neutral governance formally established.'},
+    {d:'Jun 2026',t:'Growing Ecosystem',desc:'15+ partner organizations, 100+ contributors, multiple production deployments. Expanding hardware and cloud provider support.'}
   ];
-
-  const track = document.getElementById('timelineTrack');
-  milestones.forEach((m, i) => {
-    const item = document.createElement('div');
-    item.className = 'timeline-item';
-    item.innerHTML =
-      '<div class="timeline-dot-wrap"><div class="timeline-dot"></div></div>' +
-      '<div class="timeline-date">' + m.date + '</div>' +
-      '<div class="timeline-label">' + m.title + '</div>' +
-      '<div class="timeline-detail"><div class="timeline-detail-inner">' + m.desc + '</div></div>';
-    item.addEventListener('click', () => {
-      const wasActive = item.classList.contains('active');
-      track.querySelectorAll('.timeline-item').forEach(el => el.classList.remove('active'));
-      if (!wasActive) item.classList.add('active');
-    });
-    track.appendChild(item);
-  });
+  var track=document.getElementById('tlTrack');
+  ms.forEach(function(m){var item=document.createElement('div');item.className='tl-i';
+    item.innerHTML='<div class="tl-dw"><div class="tl-d"></div></div><div class="tl-date">'+m.d+'</div><div class="tl-lbl">'+m.t+'</div><div class="tl-det"><div class="tl-det-in">'+m.desc+'</div></div>';
+    item.addEventListener('click',function(){var was=item.classList.contains('active');track.querySelectorAll('.tl-i').forEach(function(el){el.classList.remove('active')});if(!was)item.classList.add('active')});
+    track.appendChild(item)});
 })();
 
-/* ============================================================
-   4. Ecosystem Map — Canvas with animated dashes
-   ============================================================ */
-(function() {
-  const container = document.getElementById('ecosystemContainer');
-  const canvas = document.getElementById('ecosystemCanvas');
-  const ctx = canvas.getContext('2d');
-  const tooltip = document.getElementById('ecosystemTooltip');
-
-  const projects = [
-    { id: 'vllm',    label: 'vLLM',        desc: 'Inference engine — llm-d routes requests to vLLM workers', origin: 'UC Berkeley', color: '#3b82f6' },
-    { id: 'kserve',  label: 'KServe',      desc: 'Model serving — llm-d provides intelligent routing layer for KServe', origin: '', color: '#10b981' },
-    { id: 'gwapi',   label: 'Gateway API', desc: 'Kubernetes-native API — llm-d implements Gateway API for inference routing', origin: 'Google Cloud', color: '#f59e0b' },
-    { id: 'nixl',    label: 'NIXL',        desc: 'NVIDIA transfer library — enables disaggregated prefill/decode communication', origin: 'NVIDIA', color: '#76b900' },
-    { id: 'k8s',     label: 'Kubernetes',  desc: 'Orchestration — llm-d runs as cloud-native Kubernetes workloads', origin: '', color: '#326ce5' },
-    { id: 'prom',    label: 'Prometheus',  desc: 'Observability — llm-d exports metrics for monitoring and autoscaling', origin: '', color: '#e6522c' }
+/* ================================================================
+   3. DEPENDENCY MAP — Canvas with pulsating center + particles
+   ================================================================ */
+(function(){
+  var container=document.getElementById('depC'),canvas=document.getElementById('depCv'),ctx=canvas.getContext('2d'),tooltip=document.getElementById('depTT');
+  var deps=[
+    {id:'vllm',label:'vLLM',desc:'High-throughput inference engine with PagedAttention. llm-d routes requests to vLLM worker pools.',ver:'v0.6+',color:'#3b82f6'},
+    {id:'kserve',label:'KServe',desc:'Model serving platform on Kubernetes. llm-d provides intelligent routing and scheduling layer.',ver:'v0.13+',color:'#10b981'},
+    {id:'gwapi',label:'Gateway API',desc:'Kubernetes-native API gateway. llm-d implements the Inference Extension for LLM-aware routing.',ver:'v1.2+',color:'#f59e0b'},
+    {id:'nixl',label:'NIXL',desc:'NVIDIA transfer library for GPU-to-GPU KV cache transfer in disaggregated architectures.',ver:'v0.3+',color:'#76b900'},
+    {id:'k8s',label:'Kubernetes',desc:'Container orchestration. llm-d runs as cloud-native workloads with CRDs and operators.',ver:'v1.28+',color:'#326ce5'},
+    {id:'prom',label:'Prometheus',desc:'Observability and monitoring. llm-d exports metrics for autoscaling and performance dashboards.',ver:'v2.45+',color:'#e6522c'},
+    {id:'keda',label:'KEDA',desc:'Event-driven autoscaling. Scales llm-d workers based on queue depth and GPU utilization.',ver:'v2.12+',color:'#06b6d4'},
+    {id:'envoy',label:'Envoy',desc:'Edge/service proxy. Gateway API implementations use Envoy as the data plane for llm-d traffic.',ver:'v1.28+',color:'#ac6fce'}
   ];
+  var W,H,dpr,cx,cy,pos=[],hov=null,dOff=0,pulse=0,dParts=[];
 
-  let W, H, dpr;
-  let centerX, centerY;
-  let hoveredProject = null;
-  let mouseX = -1000, mouseY = -1000;
-  let dashOffset = 0;
-  let pulsePhase = 0;
+  function resize(){var r=container.getBoundingClientRect();dpr=devicePixelRatio||1;W=r.width;H=Math.max(440,Math.min(W*.54,540));canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);cx=W/2;cy=H/2;comp();initDP()}
+  function comp(){var rad=Math.min(W,H)*.37;pos=deps.map(function(d,i){var a=(i/deps.length)*6.28-1.57;return{id:d.id,label:d.label,desc:d.desc,ver:d.ver,color:d.color,x:cx+Math.cos(a)*rad,y:cy+Math.sin(a)*rad,nr:32}})}
+  function initDP(){dParts=[];pos.forEach(function(p){for(var i=0;i<3;i++){dParts.push({dep:p,t:Math.random(),sp:.003+Math.random()*.005,sz:1+Math.random()*.8})}})}
 
-  /* Computed positions for outer nodes */
-  let positions = [];
-
-  function resize() {
-    const rect = container.getBoundingClientRect();
-    dpr = window.devicePixelRatio || 1;
-    W = rect.width;
-    H = Math.max(380, Math.min(W * 0.5, 480));
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.height = H + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    centerX = W / 2;
-    centerY = H / 2;
-    computePositions();
-  }
-
-  function computePositions() {
-    const radius = Math.min(W, H) * 0.34;
-    positions = projects.map((p, i) => {
-      const angle = (i / projects.length) * Math.PI * 2 - Math.PI / 2;
-      return {
-        ...p,
-        x: centerX + Math.cos(angle) * radius,
-        y: centerY + Math.sin(angle) * radius,
-        nodeRadius: 28
-      };
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    dashOffset -= 0.3;
-    pulsePhase += 0.03;
-
-    const centerRadius = 36;
-    const pulseR = centerRadius + Math.sin(pulsePhase) * 6;
-
-    /* Draw dashed lines from center to each project */
-    positions.forEach(p => {
-      const isHovered = hoveredProject && hoveredProject.id === p.id;
-      ctx.save();
-      ctx.setLineDash([6, 4]);
-      ctx.lineDashOffset = dashOffset;
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(p.x, p.y);
-      ctx.strokeStyle = p.color;
-      ctx.globalAlpha = hoveredProject ? (isHovered ? 0.9 : 0.12) : 0.35;
-      ctx.lineWidth = isHovered ? 2.5 : 1.5;
-      ctx.stroke();
-      ctx.restore();
-    });
-
-    /* Center node pulsating glow */
-    const grad = ctx.createRadialGradient(centerX, centerY, pulseR * 0.3, centerX, centerY, pulseR + 14);
-    grad.addColorStop(0, 'rgba(59, 130, 246, 0.25)');
-    grad.addColorStop(1, 'rgba(59, 130, 246, 0)');
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, pulseR + 14, 0, Math.PI * 2);
-    ctx.fillStyle = grad;
-    ctx.fill();
-
+  function draw(){ctx.clearRect(0,0,W,H);dOff-=.4;pulse+=.025;
+    var cR=42+Math.sin(pulse)*4;
+    /* Dashed lines */
+    pos.forEach(function(p){var isH=hov&&hov.id===p.id;ctx.save();ctx.setLineDash([8,5]);ctx.lineDashOffset=dOff;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p.x,p.y);ctx.strokeStyle=p.color;ctx.globalAlpha=hov?(isH?.8:.07):.22;ctx.lineWidth=isH?2.5:1.5;ctx.stroke();ctx.restore()});
+    /* Particles */
+    dParts.forEach(function(dp){dp.t+=dp.sp;if(dp.t>1)dp.t-=1;var p=dp.dep,isH=hov&&hov.id===p.id,dim=hov&&!isH;
+      var x=cx+(p.x-cx)*dp.t,y=cy+(p.y-cy)*dp.t;ctx.beginPath();ctx.arc(x,y,dp.sz,0,6.28);ctx.fillStyle=p.color;ctx.globalAlpha=dim?.02:(isH?.8:.3);ctx.fill();ctx.globalAlpha=1});
+    /* Center glow */
+    var g=ctx.createRadialGradient(cx,cy,cR*.35,cx,cy,cR+20);g.addColorStop(0,'rgba(59,130,246,.28)');g.addColorStop(.6,'rgba(59,130,246,.06)');g.addColorStop(1,'rgba(59,130,246,0)');ctx.beginPath();ctx.arc(cx,cy,cR+20,0,6.28);ctx.fillStyle=g;ctx.fill();
     /* Center node */
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, pulseR, 0, Math.PI * 2);
-    ctx.fillStyle = '#3b82f6';
-    ctx.fill();
-    ctx.font = '900 14px "Red Hat Display", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#fff';
-    ctx.fillText('llm-d', centerX, centerY);
-
+    ctx.beginPath();ctx.arc(cx,cy,cR,0,6.28);ctx.fillStyle='#3b82f6';ctx.fill();ctx.font='900 16px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';ctx.fillText('llm-d',cx,cy);
     /* Outer nodes */
-    positions.forEach(p => {
-      const isHovered = hoveredProject && hoveredProject.id === p.id;
-      const dimmed = hoveredProject && !isHovered;
+    pos.forEach(function(p){var isH=hov&&hov.id===p.id,dim=hov&&!isH;
+      if(isH){var hg=ctx.createRadialGradient(p.x,p.y,p.nr,p.x,p.y,p.nr+14);hg.addColorStop(0,p.color+'28');hg.addColorStop(1,p.color+'00');ctx.beginPath();ctx.arc(p.x,p.y,p.nr+14,0,6.28);ctx.fillStyle=hg;ctx.fill()}
+      ctx.beginPath();ctx.arc(p.x,p.y,p.nr,0,6.28);ctx.fillStyle=dim?'rgba(15,21,37,.85)':'rgba(15,21,37,.95)';ctx.fill();ctx.strokeStyle=p.color;ctx.globalAlpha=dim?.12:.75;ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=1;
+      ctx.font='700 11px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=dim?'rgba(226,232,244,.08)':p.color;ctx.fillText(p.label,p.x,p.y-5);
+      ctx.font='400 8px "Red Hat Text",sans-serif';ctx.fillStyle=dim?'rgba(226,232,244,.04)':'rgba(226,232,244,.35)';ctx.fillText(p.ver,p.x,p.y+9)});
+    requestAnimationFrame(draw)}
 
-      if (isHovered) {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.nodeRadius + 8, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = 0.15;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
+  function hitD(mx,my){for(var i=pos.length-1;i>=0;i--){var p=pos[i],dx=mx-p.x,dy=my-p.y;if(dx*dx+dy*dy<=(p.nr+8)*(p.nr+8))return p}
+    var cdx=mx-cx,cdy=my-cy;if(cdx*cdx+cdy*cdy<=48*48)return{id:'llmd',label:'llm-d',ver:'v0.2+',desc:'Kubernetes-native platform for scalable LLM inference. The central orchestration and routing layer.'};return null}
 
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.nodeRadius, 0, Math.PI * 2);
-      ctx.fillStyle = dimmed ? 'rgba(18,18,26,0.8)' : 'rgba(18,18,26,0.95)';
-      ctx.fill();
-      ctx.strokeStyle = p.color;
-      ctx.globalAlpha = dimmed ? 0.2 : 0.8;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-
-      ctx.font = '700 11px "Red Hat Display", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = dimmed ? 'rgba(232,232,240,0.15)' : p.color;
-      ctx.fillText(p.label, p.x, p.y);
-    });
-
-    requestAnimationFrame(draw);
-  }
-
-  function getProjectAt(mx, my) {
-    for (let i = positions.length - 1; i >= 0; i--) {
-      const p = positions[i];
-      const dx = mx - p.x, dy = my - p.y;
-      if (dx * dx + dy * dy <= (p.nodeRadius + 6) * (p.nodeRadius + 6)) return p;
-    }
-    return null;
-  }
-
-  canvas.addEventListener('mousemove', e => {
-    const rect = canvas.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-    hoveredProject = getProjectAt(mouseX, mouseY);
-    if (hoveredProject) {
-      tooltip.querySelector('.tooltip-name').textContent = hoveredProject.label;
-      tooltip.querySelector('.tooltip-desc').textContent = hoveredProject.desc;
-      tooltip.style.opacity = '1';
-      let tx = mouseX + 16, ty = mouseY - 10;
-      if (tx + 260 > W) tx = mouseX - 260;
-      if (ty < 0) ty = mouseY + 20;
-      tooltip.style.left = tx + 'px';
-      tooltip.style.top = ty + 'px';
-      canvas.style.cursor = 'pointer';
-    } else {
-      tooltip.style.opacity = '0';
-      canvas.style.cursor = 'pointer';
-    }
-  });
-
-  canvas.addEventListener('mouseleave', () => {
-    mouseX = -1000; mouseY = -1000;
-    hoveredProject = null;
-    tooltip.style.opacity = '0';
-  });
-
-  canvas.addEventListener('touchstart', e => {
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    mouseX = touch.clientX - rect.left;
-    mouseY = touch.clientY - rect.top;
-    hoveredProject = getProjectAt(mouseX, mouseY);
-    if (hoveredProject) {
-      tooltip.querySelector('.tooltip-name').textContent = hoveredProject.label;
-      tooltip.querySelector('.tooltip-desc').textContent = hoveredProject.desc;
-      tooltip.style.opacity = '1';
-      tooltip.style.left = (mouseX + 16) + 'px';
-      tooltip.style.top = (mouseY - 10) + 'px';
-    }
-  }, { passive: true });
-
-  canvas.addEventListener('touchend', () => {
-    hoveredProject = null;
-    tooltip.style.opacity = '0';
-  });
-
-  resize();
-  draw();
-  window.addEventListener('resize', resize);
+  canvas.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();var mx=e.clientX-r.left,my=e.clientY-r.top;hov=hitD(mx,my);
+    if(hov){tooltip.querySelector('.tn').textContent=hov.label;tooltip.querySelector('.tr').textContent='Compatible: '+hov.ver;tooltip.querySelector('.td').textContent=hov.desc;tooltip.style.opacity='1';var tx=mx+18,ty=my-14;if(tx+300>W)tx=mx-300;if(ty<0)ty=my+24;tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';canvas.style.cursor='pointer'}
+    else{tooltip.style.opacity='0';canvas.style.cursor='default'}});
+  canvas.addEventListener('mouseleave',function(){hov=null;tooltip.style.opacity='0'});
+  canvas.addEventListener('touchstart',function(e){var t=e.touches[0],r=canvas.getBoundingClientRect();hov=hitD(t.clientX-r.left,t.clientY-r.top);if(hov){tooltip.querySelector('.tn').textContent=hov.label;tooltip.querySelector('.tr').textContent='Compatible: '+hov.ver;tooltip.querySelector('.td').textContent=hov.desc;tooltip.style.opacity='1';tooltip.style.left='10px';tooltip.style.top='10px'}},{passive:true});
+  canvas.addEventListener('touchend',function(){hov=null;tooltip.style.opacity='0'});
+  resize();requestAnimationFrame(draw);window.addEventListener('resize',resize);
 })();
 
-/* ============================================================
-   6. Community Stats — Count-up animation on scroll
-   ============================================================ */
-(function() {
-  const stats = [
-    { value: 15,  suffix: '+', label: 'Partners' },
-    { value: 3,   suffix: '',  label: 'Founding Organizations' },
-    { value: 6,   suffix: '',  label: 'Core Conferences' },
-    { value: 8,   suffix: '+', label: 'Integrations' },
-    { value: 1,   suffix: '',  label: 'CNCF Sandbox Project' },
-    { value: 100, suffix: '+', label: 'Contributors' }
+/* ================================================================
+   4. GOVERNANCE — Animated Canvas Org Chart with Particles
+   ================================================================ */
+(function(){
+  var container=document.getElementById('govC'),canvas=document.getElementById('govCv'),ctx=canvas.getContext('2d'),tooltip=document.getElementById('govTT');
+  var layers=[
+    {label:'CNCF',sub:'Cloud Native Computing Foundation',desc:'The vendor-neutral home for cloud-native open source projects. Provides governance framework, legal structure, and community resources for llm-d.',color:'#426de1'},
+    {label:'Technical Oversight Committee',sub:'TOC',desc:'The CNCF TOC evaluates projects, sets technical direction, and decides on maturity levels (Sandbox, Incubating, Graduated).',color:'#3b82f6'},
+    {label:'CNCF Sandbox',sub:'Early-stage incubation',desc:'Sandbox projects receive IP protection, CI infrastructure, and foundation oversight. llm-d was accepted March 2026.',color:'#10b981'},
+    {label:'Maintainers',sub:'Red Hat, Google Cloud, IBM Research',desc:'Core maintainers with merge authority who review PRs, set roadmap direction, and ensure code quality across the project.',color:'#f59e0b'},
+    {label:'Contributors',sub:'15+ organizations',desc:'Open contributor base spanning hardware vendors, cloud providers, academic institutions, and AI companies. PRs evaluated on technical merit.',color:'#8b5cf6'}
   ];
+  var W,H,dpr,hovL=null,govParts=[];
 
-  const grid = document.getElementById('statsGrid');
-  const cards = [];
+  function resize(){var r=container.getBoundingClientRect();dpr=devicePixelRatio||1;W=r.width;H=Math.max(400,Math.min(W*.45,460));canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);compLayers();initGP()}
+  function compLayers(){var lh=50,gap=(H-50-layers.length*lh)/(layers.length);layers.forEach(function(l,i){l.y=30+i*(lh+gap);l.h=lh;l.w=Math.max(220,W*.56-i*20);l.x=(W-l.w)/2})}
+  function initGP(){govParts=[];for(var i=0;i<12;i++){govParts.push({dir:'up',x:W*.32+Math.random()*W*.06,t:Math.random(),sp:.002+Math.random()*.003,sz:1.3+Math.random(),c:'#8b5cf6'})}
+    for(var i=0;i<8;i++){govParts.push({dir:'down',x:W*.62+Math.random()*W*.06,t:Math.random(),sp:.002+Math.random()*.003,sz:1.3+Math.random(),c:'#f59e0b'})}}
 
-  stats.forEach(s => {
-    const card = document.createElement('div');
-    card.className = 'stat-card';
-    const numEl = document.createElement('div');
-    numEl.className = 'stat-number';
-    numEl.textContent = '0' + s.suffix;
-    numEl.dataset.target = s.value;
-    numEl.dataset.suffix = s.suffix;
-    const labelEl = document.createElement('div');
-    labelEl.className = 'stat-label';
-    labelEl.textContent = s.label;
-    card.appendChild(numEl);
-    card.appendChild(labelEl);
-    grid.appendChild(card);
-    cards.push(numEl);
+  function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath()}
+
+  function draw(){ctx.clearRect(0,0,W,H);
+    var topY=layers[0].y+layers[0].h/2,botY=layers[4].y+layers[4].h/2;
+    /* Vertical connector lines */
+    ctx.beginPath();ctx.moveTo(W*.35,topY);ctx.lineTo(W*.35,botY);ctx.strokeStyle='rgba(139,92,246,.1)';ctx.lineWidth=1;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(W*.65,topY);ctx.lineTo(W*.65,botY);ctx.strokeStyle='rgba(245,158,11,.1)';ctx.lineWidth=1;ctx.stroke();
+    /* Particles */
+    govParts.forEach(function(p){p.t+=p.sp;if(p.t>1)p.t-=1;var py=p.dir==='up'?botY-(botY-topY)*p.t:topY+(botY-topY)*p.t;var a=Math.sin(p.t*3.14)*.55+.1;ctx.beginPath();ctx.arc(p.x,py,p.sz,0,6.28);ctx.fillStyle=p.c;ctx.globalAlpha=a;ctx.fill();ctx.globalAlpha=1});
+    /* Layer boxes */
+    layers.forEach(function(l,i){var isH=hovL===i;
+      if(isH){ctx.shadowColor=l.color;ctx.shadowBlur=18}
+      roundRect(l.x,l.y,l.w,l.h,10);ctx.fillStyle='rgba(15,21,37,.88)';ctx.fill();ctx.strokeStyle=l.color+(isH?'bb':'35');ctx.lineWidth=isH?2:1;ctx.stroke();ctx.shadowBlur=0;ctx.shadowColor='transparent';
+      ctx.font='700 13px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=l.color;ctx.fillText(l.label,W/2,l.y+l.h/2-7);
+      ctx.font='400 10px "Red Hat Text",sans-serif';ctx.fillStyle='rgba(226,232,244,.4)';ctx.fillText(l.sub,W/2,l.y+l.h/2+9);
+      if(i<layers.length-1){var nxt=layers[i+1];ctx.beginPath();ctx.setLineDash([3,3]);ctx.moveTo(W/2,l.y+l.h);ctx.lineTo(W/2,nxt.y);ctx.strokeStyle='rgba(226,232,244,.08)';ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([])}});
+    /* Labels at bottom */
+    ctx.font='500 10px "Red Hat Text",sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(139,92,246,.55)';ctx.fillText('Contributions flow up',W*.35,H-10);
+    ctx.fillStyle='rgba(245,158,11,.55)';ctx.fillText('Governance flows down',W*.65,H-10);
+    requestAnimationFrame(draw)}
+
+  function hitL(mx,my){for(var i=0;i<layers.length;i++){var l=layers[i];if(mx>=l.x&&mx<=l.x+l.w&&my>=l.y&&my<=l.y+l.h)return i}return null}
+
+  canvas.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();var mx=e.clientX-r.left,my=e.clientY-r.top;hovL=hitL(mx,my);
+    if(hovL!==null){var l=layers[hovL];tooltip.querySelector('.tn').textContent=l.label;tooltip.querySelector('.td').textContent=l.desc;tooltip.style.opacity='1';var tx=mx+18,ty=my-14;if(tx+260>W)tx=mx-260;if(ty+80>H)ty=my-80;tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';canvas.style.cursor='pointer'}
+    else{tooltip.style.opacity='0';canvas.style.cursor='default'}});
+  canvas.addEventListener('mouseleave',function(){hovL=null;tooltip.style.opacity='0'});
+  canvas.addEventListener('touchstart',function(e){var t=e.touches[0],r=canvas.getBoundingClientRect();hovL=hitL(t.clientX-r.left,t.clientY-r.top);if(hovL!==null){var l=layers[hovL];tooltip.querySelector('.tn').textContent=l.label;tooltip.querySelector('.td').textContent=l.desc;tooltip.style.opacity='1';tooltip.style.left='10px';tooltip.style.top='10px'}},{passive:true});
+  canvas.addEventListener('touchend',function(){hovL=null;tooltip.style.opacity='0'});
+  resize();requestAnimationFrame(draw);window.addEventListener('resize',resize);
+})();
+
+/* ================================================================
+   5. COMMUNITY METRICS — Count-up + Sparklines
+   ================================================================ */
+(function(){
+  var stats=[
+    {val:15,suf:'+',label:'Partner Organizations',spark:[2,3,5,6,8,10,12,14,15]},
+    {val:4,suf:'',label:'Major Releases',spark:[0,1,1,2,2,3,3,4,4]},
+    {val:8,suf:'+',label:'Ecosystem Integrations',spark:[1,2,3,4,4,5,6,7,8]},
+    {val:6,suf:'',label:'Conference Presentations',spark:[0,1,2,2,3,4,5,5,6]},
+    {val:100,suf:'+',label:'Contributors',spark:[5,12,25,40,55,68,80,92,100]}
+  ];
+  var grid=document.getElementById('statsG'),numEls=[];
+  stats.forEach(function(s){
+    var card=document.createElement('div');card.className='sc';
+    var numEl=document.createElement('div');numEl.className='sc-num';numEl.textContent='0'+s.suf;numEl.dataset.target=s.val;numEl.dataset.suffix=s.suf;
+    var lblEl=document.createElement('div');lblEl.className='sc-lbl';lblEl.textContent=s.label;
+    var spkCv=document.createElement('canvas');spkCv.width=300;spkCv.height=36;
+    card.appendChild(numEl);card.appendChild(lblEl);card.appendChild(spkCv);grid.appendChild(card);numEls.push(numEl);
+    /* Draw sparkline */
+    var sx=spkCv.getContext('2d'),sw=300,sh=36,pad=4,max=Math.max.apply(null,s.spark)||1,segW=(sw-pad*2)/(s.spark.length-1);
+    /* Fill area */
+    sx.beginPath();sx.moveTo(pad,sh-pad);
+    s.spark.forEach(function(v,i){var x=pad+i*segW,y=sh-pad-(v/max)*(sh-pad*2);sx.lineTo(x,y)});
+    sx.lineTo(pad+(s.spark.length-1)*segW,sh-pad);sx.closePath();
+    var grd=sx.createLinearGradient(0,0,0,sh);grd.addColorStop(0,'rgba(59,130,246,.12)');grd.addColorStop(1,'rgba(59,130,246,0)');sx.fillStyle=grd;sx.fill();
+    /* Line */
+    sx.beginPath();s.spark.forEach(function(v,i){var x=pad+i*segW,y=sh-pad-(v/max)*(sh-pad*2);i===0?sx.moveTo(x,y):sx.lineTo(x,y)});sx.strokeStyle='rgba(59,130,246,.45)';sx.lineWidth=1.5;sx.stroke();
+    /* End dot */
+    var lx=pad+(s.spark.length-1)*segW,ly=sh-pad-(s.spark[s.spark.length-1]/max)*(sh-pad*2);sx.beginPath();sx.arc(lx,ly,3,0,6.28);sx.fillStyle='#3b82f6';sx.fill();
   });
+  var animated=false;
+  function anim(){if(animated)return;animated=true;numEls.forEach(function(el){var tgt=+el.dataset.target,suf=el.dataset.suffix,dur=1400,st=performance.now();
+    (function step(now){var p=Math.min((now-st)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*tgt)+suf;if(p<1)requestAnimationFrame(step)})(st)})}
+  if('IntersectionObserver' in window){var obs=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){anim();obs.disconnect()}})},{threshold:.25});obs.observe(grid)}else anim();
+})();
 
-  let animated = false;
+/* ================================================================
+   6. CONTRIBUTION SIMULATOR — Animated flow through governance
+   ================================================================ */
+(function(){
+  var canvas=document.getElementById('simCv'),ctx=canvas.getContext('2d'),wrap=document.getElementById('simC');
+  var W,H,dpr;
+  var stages=['Contributor','PR\nSubmitted','Code\nReview','Maintainer\nApproval','Merge','Release'];
+  var simState=null;
+  var typeColors={Code:'#3b82f6',Documentation:'#10b981',Testing:'#f59e0b',Research:'#8b5cf6','Hardware Optimization':'#76b900'};
 
-  function animateCounters() {
-    if (animated) return;
-    animated = true;
-    cards.forEach(el => {
-      const target = parseInt(el.dataset.target);
-      const suffix = el.dataset.suffix;
-      const duration = 1200;
-      const start = performance.now();
-      function step(now) {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        /* Ease out cubic */
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const current = Math.round(eased * target);
-        el.textContent = current + suffix;
-        if (progress < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    });
-  }
+  function resize(){var r=wrap.getBoundingClientRect();dpr=devicePixelRatio||1;W=r.width;H=200;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+  function stX(i){return 70+i*(W-140)/(stages.length-1)}
 
-  /* IntersectionObserver to trigger count-up */
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCounters();
-          observer.disconnect();
-        }
-      });
-    }, { threshold: 0.3 });
-    observer.observe(grid);
-  } else {
-    /* Fallback — just animate immediately */
-    animateCounters();
-  }
+  function drawIdle(){ctx.clearRect(0,0,W,H);var cy=H/2;
+    /* Line */
+    ctx.beginPath();ctx.moveTo(stX(0),cy);ctx.lineTo(stX(stages.length-1),cy);ctx.strokeStyle='rgba(26,32,56,.8)';ctx.lineWidth=2;ctx.stroke();
+    stages.forEach(function(s,i){var x=stX(i);ctx.beginPath();ctx.arc(x,cy,10,0,6.28);ctx.fillStyle='rgba(26,32,56,.8)';ctx.fill();ctx.strokeStyle='#1a2038';ctx.lineWidth=1.5;ctx.stroke();
+      var lines=s.split('\n');ctx.font='500 9px "Red Hat Text",sans-serif';ctx.textAlign='center';ctx.fillStyle='#5a6580';lines.forEach(function(ln,li){ctx.fillText(ln,x,cy+24+li*12)})})}
+
+  function startSim(){var org=document.getElementById('simOrg').value,type=document.getElementById('simType').value;
+    simState={org:org,type:type,stage:0,t:0,done:false,trails:[]};animSim()}
+
+  function animSim(){if(!simState)return;ctx.clearRect(0,0,W,H);var cy=H/2,col=typeColors[simState.type]||'#3b82f6';
+    simState.t+=.014;if(simState.t>=1&&simState.stage<stages.length-1){simState.stage++;simState.t=0}
+    if(simState.stage>=stages.length-1)simState.done=true;
+    /* Connecting segments */
+    stages.forEach(function(s,i){if(i===0)return;var x0=stX(i-1),x1=stX(i);ctx.beginPath();ctx.moveTo(x0,cy);ctx.lineTo(x1,cy);ctx.strokeStyle=i<=simState.stage?col+'80':'rgba(26,32,56,.8)';ctx.lineWidth=2;ctx.stroke()});
+    /* Active particle */
+    if(!simState.done&&simState.stage<stages.length-1){var x0=stX(simState.stage),x1=stX(simState.stage+1),px=x0+(x1-x0)*simState.t;
+      ctx.beginPath();ctx.arc(px,cy,5,0,6.28);ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=16;ctx.fill();ctx.shadowBlur=0;
+      for(var k=0;k<4;k++){var tt=simState.t-.025*(k+1);if(tt<0)continue;var tx=x0+(x1-x0)*tt;ctx.beginPath();ctx.arc(tx,cy,3.5-k*.7,0,6.28);ctx.fillStyle=col;ctx.globalAlpha=.35-.08*k;ctx.fill();ctx.globalAlpha=1}}
+    /* Stage dots */
+    stages.forEach(function(s,i){var x=stX(i),active=i<=simState.stage,cur=i===simState.stage;
+      ctx.beginPath();ctx.arc(x,cy,cur?14:10,0,6.28);
+      if(active){ctx.fillStyle=cur?col:'rgba(59,130,246,.3)';if(cur){ctx.shadowColor=col;ctx.shadowBlur=18}}else ctx.fillStyle='rgba(26,32,56,.8)';
+      ctx.fill();ctx.shadowBlur=0;ctx.shadowColor='transparent';
+      if(active&&!cur){ctx.font='bold 10px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';ctx.fillText('✓',x,cy)}
+      var lines=s.split('\n');ctx.font=(cur?'600':'500')+' 9px "Red Hat Text",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';ctx.fillStyle=active?'#e2e8f4':'#5a6580';lines.forEach(function(ln,li){ctx.fillText(ln,x,cy+24+li*12)})});
+    /* Label */
+    ctx.font='600 12px "Red Hat Text",sans-serif';ctx.textAlign='left';ctx.fillStyle=col;ctx.fillText(simState.org+' → '+simState.type,stX(0),cy-40);
+    if(simState.done){ctx.font='700 13px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.fillStyle='#10b981';ctx.fillText('Contribution successfully released!',W/2,cy-40)}
+    if(!simState.done)requestAnimationFrame(animSim);else setTimeout(function(){if(simState&&simState.done){simState=null;drawIdle()}},3000)}
+
+  document.getElementById('simBtn').addEventListener('click',startSim);
+  resize();drawIdle();window.addEventListener('resize',function(){resize();if(!simState||simState.done)drawIdle()});
 })();
 </script>
 </body>
