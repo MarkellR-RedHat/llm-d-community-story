@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Competing Companies Built a Community Around LLM Inference Infrastructure | llm-d</title>
+    <meta name="description" content="The story of llm-d: from multi-vendor launch to CNCF Sandbox — and what it means for the future of AI infrastructure.">
+    <meta name="author" content="Markell Rawls">
+    <link rel="icon" type="image/png" href="https://llm-d.ai/img/llm-d-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700;900&family=Red+Hat+Text:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-body: #0a0a0f;
+            --bg-card: #12121a;
+            --border: #1e1e32;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9898b0;
+            --text-muted: #6a6a80;
+            --accent-blue: #3b82f6;
+            --green: #00e676;
+            --amber: #ffab00;
+            --red: #ff1744;
+            --purple: #7c4dff;
+            --radius: 12px;
+            --font-heading: 'Red Hat Display', sans-serif;
+            --font-body: 'Red Hat Text', sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 17px;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Header */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .header-left img {
+            width: 36px;
+            height: 36px;
+        }
+
+        .header-brand {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .header-nav a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Main content */
+        .article-container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 6rem;
+        }
+
+        /* Metadata block */
+        .meta-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 2rem;
+            align-items: center;
+        }
+
+        .meta-item {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .meta-item strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .meta-separator {
+            color: var(--border);
+            user-select: none;
+        }
+
+        .meta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .meta-tag {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Title & subtitle */
+        .article-title {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 2.6rem;
+            line-height: 1.15;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .article-subtitle {
+            font-family: var(--font-body);
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        /* Table of contents */
+        .toc {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .toc-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .toc ol {
+            list-style: none;
+            counter-reset: toc-counter;
+        }
+
+        .toc li {
+            counter-increment: toc-counter;
+            padding: 0.3rem 0;
+        }
+
+        .toc li::before {
+            content: counter(toc-counter) ".";
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            font-family: var(--font-mono);
+        }
+
+        .toc a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .toc a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Section headings */
+        .article-body h2 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: var(--text-primary);
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent-blue);
+            line-height: 1.3;
+        }
+
+        .article-body h3 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Paragraphs */
+        .article-body p {
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        /* Links */
+        .article-body a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+            transition: border-color 0.2s;
+        }
+
+        .article-body a:hover {
+            border-color: var(--accent-blue);
+        }
+
+        /* Inline code */
+        .article-body code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+        }
+
+        /* Blockquotes */
+        .article-body blockquote {
+            border-left: 3px solid var(--accent-blue);
+            background: var(--bg-card);
+            margin: 1.5rem 0;
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .article-body blockquote p {
+            color: var(--text-secondary);
+            margin-bottom: 0;
+        }
+
+        /* Lists */
+        .article-body ul,
+        .article-body ol {
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+        }
+
+        .article-body li {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .article-body li strong {
+            color: var(--text-primary);
+        }
+
+        /* Ordered list for timeline */
+        .timeline-list {
+            list-style: none;
+            padding-left: 0 !important;
+        }
+
+        .timeline-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+        }
+
+        /* CTA section */
+        .cta-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .cta-section h2 {
+            border-left: none !important;
+            padding-left: 0 !important;
+            margin-top: 0 !important;
+        }
+
+        .cta-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .cta-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 8px;
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .cta-link:hover {
+            background: rgba(59, 130, 246, 0.18);
+            border-color: var(--accent-blue);
+        }
+
+        /* Footer */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .site-header {
+                padding: 0 1rem;
+            }
+
+            .article-container {
+                padding: 2rem 1rem 4rem;
+            }
+
+            .article-title {
+                font-size: 1.8rem;
+            }
+
+            .article-subtitle {
+                font-size: 1.05rem;
+            }
+
+            .article-body h2 {
+                font-size: 1.35rem;
+            }
+
+            .meta-card {
+                padding: 1rem;
+            }
+
+            .cta-links {
+                flex-direction: column;
+            }
+
+            .header-nav {
+                gap: 1rem;
+            }
+
+            .header-nav a {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+    <a href="https://llm-d.ai" class="header-left" style="text-decoration: none;">
+        <img src="https://llm-d.ai/img/llm-d-icon.png" alt="llm-d logo" width="36" height="36">
+        <span class="header-brand">llm-d</span>
+    </a>
+    <nav class="header-nav">
+        <a href="../">Interactive App</a>
+        <a href="https://github.com/llm-d" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://llm-d.ai" target="_blank" rel="noopener">Website</a>
+    </nav>
+</header>
+
+<!-- Article -->
+<main class="article-container">
+
+    <!-- Metadata -->
+    <div class="meta-card">
+        <span class="meta-item"><strong>Markell Rawls</strong></span>
+        <span class="meta-separator">|</span>
+        <span class="meta-item">June 2026</span>
+        <span class="meta-separator">|</span>
+        <span class="meta-item">12 min read</span>
+        <div class="meta-tags">
+            <span class="meta-tag">llm-d</span>
+            <span class="meta-tag">CNCF</span>
+            <span class="meta-tag">open source</span>
+            <span class="meta-tag">community</span>
+            <span class="meta-tag">distributed inference</span>
+            <span class="meta-tag">Kubernetes</span>
+        </div>
+    </div>
+
+    <!-- Title -->
+    <h1 class="article-title">How Competing Companies Built a Community Around LLM Inference Infrastructure</h1>
+    <p class="article-subtitle">The story of llm-d: from multi-vendor launch to CNCF Sandbox &mdash; and what it means for the future of AI infrastructure</p>
+
+    <!-- Table of Contents -->
+    <nav class="toc">
+        <div class="toc-title">Table of Contents</div>
+        <ol>
+            <li><a href="#problem">The Problem That United Competitors</a></li>
+            <li><a href="#coalition">The Founding Coalition</a></li>
+            <li><a href="#academic">The Academic Foundation</a></li>
+            <li><a href="#cncf-path">The Path to CNCF Sandbox</a></li>
+            <li><a href="#governance">What Vendor-Neutral Governance Means in Practice</a></li>
+            <li><a href="#ecosystem">The Ecosystem: More Than a Single Project</a></li>
+            <li><a href="#contributors">The Contributor Journey</a></li>
+            <li><a href="#forward">Looking Forward</a></li>
+            <li><a href="#cta">Get Involved</a></li>
+        </ol>
+    </nav>
+
+    <!-- Article Body -->
+    <article class="article-body">
+
+        <h2 id="problem">The Problem That United Competitors</h2>
+
+        <p>Every company deploying large language models at scale runs into the same wall. Traditional load balancers&mdash;the ones that have reliably distributed HTTP requests across web servers for decades&mdash;fundamentally do not work for LLM inference. The reasons are structural, not incremental.</p>
+
+        <p>LLM inference is <strong>stateful</strong>. Each request builds a KV cache that persists across the generation of every token in the response. Route a follow-up request to the wrong GPU, and you either recompute that cache from scratch (wasting seconds of expensive accelerator time) or transfer gigabytes of state across the network. Traditional load balancers have no concept of this state.</p>
+
+        <p>LLM inference is <strong>heterogeneous</strong>. A production cluster might run H100s, A100s, and L40S GPUs side by side, each with different memory capacities, compute profiles, and optimal batch sizes. A 70B parameter model on an 80GB H100 has fundamentally different characteristics than the same model on a 48GB A100. Round-robin and least-connections algorithms are blind to these differences.</p>
+
+        <p>LLM inference is <strong>asymmetric</strong>. The prefill phase (processing the input prompt) and the decode phase (generating tokens one at a time) have radically different compute profiles. Prefill is compute-bound and parallelizable; decode is memory-bandwidth-bound and sequential. The most efficient architectures separate these phases onto different hardware pools&mdash;but that requires a routing layer smart enough to orchestrate the handoff.</p>
+
+        <blockquote><p>No single company could solve all of these problems alone. And critically, no company wanted to be locked into a competitor's proprietary solution for such a foundational piece of their inference stack.</p></blockquote>
+
+        <p>This tension&mdash;shared problems, competitive dynamics, and mutual distrust of vendor lock-in&mdash;created the conditions for an unusual collaboration.</p>
+
+        <h2 id="coalition">The Founding Coalition</h2>
+
+        <p>In May 2025, llm-d launched with a coalition that would have seemed implausible even a year earlier. Five companies that compete directly in the cloud and AI infrastructure market agreed to build shared routing and scheduling infrastructure together. Each brought something the others needed.</p>
+
+        <p><strong>Red Hat</strong> led the project's creation. Their contribution went beyond code: they brought the <code>Endpoint Picker Protocol</code> (EPP), a framework for making intelligent routing decisions based on real-time inference engine state. Equally important, they brought two decades of experience in open-source community management from the OpenShift and Kubernetes ecosystems. Building a multi-vendor open-source project is as much a social challenge as a technical one, and Red Hat understood the governance patterns that make it work.</p>
+
+        <p><strong>Google Cloud</strong> brought <code>Gateway API</code> integration&mdash;the Kubernetes-native API standard that Google helped create and shepherd through the community. By building llm-d on Gateway API, the project inherited a mature, well-understood interface that the entire Kubernetes ecosystem already speaks. Google also brought the cloud-provider perspective on what "scale" actually means in production environments serving millions of users.</p>
+
+        <p><strong>IBM Research</strong> contributed advanced scheduling algorithms and deep research on disaggregated serving&mdash;the architectural pattern of separating prefill and decode phases onto different hardware pools. Their research on optimal request scheduling across heterogeneous GPU clusters directly shaped llm-d's scheduling layer. IBM Research, alongside Red Hat and Google Cloud, later donated the project to CNCF.</p>
+
+        <p><strong>NVIDIA</strong> brought hardware-level optimization through Dynamo integration for GPU-aware scheduling and the <code>NIXL</code> transfer library. NIXL is what makes disaggregated prefill/decode architectures practical at scale: it handles the high-speed transfer of KV cache state between GPU pools with minimal latency overhead. Without this kind of hardware-software co-design, disaggregated serving remains a research concept rather than a production architecture.</p>
+
+        <p><strong>CoreWeave</strong> provided what no other partner could: large-scale GPU infrastructure for real-world testing and validation. Building a routing layer in a lab is one thing; proving it works at cloud-provider scale across thousands of GPUs running diverse workloads is another. CoreWeave's infrastructure gave llm-d a proving ground that matched production conditions.</p>
+
+        <blockquote><p>The key insight that made this coalition possible: routing and scheduling are "undifferentiated heavy lifting." Companies compete on models, services, platforms, and user experience&mdash;not on the plumbing that moves requests to GPUs. Collaborating on the plumbing lets everyone focus investment on their actual differentiators.</p></blockquote>
+
+        <p>This is the same dynamic that drove the creation of Kubernetes itself. No cloud provider competes on container orchestration anymore. They compete on managed services, developer experience, and ecosystem integration built on top of the shared orchestration layer. llm-d represents the same bet for LLM inference: the routing layer should be shared infrastructure, not a competitive moat.</p>
+
+        <h2 id="academic">The Academic Foundation</h2>
+
+        <p>llm-d did not start from scratch. It built deliberately on two major academic projects that had already reshaped how the industry thinks about LLM serving.</p>
+
+        <p><strong>vLLM</strong>, created at UC Berkeley, introduced <code>PagedAttention</code>&mdash;a memory management technique that dramatically improved GPU memory utilization during inference. vLLM quickly became the de facto standard inference engine for LLM serving, adopted across the industry from startups to hyperscalers. llm-d was designed from the beginning to route requests <em>to</em> vLLM workers rather than replace them. This is a critical architectural decision: llm-d does not try to be an inference engine. It makes inference engines smarter by giving them better-selected work. The vLLM team's direct involvement in llm-d ensured the routing layer has deep knowledge of engine internals&mdash;KV cache occupancy, queue depth, model loading status&mdash;rather than treating workers as black boxes.</p>
+
+        <p><strong>LMCache</strong>, developed at the University of Chicago, tackled a different dimension: KV cache management and sharing across requests. In production LLM serving, many requests share common prefixes&mdash;system prompts, few-shot examples, or shared context. LMCache enables prefix-aware routing, where requests sharing common prefixes can be directed to workers that have already computed and cached the relevant KV state. This avoids redundant computation and dramatically improves both latency and throughput for workloads with shared context patterns. LMCache's integration into llm-d means the routing layer can make decisions based on <em>what computation has already been done</em>, not just <em>which worker is least busy</em>.</p>
+
+        <p>This academic-industry bridge is a model worth studying. The researchers who invented these techniques are active participants in the llm-d community. They sit in design discussions, review pull requests, and shape the roadmap. The result is a routing layer that understands inference at a level that would be impossible to achieve through API-level integration alone.</p>
+
+        <h2 id="cncf-path">The Path to CNCF Sandbox</h2>
+
+        <p>The journey from launch to CNCF Sandbox took less than a year&mdash;fast by CNCF standards, reflecting both the project's momentum and the industry's urgency around LLM inference infrastructure.</p>
+
+        <ul class="timeline-list">
+            <li><strong>May 2025</strong> &mdash; Launch with multi-vendor backing. The initial release included the EPP routing framework, basic vLLM integration, and Gateway API support. The founding five organizations committed maintainers and engineering resources.</li>
+            <li><strong>Summer 2025</strong> &mdash; First external contributors beyond the founding partners began appearing. Community processes were established: contribution guidelines, code review standards, and regular community meetings. The project moved from "founding team builds everything" to "community contributes meaningfully."</li>
+            <li><strong>KubeCon NA 2025</strong> &mdash; Live demonstrations showed multi-model routing at scale. These were not slide-deck promises; they were running systems routing real inference requests across heterogeneous GPU pools with measurable latency and throughput improvements. The demos attracted significant attention from platform engineering teams evaluating their LLM serving infrastructure.</li>
+            <li><strong>Late 2025</strong> &mdash; The v0.2 release delivered major architectural improvements: better disaggregated prefill/decode support, enhanced prefix-aware routing, improved observability, and production-hardening based on real-world deployment feedback.</li>
+            <li><strong>January 2026</strong> &mdash; IBM Research, Red Hat, and Google Cloud jointly submitted llm-d to the Cloud Native Computing Foundation. The joint submission from three major technology companies underscored the project's vendor-neutral positioning.</li>
+            <li><strong>March 2026</strong> &mdash; Accepted into CNCF Sandbox, joining the foundation's portfolio of cloud-native projects alongside Kubernetes, Prometheus, Envoy, and others.</li>
+        </ul>
+
+        <p>Why does CNCF membership matter? For engineering leaders evaluating infrastructure dependencies, CNCF membership answers a critical question: <em>what happens if the project's primary sponsor changes strategy?</em></p>
+
+        <p>Under CNCF governance, the intellectual property belongs to the foundation, not to any single company. The trademark is held by CNCF. The infrastructure is managed by CNCF. No single company can unilaterally change the license, close the source, or redirect the project to serve their commercial interests at the expense of the community. For companies building their inference stack on llm-d, CNCF membership is a contractual guarantee against rug-pulls.</p>
+
+        <h2 id="governance">What Vendor-Neutral Governance Means in Practice</h2>
+
+        <p>The phrase "vendor-neutral governance" gets used so often in open source that it risks becoming meaningless. For llm-d, it has specific, concrete implications.</p>
+
+        <p><strong>CNCF provides the institutional framework.</strong> Intellectual property is held by the foundation under the Apache 2.0 license. The llm-d trademark is managed by CNCF. Build infrastructure, CI/CD pipelines, and project hosting are provided by the foundation, ensuring no single company controls the project's operational infrastructure.</p>
+
+        <p><strong>Maintainers come from multiple organizations.</strong> This is not a courtesy arrangement&mdash;it is a structural requirement. No single company holds majority control over the maintainer group. Merge authority is distributed. Release decisions require consensus across organizational boundaries.</p>
+
+        <p><strong>Decisions are made through open processes.</strong> Architectural changes go through RFCs that are publicly reviewable. Community meetings are recorded and published. The roadmap is visible. Anyone can see what decisions are being made, by whom, and why. This transparency is what makes it possible for competing companies to trust the process.</p>
+
+        <p><strong>Contributions are evaluated on technical merit.</strong> A pull request from a two-person startup receives the same review process as one from a founding partner. The <code>CONTRIBUTING.md</code> defines clear expectations. The <code>GOVERNANCE.md</code> defines how decisions are escalated. The path from first contribution to maintainership is documented and achievable.</p>
+
+        <blockquote><p>This governance structure is not bureaucracy for its own sake. It is the mechanism that makes competitors comfortable contributing to the same codebase. Red Hat engineers can review Google Cloud pull requests and vice versa, because the governance framework ensures both parties are treated fairly and neither can capture the project.</p></blockquote>
+
+        <h2 id="ecosystem">The Ecosystem: More Than a Single Project</h2>
+
+        <p>llm-d is not a monolith. It sits at the center of an ecosystem of projects, each handling a different layer of the LLM serving stack. Understanding llm-d means understanding how it connects to its neighbors.</p>
+
+        <p><strong>vLLM</strong> is the inference engine that llm-d routes to. The integration is deep: llm-d's routing decisions are informed by real-time engine state including KV cache occupancy, request queue depth, and model loading status. This is not a generic health-check integration. llm-d understands vLLM's internal state well enough to make routing decisions that a general-purpose load balancer cannot.</p>
+
+        <p><strong>KServe</strong> is the model serving framework that provides the broader serving infrastructure. llm-d provides the intelligent routing layer that KServe needs for LLM-specific workloads. Where KServe handles model lifecycle management, autoscaling, and multi-framework support, llm-d handles the inference-aware routing that makes LLM serving efficient.</p>
+
+        <p><strong><code>Gateway API</code></strong> is the Kubernetes-native API standard for traffic management. By implementing Gateway API, llm-d works with any Kubernetes-native tooling that understands this standard&mdash;monitoring, policy enforcement, traffic splitting, canary deployments. You do not need llm-d-specific tooling to manage llm-d traffic.</p>
+
+        <p><strong><code>NIXL</code></strong> is NVIDIA's transfer library that enables disaggregated prefill/decode architectures. When prefill and decode happen on different GPU pools, NIXL handles the high-speed transfer of KV cache state between them. llm-d orchestrates the routing; NIXL handles the data movement.</p>
+
+        <p><strong>Kubernetes</strong> is the foundation. llm-d runs as Kubernetes workloads, uses Kubernetes primitives (Services, Endpoints, Custom Resources), and integrates with the Kubernetes ecosystem. If you run Kubernetes, you can run llm-d. There is no separate control plane to deploy and manage.</p>
+
+        <p><strong>Prometheus</strong> provides observability. llm-d exports metrics in Prometheus format that feed into standard Kubernetes monitoring dashboards and autoscaling controllers like KEDA. You can monitor llm-d with the same tools you use for everything else in your cluster.</p>
+
+        <blockquote><p>This ecosystem approach means adopting llm-d does not mean replacing your existing stack. It means making your existing stack smarter about LLM inference. If you already run vLLM on Kubernetes with Prometheus monitoring, llm-d slots into the architecture you have.</p></blockquote>
+
+        <h2 id="contributors">The Contributor Journey</h2>
+
+        <p>People come to the llm-d community through different doors.</p>
+
+        <p><strong>Corporate mandate.</strong> "My company wants us to contribute to llm-d." This is common for partner organizations. An engineer is assigned to work on llm-d as part of their company's strategic investment in the project. These contributors often start with deep expertise in a specific area&mdash;GPU scheduling, Kubernetes networking, inference optimization&mdash;and bring that expertise to the project from day one.</p>
+
+        <p><strong>Problem-driven.</strong> "I have a routing problem and I found llm-d." These are users who run into the same infrastructure challenges that motivated the project's creation. They start by deploying llm-d, file issues when they hit rough edges, and gradually begin contributing fixes and improvements. These contributors are invaluable because they represent the real-world use cases the project must serve.</p>
+
+        <p><strong>Academic.</strong> "My research is relevant to llm-d." Researchers working on inference optimization, KV cache management, scheduling algorithms, or distributed systems find that llm-d is a natural home for their work. The project provides a production-grade codebase where research ideas can be validated at scale.</p>
+
+        <p><strong>Ecosystem.</strong> "I maintain an adjacent project and want to integrate." Contributors from KServe, vLLM, and other ecosystem projects who want to ensure their projects work well with llm-d. These cross-project contributors are essential for maintaining the integration quality that makes the ecosystem work.</p>
+
+        <p>The community has grown from the founding five organizations to over 15 organizations with more than 100 contributors. The contributor journey typically follows a recognizable progression: user, then issue reporter, then first pull request, then regular contributor, then reviewer, then maintainer candidate. The governance framework makes this path explicit and achievable&mdash;you do not need to work for a founding partner to become a maintainer.</p>
+
+        <h2 id="forward">Looking Forward</h2>
+
+        <p>The community story is still being written. Several themes will define the next chapter.</p>
+
+        <p><strong>Expanding hardware support.</strong> Today, llm-d's deepest optimizations target NVIDIA GPUs through Dynamo and NIXL integration. The roadmap includes support for AMD GPUs, Intel accelerators, and custom AI silicon. As the hardware landscape diversifies, the routing layer must be able to schedule across heterogeneous accelerator types&mdash;not just different models of NVIDIA GPUs, but fundamentally different architectures.</p>
+
+        <p><strong>Deeper integration with model serving frameworks.</strong> The integration with KServe and vLLM will continue to deepen. As new inference engines emerge and existing ones evolve, llm-d's routing abstractions must remain flexible enough to accommodate them while maintaining the deep engine-awareness that makes the routing intelligent.</p>
+
+        <p><strong>Production hardening.</strong> Real-world deployments generate the feedback that transforms a project from "works in demos" to "runs our production traffic." As more organizations deploy llm-d in production, the project will accumulate the edge-case handling, failure-mode resilience, and operational tooling that production demands.</p>
+
+        <p><strong>Growing the contributor base.</strong> The founding organizations provided the initial investment, but long-term sustainability requires a contributor base that extends well beyond them. This means making the project approachable: better documentation, clearer contribution paths, mentorship for new contributors, and community events that build relationships across organizational boundaries.</p>
+
+        <p><strong>The path from Sandbox to Incubation.</strong> CNCF projects progress through maturity levels: Sandbox, Incubation, and Graduation. Moving to Incubation requires demonstrating production adoption, a healthy contributor community, and mature governance. This milestone will signal to the market that llm-d has moved from "promising project" to "established infrastructure."</p>
+
+        <blockquote><p>The real innovation of llm-d is not just the technology&mdash;it is the community model. Proving that competing companies can build shared AI infrastructure under open governance may be as important as the routing algorithms themselves. If this model works for LLM inference routing, it can work for other layers of the AI infrastructure stack that face the same "shared problem, competitive dynamics" tension.</p></blockquote>
+
+        <p>The infrastructure decisions being made today will determine how LLM serving works for the next decade. llm-d is a bet that the best way to make those decisions is together, in the open, with governance structures that ensure no single company can capture the outcome. The early results suggest that bet is paying off.</p>
+
+        <!-- CTA -->
+        <div class="cta-section" id="cta">
+            <h2>Get Involved</h2>
+            <p>llm-d is an open community. Whether you want to deploy it, contribute code, integrate your project, or just learn more about inference-aware routing, there is a path for you.</p>
+            <div class="cta-links">
+                <a href="../" class="cta-link">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    Interactive Community Visualization
+                </a>
+                <a href="https://github.com/llm-d" target="_blank" rel="noopener" class="cta-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
+                    GitHub
+                </a>
+                <a href="https://llm-d.ai" target="_blank" rel="noopener" class="cta-link">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                    Website
+                </a>
+                <a href="https://www.cncf.io/projects/llm-d/" target="_blank" rel="noopener" class="cta-link">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    CNCF Listing
+                </a>
+            </div>
+        </div>
+
+    </article>
+
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <p>llm-d is a CNCF Sandbox project</p>
+    <div class="footer-links">
+        <a href="https://github.com/llm-d" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://llm-d.ai" target="_blank" rel="noopener">Website</a>
+        <a href="../">Interactive App</a>
+    </div>
+</footer>
+
+</body>
+</html>
