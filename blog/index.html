@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How Competing Companies Built a Community Around LLM Inference Infrastructure | llm-d</title>
-    <meta name="description" content="The story of llm-d: game theory, founding partners, academic foundations, CNCF governance, and what it means for the future of AI infrastructure. A deep dive into why competitors collaborate on shared LLM inference routing.">
+    <meta name="description" content="The story of llm-d: game theory, founding partners, academic foundations, CNCF governance, contributor origin stories, and what it means for the future of AI infrastructure. A deep dive into why competitors collaborate on shared LLM inference routing.">
     <meta name="author" content="Markell Rawls">
     <meta property="og:title" content="How Competing Companies Built a Community Around LLM Inference Infrastructure">
-    <meta property="og:description" content="The story of llm-d: from multi-vendor launch to CNCF Sandbox — game theory, founding partners, academic roots, and the future of AI infrastructure.">
+    <meta property="og:description" content="The story of llm-d: from multi-vendor launch to CNCF Sandbox. Game theory, founding partners, academic roots, contributor journeys, community governance, and the future of AI infrastructure.">
     <meta property="og:type" content="article">
     <link rel="icon" type="image/png" href="https://llm-d.ai/img/llm-d-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -382,6 +382,95 @@
             margin-bottom: 0;
         }
 
+        /* Story cards */
+        .story-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-card h3 {
+            margin-top: 0 !important;
+            color: var(--accent-blue);
+            font-size: 1.15rem;
+            margin-bottom: 1rem;
+        }
+
+        .story-card p {
+            margin-bottom: 0.75rem;
+        }
+
+        .story-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .story-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Hesitation cards */
+        .hesitation-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hesitation-card h3 {
+            margin-top: 0 !important;
+            color: var(--amber);
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .hesitation-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .hesitation-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Ten-minute list */
+        .ten-min-list {
+            list-style: none;
+            padding-left: 0 !important;
+        }
+
+        .ten-min-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .ten-min-list li::before {
+            content: '10m';
+            position: absolute;
+            left: 0;
+            top: 0.15rem;
+            font-size: 0.6rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--green);
+            background: rgba(0, 230, 118, 0.1);
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            padding: 0.05rem 0.25rem;
+            border-radius: 3px;
+        }
+
         /* CTA section */
         .cta-section {
             background: var(--bg-card);
@@ -436,6 +525,33 @@
 
         .cta-steps li strong {
             color: var(--accent-blue);
+        }
+
+        /* Impact statement */
+        .impact-statement {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(124, 77, 255, 0.08));
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .impact-statement p {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 700;
+            line-height: 1.5;
+            color: var(--text-primary);
+            margin-bottom: 0;
+        }
+
+        .impact-statement .impact-sub {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
         }
 
         /* Footer */
@@ -502,6 +618,10 @@
             .header-nav a {
                 font-size: 0.8rem;
             }
+
+            .impact-statement p {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -529,7 +649,7 @@
         <span class="meta-separator">|</span>
         <span class="meta-item">June 2026</span>
         <span class="meta-separator">|</span>
-        <span class="meta-item">~18 min read</span>
+        <span class="meta-item">~32 min read</span>
         <div class="meta-tags">
             <span class="meta-tag">llm-d</span>
             <span class="meta-tag">CNCF</span>
@@ -539,6 +659,8 @@
             <span class="meta-tag">Kubernetes</span>
             <span class="meta-tag">game theory</span>
             <span class="meta-tag">AI infrastructure</span>
+            <span class="meta-tag">contributor stories</span>
+            <span class="meta-tag">governance</span>
         </div>
     </div>
 
@@ -554,12 +676,16 @@
             <li><a href="#partners">Deep Profiles of Each Founding Partner</a></li>
             <li><a href="#academic">The Academic Foundation: vLLM and LMCache</a></li>
             <li><a href="#cncf">CNCF Governance Deep Dive</a></li>
+            <li><a href="#sandbox-journey">The CNCF Sandbox Journey: What Changed and What Comes Next</a></li>
+            <li><a href="#governance-mechanics">Community Governance Mechanics: How Decisions Actually Get Made</a></li>
             <li><a href="#contributors">The Contributor Journey: From Corporate Mandate to Organic Community</a></li>
+            <li><a href="#origin-stories">Three Contributor Origin Stories</a></li>
+            <li><a href="#economics">The Economics of Open-Source Contribution</a></li>
             <li><a href="#comparison">How llm-d Compares to Other CNCF Projects at the Same Stage</a></li>
             <li><a href="#ecosystem">The Ecosystem Play: Why Integration Matters</a></li>
             <li><a href="#forward">Forward-Looking: What the Community Needs to Grow</a></li>
             <li><a href="#why-join">Why You Should Join</a></li>
-            <li><a href="#cta">Your First Steps</a></li>
+            <li><a href="#cta">The Code You Write This Month</a></li>
         </ol>
     </nav>
 
@@ -570,7 +696,7 @@
 
         <p>Picture five companies in a room. They compete head-to-head for the same customers. They are about to agree to share their most valuable engineering work. This should not work. Here is why it does.</p>
 
-        <p>Every company deploying large language models at scale runs into the same wall. Traditional load balancers&mdash;the ones that have reliably distributed HTTP requests across web servers for decades&mdash;fundamentally do not work for LLM inference. The reasons are structural, not incremental. LLM inference is stateful, heterogeneous, and asymmetric. Routing a follow-up request to the wrong GPU means recomputing a KV cache from scratch or transferring gigabytes across the network. A production cluster might mix H100s, A100s, and L40S GPUs side by side, each with different memory capacities and optimal batch sizes. The prefill phase is compute-bound; the decode phase is memory-bandwidth-bound. Round-robin does not work here. Least-connections does not work here. The problem demands a fundamentally new kind of routing layer.</p>
+        <p>Every company deploying large language models at scale runs into the same wall. Traditional load balancers (the ones that have reliably distributed HTTP requests across web servers for decades) fundamentally do not work for LLM inference. The reasons are structural, not incremental. LLM inference is stateful, heterogeneous, and asymmetric. Routing a follow-up request to the wrong GPU means recomputing a KV cache from scratch or transferring gigabytes across the network. A production cluster might mix H100s, A100s, and L40S GPUs side by side, each with different memory capacities and optimal batch sizes. The prefill phase is compute-bound; the decode phase is memory-bandwidth-bound. Round-robin does not work here. Least-connections does not work here. The problem demands a fundamentally new kind of routing layer.</p>
 
         <p>So why did five companies that compete directly in the cloud and AI infrastructure market decide to build that routing layer together? The answer lives in game theory.</p>
 
@@ -578,21 +704,21 @@
 
         <p>Economists describe a <strong>public good</strong> as something that is both non-rivalrous (one company using it does not diminish its value for another) and non-excludable (once it exists, it is impractical to prevent others from using it). LLM inference routing fits this definition surprisingly well. A scheduling algorithm that optimally assigns requests to GPU workers is no less effective because two companies use it instead of one. The mathematics of prefix-aware routing do not degrade with additional adopters. If anything, the opposite is true: the more companies deploy and test the routing layer, the more edge cases get discovered, the more failure modes get handled, and the better the system becomes for everyone.</p>
 
-        <p>This is the economics of <strong>network effects applied to infrastructure</strong>. Each new contributor does not just consume value from the project&mdash;they add value. A GPU cloud provider contributes real-world scale testing. A hardware vendor contributes optimized transfer primitives. An academic lab contributes scheduling research validated by production data. The routing layer becomes more capable with every new participant, and that capability flows back to all participants equally.</p>
+        <p>This is the economics of <strong>network effects applied to infrastructure</strong>. Each new contributor does not just consume value from the project. They add value. A GPU cloud provider contributes real-world scale testing. A hardware vendor contributes optimized transfer primitives. An academic lab contributes scheduling research validated by production data. The routing layer becomes more capable with every new participant, and that capability flows back to all participants equally.</p>
 
         <h3>The Prisoner's Dilemma of Infrastructure</h3>
 
-        <p>Consider the alternative: every company builds its own proprietary LLM routing layer. From a game-theory perspective, this is the <strong>Prisoner's Dilemma</strong> applied to infrastructure. Defecting&mdash;building proprietary&mdash;is locally optimal for any individual company. You control the roadmap. You own the intellectual property. You can optimize for your specific hardware and use cases without committee overhead.</p>
+        <p>Consider the alternative: every company builds its own proprietary LLM routing layer. From a game-theory perspective, this is the <strong>Prisoner's Dilemma</strong> applied to infrastructure. Defecting (building proprietary) is locally optimal for any individual company. You control the roadmap. You own the intellectual property. You can optimize for your specific hardware and use cases without committee overhead.</p>
 
         <p>But if everyone defects, everyone loses. Each company independently solves the same hard problems: disaggregated serving, prefix-aware routing, heterogeneous GPU scheduling. The same categories of bugs get discovered and fixed five times over. The same research papers get independently reimplemented. Engineering talent gets spread across five duplicated efforts instead of concentrated on one shared effort that advances faster than any individual team could achieve alone.</p>
 
-        <blockquote><p>The rational choice in a repeated game is cooperation&mdash;especially when the infrastructure in question is not where you compete. No customer has ever chosen a cloud provider because of its internal request routing algorithm. They choose based on models, services, platform experience, and price. Routing is plumbing. Collaborating on the plumbing lets everyone invest more in their actual differentiators.</p></blockquote>
+        <blockquote><p>The rational choice in a repeated game is cooperation, especially when the infrastructure in question is not where you compete. No customer has ever chosen a cloud provider because of its internal request routing algorithm. They choose based on models, services, platform experience, and price. Routing is plumbing. Collaborating on the plumbing lets everyone invest more in their actual differentiators.</p></blockquote>
 
         <h3>The Vendor Lock-In Calculus</h3>
 
-        <p>There is a second game-theoretic consideration that makes collaboration not just rational but urgent: <strong>the risk of lock-in</strong>. If one company builds the dominant proprietary routing layer and the rest of the industry adopts it, that company gains enormous leverage. They control the interface between applications and GPU infrastructure&mdash;a chokepoint in the AI stack. Every other company becomes dependent on a competitor for a critical piece of their serving infrastructure.</p>
+        <p>There is a second game-theoretic consideration that makes collaboration not just rational but urgent: <strong>the risk of lock-in</strong>. If one company builds the dominant proprietary routing layer and the rest of the industry adopts it, that company gains enormous leverage. They control the interface between applications and GPU infrastructure, a chokepoint in the AI stack. Every other company becomes dependent on a competitor for a critical piece of their serving infrastructure.</p>
 
-        <p>This is why vendor-neutral, open-source infrastructure wins in markets with multiple powerful players. No one wants to depend on a competitor's proprietary solution for something this foundational. The rational response is to ensure the routing layer is governed by a neutral foundation, licensed under permissive terms, and controlled by a diverse group of maintainers. CNCF governance is not altruism&mdash;it is a mutual defense pact against vendor lock-in.</p>
+        <p>This is why vendor-neutral, open-source infrastructure wins in markets with multiple powerful players. No one wants to depend on a competitor's proprietary solution for something this foundational. The rational response is to ensure the routing layer is governed by a neutral foundation, licensed under permissive terms, and controlled by a diverse group of maintainers. CNCF governance is not altruism. It is a mutual defense pact against vendor lock-in.</p>
 
         <h3>Historical Precedent: Linux, Kubernetes, Apache</h3>
 
@@ -601,64 +727,64 @@
         <ul>
             <li><strong>Linux</strong> emerged because no company wanted to depend on a competitor's operating system for server workloads. Today, competing companies like Red Hat, Google, Microsoft, and Amazon all contribute to the Linux kernel. None of them competes on kernel system calls. They compete on the services and platforms built on top of the shared kernel.</li>
             <li><strong>Kubernetes</strong> started at Google but was donated to the CNCF precisely because the industry would not adopt a container orchestrator controlled by a single cloud provider. Today, every major cloud provider offers a managed Kubernetes service. None competes on pod scheduling. They compete on managed services, developer experience, and ecosystem integration.</li>
-            <li><strong>Apache HTTP Server</strong> became the foundation of the web because no single company could have built enough trust for the others to adopt their web server. The shared infrastructure enabled competition at higher levels of the stack&mdash;content, applications, services.</li>
+            <li><strong>Apache HTTP Server</strong> became the foundation of the web because no single company could have built enough trust for the others to adopt their web server. The shared infrastructure enabled competition at higher levels of the stack: content, applications, services.</li>
         </ul>
 
-        <p>llm-d represents the same bet for the AI inference era. Jeff Bezos famously described this pattern as avoiding <strong>"undifferentiated heavy lifting"</strong>&mdash;the work that every company needs done but that no company gains competitive advantage from doing themselves. Request routing is undifferentiated heavy lifting. Model quality, application design, user experience, and platform integration are where competitive advantage lives. The companies that recognized this earliest are the ones that showed up to build llm-d together.</p>
+        <p>llm-d represents the same bet for the AI inference era. Jeff Bezos famously described this pattern as avoiding <strong>"undifferentiated heavy lifting"</strong>, the work that every company needs done but that no company gains competitive advantage from doing themselves. Request routing is undifferentiated heavy lifting. Model quality, application design, user experience, and platform integration are where competitive advantage lives. The companies that recognized this earliest are the ones that showed up to build llm-d together.</p>
 
 
         <h2 id="partners">Deep Profiles of Each Founding Partner</h2>
 
-        <p>The founding coalition was not assembled at random. Each partner brought a specific capability that the others needed and could not easily replicate. Understanding what each partner contributed&mdash;and, more importantly, <em>why</em> they showed up&mdash;explains why this particular combination succeeded where other multi-vendor collaborations have stalled.</p>
+        <p>The founding coalition was not assembled at random. Each partner brought a specific capability that the others needed and could not easily replicate. Understanding what each partner contributed, and more importantly <em>why</em> they showed up, explains why this particular combination succeeded where other multi-vendor collaborations have stalled.</p>
 
         <div class="partner-card">
-            <h3>Red Hat &mdash; The Community Architect</h3>
+            <h3>Red Hat: The Community Architect</h3>
             <p>After years of watching customers struggle to route inference traffic on OpenShift, Red Hat's engineering team reached a conclusion that shaped everything that followed: no one company could solve this alone. The problem was not that Red Hat lacked the talent to build a proprietary routing layer. The problem was that a proprietary routing layer would never attract the diversity of hardware vendors, cloud providers, and research groups needed to make it actually work across the fragmented landscape of production GPU deployments. The only routing layer worth building was one the whole industry could trust.</p>
-            <p>Red Hat led the creation of llm-d, but their most important contribution was not code&mdash;it was <strong>pattern recognition</strong>. After two decades of building open-source communities around OpenShift, Kubernetes, and the broader Red Hat ecosystem, Red Hat understood something that pure technology companies often miss: the governance structure you choose at the beginning determines whether the project attracts a real community or becomes a corporate side project with an open-source license.</p>
-            <p>On the technical side, Red Hat contributed the <code>Endpoint Picker Protocol</code> (EPP)&mdash;the framework that enables intelligent routing decisions based on real-time inference engine state. EPP is the mechanism through which llm-d communicates with inference engines like vLLM, collecting signals about KV cache occupancy, request queue depth, active model versions, and hardware utilization. These signals feed the scheduling algorithms that make llm-d's routing decisions orders of magnitude more informed than traditional load balancing.</p>
-            <p>But the governance contribution mattered equally. Red Hat designed the project's contribution guidelines, review processes, and maintainer progression framework based on patterns that had been battle-tested across dozens of CNCF projects. They understood that competing companies will only contribute to a shared codebase if the rules of engagement are explicit, fair, and enforced consistently. The <code>CONTRIBUTING.md</code> and <code>GOVERNANCE.md</code> files are not bureaucratic formalities&mdash;they are the social contracts that make multi-vendor collaboration possible.</p>
+            <p>Red Hat led the creation of llm-d, but their most important contribution was not code. It was <strong>pattern recognition</strong>. After two decades of building open-source communities around OpenShift, Kubernetes, and the broader Red Hat ecosystem, Red Hat understood something that pure technology companies often miss: the governance structure you choose at the beginning determines whether the project attracts a real community or becomes a corporate side project with an open-source license.</p>
+            <p>On the technical side, Red Hat contributed the <code>Endpoint Picker Protocol</code> (EPP), the framework that enables intelligent routing decisions based on real-time inference engine state. EPP is the mechanism through which llm-d communicates with inference engines like vLLM, collecting signals about KV cache occupancy, request queue depth, active model versions, and hardware utilization. These signals feed the scheduling algorithms that make llm-d's routing decisions orders of magnitude more informed than traditional load balancing.</p>
+            <p>But the governance contribution mattered equally. Red Hat designed the project's contribution guidelines, review processes, and maintainer progression framework based on patterns that had been battle-tested across dozens of CNCF projects. They understood that competing companies will only contribute to a shared codebase if the rules of engagement are explicit, fair, and enforced consistently. The <code>CONTRIBUTING.md</code> and <code>GOVERNANCE.md</code> files are not bureaucratic formalities. They are the social contracts that make multi-vendor collaboration possible.</p>
         </div>
 
         <div class="partner-card">
-            <h3>Google Cloud &mdash; The Standards Bearer</h3>
-            <p>Gateway API was already the standard for Kubernetes traffic management. Extending it to LLM inference was the obvious next step&mdash;but it needed the inference community's buy-in. Google Cloud's engineers knew that a routing standard designed in isolation from the people actually running inference workloads would end up as a specification that nobody implements. They showed up because the only way to build a credible LLM routing standard was to build it alongside the teams running LLM routing in production.</p>
-            <p>Google Cloud's contribution centered on <code>Gateway API</code> integration&mdash;the Kubernetes-native API standard that Google helped create and shepherd through the Kubernetes community. Gateway API is the successor to the Ingress resource, providing a more expressive, role-oriented model for traffic management in Kubernetes clusters. By building llm-d on Gateway API, the project inherited an interface that the entire Kubernetes ecosystem already understands.</p>
-            <p>This decision had profound architectural implications. Any Kubernetes-native tool that works with Gateway API&mdash;monitoring dashboards, policy engines, traffic splitting controllers, canary deployment systems&mdash;works with llm-d out of the box. Platform teams do not need to learn llm-d-specific tooling to manage LLM inference traffic. They use the same tools they already use for all their other Kubernetes workloads. This dramatically lowers the adoption barrier and makes llm-d feel like a natural extension of the Kubernetes platform rather than a foreign system bolted onto the side.</p>
+            <h3>Google Cloud: The Standards Bearer</h3>
+            <p>Gateway API was already the standard for Kubernetes traffic management. Extending it to LLM inference was the obvious next step, but it needed the inference community's buy-in. Google Cloud's engineers knew that a routing standard designed in isolation from the people actually running inference workloads would end up as a specification that nobody implements. They showed up because the only way to build a credible LLM routing standard was to build it alongside the teams running LLM routing in production.</p>
+            <p>Google Cloud's contribution centered on <code>Gateway API</code> integration, the Kubernetes-native API standard that Google helped create and shepherd through the Kubernetes community. Gateway API is the successor to the Ingress resource, providing a more expressive, role-oriented model for traffic management in Kubernetes clusters. By building llm-d on Gateway API, the project inherited an interface that the entire Kubernetes ecosystem already understands.</p>
+            <p>This decision had profound architectural implications. Any Kubernetes-native tool that works with Gateway API (monitoring dashboards, policy engines, traffic splitting controllers, canary deployment systems) works with llm-d out of the box. Platform teams do not need to learn llm-d-specific tooling to manage LLM inference traffic. They use the same tools they already use for all their other Kubernetes workloads. This dramatically lowers the adoption barrier and makes llm-d feel like a natural extension of the Kubernetes platform rather than a foreign system bolted onto the side.</p>
             <p>Google also brought the <strong>cloud-provider perspective on scale</strong>. When Google Cloud engineers say "this needs to work at scale," they mean serving millions of concurrent users across globally distributed clusters. That perspective shaped design decisions around connection management, failure handling, and state propagation that would not have surfaced in a smaller-scale testing environment.</p>
         </div>
 
         <div class="partner-card">
-            <h3>IBM Research &mdash; The Scheduling Scientists</h3>
-            <p>IBM Research's scheduling algorithms had been validated in papers. What they needed was a production codebase where theory met reality. Algorithms that look elegant in a simulation behave differently when they encounter network partitions, hardware failures, and the unpredictable traffic patterns of real users. The gap between a published paper and production-grade software is enormous, and IBM Research saw llm-d as the bridge across that gap&mdash;a place where their formal optimization work could be tested against the chaos of real-world inference workloads at scale.</p>
-            <p>IBM Research contributed the <strong>theoretical and algorithmic foundation</strong> for llm-d's scheduling layer. Their research on disaggregated serving&mdash;the architectural pattern of separating the prefill phase (processing input tokens) from the decode phase (generating output tokens) onto different, specialized hardware pools&mdash;directly shaped how llm-d orchestrates requests across heterogeneous GPU clusters.</p>
-            <p>Disaggregated serving is one of the most important architectural shifts in LLM inference. Prefill is compute-bound and highly parallelizable&mdash;it benefits from dense compute hardware. Decode is memory-bandwidth-bound and sequential&mdash;it benefits from hardware with high memory bandwidth. Running both phases on the same GPU means neither phase gets optimal hardware. IBM Research's work on optimal scheduling algorithms for this split, including request placement, KV cache handoff timing, and load balancing across asymmetric hardware pools, gave llm-d a scheduling layer grounded in formal optimization rather than heuristics.</p>
-            <p>IBM Research, alongside Red Hat and Google Cloud, later <strong>jointly donated the project to CNCF</strong>&mdash;a significant act that transferred intellectual property to a neutral foundation and demonstrated that no single company intended to control the project's future.</p>
+            <h3>IBM Research: The Scheduling Scientists</h3>
+            <p>IBM Research's scheduling algorithms had been validated in papers. What they needed was a production codebase where theory met reality. Algorithms that look elegant in a simulation behave differently when they encounter network partitions, hardware failures, and the unpredictable traffic patterns of real users. The gap between a published paper and production-grade software is enormous, and IBM Research saw llm-d as the bridge across that gap: a place where their formal optimization work could be tested against the chaos of real-world inference workloads at scale.</p>
+            <p>IBM Research contributed the <strong>theoretical and algorithmic foundation</strong> for llm-d's scheduling layer. Their research on disaggregated serving (the architectural pattern of separating the prefill phase from the decode phase onto different, specialized hardware pools) directly shaped how llm-d orchestrates requests across heterogeneous GPU clusters.</p>
+            <p>Disaggregated serving is one of the most important architectural shifts in LLM inference. Prefill is compute-bound and highly parallelizable; it benefits from dense compute hardware. Decode is memory-bandwidth-bound and sequential; it benefits from hardware with high memory bandwidth. Running both phases on the same GPU means neither phase gets optimal hardware. IBM Research's work on optimal scheduling algorithms for this split, including request placement, KV cache handoff timing, and load balancing across asymmetric hardware pools, gave llm-d a scheduling layer grounded in formal optimization rather than heuristics.</p>
+            <p>IBM Research, alongside Red Hat and Google Cloud, later <strong>jointly donated the project to CNCF</strong>. This was a significant act that transferred intellectual property to a neutral foundation and demonstrated that no single company intended to control the project's future.</p>
         </div>
 
         <div class="partner-card">
-            <h3>NVIDIA &mdash; The Hardware-Software Bridge</h3>
+            <h3>NVIDIA: The Hardware-Software Bridge</h3>
             <p>Every customer running inefficient inference routing was underutilizing NVIDIA hardware. The math was straightforward: better routing meant better GPU utilization, which meant customers getting more value from their GPU investment, which meant happier customers who buy more GPUs. But NVIDIA's motivation went deeper than sales arithmetic. The AI inference stack was fragmenting into proprietary silos, and NVIDIA needed the routing layer to be open so that hardware improvements could benefit the entire ecosystem rather than being locked behind any single vendor's software stack.</p>
-            <p>NVIDIA brought the critical <strong>hardware-software co-design</strong> that makes llm-d's most advanced features practical at production scale. Through <code>Dynamo</code> integration, llm-d gains GPU-aware scheduling capabilities&mdash;the routing layer can make decisions informed by GPU-level telemetry including compute utilization, memory pressure, thermal state, and interconnect bandwidth. This goes far beyond what application-level health checks can provide.</p>
-            <p>The <code>NIXL</code> (NVIDIA Inference Transfer Library) contribution is what makes disaggregated prefill/decode architectures practical rather than theoretical. When the prefill phase completes on one GPU pool and the decode phase needs to begin on another, the KV cache&mdash;potentially gigabytes of intermediate state&mdash;must be transferred between pools with minimal latency. NIXL handles this transfer using optimized GPU-to-GPU communication primitives, RDMA when available, and intelligent buffer management. Without NIXL, the latency overhead of transferring KV cache state would erase the throughput gains from disaggregated serving.</p>
+            <p>NVIDIA brought the critical <strong>hardware-software co-design</strong> that makes llm-d's most advanced features practical at production scale. Through <code>Dynamo</code> integration, llm-d gains GPU-aware scheduling capabilities. The routing layer can make decisions informed by GPU-level telemetry including compute utilization, memory pressure, thermal state, and interconnect bandwidth. This goes far beyond what application-level health checks can provide.</p>
+            <p>The <code>NIXL</code> (NVIDIA Inference Transfer Library) contribution is what makes disaggregated prefill/decode architectures practical rather than theoretical. When the prefill phase completes on one GPU pool and the decode phase needs to begin on another, the KV cache (potentially gigabytes of intermediate state) must be transferred between pools with minimal latency. NIXL handles this transfer using optimized GPU-to-GPU communication primitives, RDMA when available, and intelligent buffer management. Without NIXL, the latency overhead of transferring KV cache state would erase the throughput gains from disaggregated serving.</p>
             <p>NVIDIA's participation also signals something important about the project's trajectory. When the dominant GPU hardware vendor actively contributes to an open-source routing layer, it validates the architectural approach and ensures the software can take full advantage of hardware capabilities as they evolve.</p>
         </div>
 
         <div class="partner-card">
-            <h3>CoreWeave &mdash; The Scale Validator</h3>
-            <p>As a GPU cloud provider, CoreWeave understood that every improvement in inference routing efficiency directly improved their competitive position. When customers waste GPU cycles on suboptimal routing, they burn money&mdash;and eventually they look for a provider that wastes less. CoreWeave showed up because they had the most direct, dollar-denominated reason to care: better routing infrastructure meant they could offer better economics to their customers than competitors still relying on general-purpose load balancers.</p>
+            <h3>CoreWeave: The Scale Validator</h3>
+            <p>As a GPU cloud provider, CoreWeave understood that every improvement in inference routing efficiency directly improved their competitive position. When customers waste GPU cycles on suboptimal routing, they burn money, and eventually they look for a provider that wastes less. CoreWeave showed up because they had the most direct, dollar-denominated reason to care: better routing infrastructure meant they could offer better economics to their customers than competitors still relying on general-purpose load balancers.</p>
             <p>CoreWeave provided what no other partner could: <strong>large-scale GPU infrastructure for real-world validation</strong>. A routing layer that works on a test cluster of eight GPUs might fail completely at the scale of thousands of GPUs running diverse workloads with varying latency requirements, failure modes, and hardware configurations.</p>
-            <p>CoreWeave's GPU cloud infrastructure gave llm-d a proving ground that matched production conditions. Their engineers ran llm-d across clusters of thousands of GPUs, exposing race conditions, bottlenecks, and edge cases that only manifest at scale. This validation was not testing in the traditional sense&mdash;it was <strong>empirical stress testing</strong> against the actual conditions the project would face in production deployments.</p>
-            <p>CoreWeave also contributed the <strong>cloud-provider operator perspective</strong>: what does it take to run and manage an LLM routing layer in a production environment day after day? Operational concerns&mdash;upgrade paths, rollback procedures, monitoring blind spots, failure recovery&mdash;are often invisible in project design but critical for real-world adoption. CoreWeave's operational experience shaped llm-d's observability, configuration management, and operational runbook documentation.</p>
+            <p>CoreWeave's GPU cloud infrastructure gave llm-d a proving ground that matched production conditions. Their engineers ran llm-d across clusters of thousands of GPUs, exposing race conditions, bottlenecks, and edge cases that only manifest at scale. This validation was not testing in the traditional sense. It was <strong>empirical stress testing</strong> against the actual conditions the project would face in production deployments.</p>
+            <p>CoreWeave also contributed the <strong>cloud-provider operator perspective</strong>: what does it take to run and manage an LLM routing layer in a production environment day after day? Operational concerns (upgrade paths, rollback procedures, monitoring blind spots, failure recovery) are often invisible in project design but critical for real-world adoption. CoreWeave's operational experience shaped llm-d's observability, configuration management, and operational runbook documentation.</p>
         </div>
 
 
         <h2 id="academic">The Academic Foundation: vLLM and LMCache</h2>
 
-        <p>llm-d did not start from scratch. It was designed from the beginning to build on two major academic projects that had already reshaped how the industry thinks about LLM serving. This decision&mdash;to integrate deeply with existing research rather than reimplement it&mdash;is one of the most consequential architectural choices the project made.</p>
+        <p>llm-d did not start from scratch. It was designed from the beginning to build on two major academic projects that had already reshaped how the industry thinks about LLM serving. This decision, to integrate deeply with existing research rather than reimplement it, is one of the most consequential architectural choices the project made.</p>
 
         <h3>vLLM and PagedAttention: The Inference Engine</h3>
 
-        <p><strong>vLLM</strong>, created at UC Berkeley, introduced <code>PagedAttention</code>&mdash;a memory management technique inspired by virtual memory in operating systems. Before PagedAttention, LLM inference engines allocated contiguous blocks of GPU memory for each request's KV cache. This led to severe memory fragmentation: GPU memory was wasted on internal fragmentation (allocated blocks larger than needed) and external fragmentation (free memory too scattered to use). PagedAttention manages KV cache memory in fixed-size blocks that can be non-contiguous, just as virtual memory manages physical RAM in pages. The result was a dramatic improvement in GPU memory utilization, often enabling 2-4x more concurrent requests on the same hardware.</p>
+        <p><strong>vLLM</strong>, created at UC Berkeley, introduced <code>PagedAttention</code>, a memory management technique inspired by virtual memory in operating systems. Before PagedAttention, LLM inference engines allocated contiguous blocks of GPU memory for each request's KV cache. This led to severe memory fragmentation: GPU memory was wasted on internal fragmentation (allocated blocks larger than needed) and external fragmentation (free memory too scattered to use). PagedAttention manages KV cache memory in fixed-size blocks that can be non-contiguous, just as virtual memory manages physical RAM in pages. The result was a dramatic improvement in GPU memory utilization, often enabling 2-4x more concurrent requests on the same hardware.</p>
 
         <p>vLLM quickly became the <strong>de facto standard inference engine</strong> for LLM serving, adopted across the industry from two-person startups to hyperscalers. Its dominance meant that any routing layer had to work with vLLM or be irrelevant. llm-d was designed to route requests <em>to</em> vLLM workers, not to replace them. This is a critical architectural decision that bears emphasis: <strong>llm-d does not try to be an inference engine</strong>. It makes inference engines smarter by giving them better-selected work.</p>
 
@@ -667,7 +793,7 @@
         <ul>
             <li><strong>KV cache occupancy</strong>: How much of each worker's GPU memory is consumed by active KV caches, and how much headroom remains for new requests</li>
             <li><strong>Queue depth</strong>: How many requests are waiting to be processed on each worker, including their estimated completion times</li>
-            <li><strong>Model loading status</strong>: Which models are loaded, warming up, or available for serving on each worker&mdash;critical for multi-model routing scenarios</li>
+            <li><strong>Model loading status</strong>: Which models are loaded, warming up, or available for serving on each worker. This is critical for multi-model routing scenarios</li>
             <li><strong>Active generation state</strong>: Which requests are in prefill vs. decode phases, enabling scheduling decisions based on the current compute profile of each worker</li>
         </ul>
 
@@ -677,20 +803,20 @@
 
         <p><strong>LMCache</strong>, developed at the University of Chicago, tackled a different dimension of the problem: <strong>KV cache management and sharing across requests</strong>. In production LLM serving, many requests share common prefixes. A customer service chatbot might prepend the same 2,000-token system prompt to every user query. A coding assistant might include the same few-shot examples before every completion request. A RAG pipeline might share retrieved context across related queries.</p>
 
-        <p>Without prefix-aware routing, each request recomputes the KV cache for these shared prefixes from scratch&mdash;thousands of tokens of redundant computation per request. LMCache enables a different approach: the routing layer can identify requests that share common prefixes and direct them to workers that have already computed and cached the relevant KV state. The shared prefix KV cache is reused, and only the unique suffix of each request requires new computation.</p>
+        <p>Without prefix-aware routing, each request recomputes the KV cache for these shared prefixes from scratch: thousands of tokens of redundant computation per request. LMCache enables a different approach. The routing layer can identify requests that share common prefixes and direct them to workers that have already computed and cached the relevant KV state. The shared prefix KV cache is reused, and only the unique suffix of each request requires new computation.</p>
 
-        <p>LMCache's integration into llm-d transforms the routing layer from a system that asks "which worker is least busy?" to one that asks <strong>"which worker has already done the most relevant computation for this request?"</strong> For workloads with high prefix sharing&mdash;which includes most enterprise deployment patterns&mdash;this can reduce per-request latency by 40-60% and increase overall throughput proportionally.</p>
+        <p>LMCache's integration into llm-d transforms the routing layer from a system that asks "which worker is least busy?" to one that asks <strong>"which worker has already done the most relevant computation for this request?"</strong> For workloads with high prefix sharing (which includes most enterprise deployment patterns) this can reduce per-request latency by 40-60% and increase overall throughput proportionally.</p>
 
         <h3>The Academic-Industry Bridge</h3>
 
         <p>What makes llm-d's relationship with these academic projects unusual is the <strong>depth of ongoing collaboration</strong>. The researchers who invented PagedAttention and LMCache are not distant advisors who review a slide deck once a quarter. They are active participants in the llm-d community. They sit in design discussions, review pull requests, challenge architectural assumptions, and shape the roadmap based on their research directions.</p>
 
-        <blockquote><p>This bidirectional flow matters. The researchers gain a production-grade codebase where their ideas can be validated at scale against real-world workloads, generating data that feeds back into their research. The project gains routing intelligence grounded in peer-reviewed research rather than ad hoc heuristics. This academic-industry bridge is a model worth studying&mdash;and replicating.</p></blockquote>
+        <blockquote><p>This bidirectional flow matters. The researchers gain a production-grade codebase where their ideas can be validated at scale against real-world workloads, generating data that feeds back into their research. The project gains routing intelligence grounded in peer-reviewed research rather than ad hoc heuristics. This academic-industry bridge is a model worth studying and replicating.</p></blockquote>
 
 
         <h2 id="cncf">CNCF Governance Deep Dive</h2>
 
-        <p>The Cloud Native Computing Foundation operates a three-tier maturity model for its projects: <strong>Sandbox</strong>, <strong>Incubation</strong>, and <strong>Graduation</strong>. Each level represents increasing confidence in the project's technical maturity, community health, and production readiness. Understanding what these levels mean&mdash;and what Sandbox specifically provides&mdash;is essential for evaluating llm-d's current position and trajectory.</p>
+        <p>The Cloud Native Computing Foundation operates a three-tier maturity model for its projects: <strong>Sandbox</strong>, <strong>Incubation</strong>, and <strong>Graduation</strong>. Each level represents increasing confidence in the project's technical maturity, community health, and production readiness. Understanding what these levels mean, and what Sandbox specifically provides, is essential for evaluating llm-d's current position and trajectory.</p>
 
         <h3>What Sandbox Means</h3>
 
@@ -713,12 +839,12 @@
         <p>The timeline from launch to Sandbox acceptance was remarkably fast by CNCF standards:</p>
 
         <ul class="timeline-list">
-            <li><strong>May 2025</strong> &mdash; Public launch with multi-vendor backing. Initial release included the EPP routing framework, basic vLLM integration, and Gateway API support.</li>
-            <li><strong>Summer 2025</strong> &mdash; First external contributors beyond founding partners. Community processes established: contribution guidelines, code review standards, regular community meetings.</li>
-            <li><strong>KubeCon NA 2025</strong> &mdash; Live demonstrations of multi-model routing at scale across heterogeneous GPU pools with measurable latency and throughput improvements.</li>
-            <li><strong>Late 2025</strong> &mdash; v0.2 release with improved disaggregated prefill/decode support, enhanced prefix-aware routing, better observability, and production hardening based on deployment feedback.</li>
-            <li><strong>January 2026</strong> &mdash; Joint submission to CNCF by IBM Research, Red Hat, and Google Cloud.</li>
-            <li><strong>March 2026</strong> &mdash; Accepted into CNCF Sandbox.</li>
+            <li><strong>May 2025</strong>: Public launch with multi-vendor backing. Initial release included the EPP routing framework, basic vLLM integration, and Gateway API support.</li>
+            <li><strong>Summer 2025</strong>: First external contributors beyond founding partners. Community processes established: contribution guidelines, code review standards, regular community meetings.</li>
+            <li><strong>KubeCon NA 2025</strong>: Live demonstrations of multi-model routing at scale across heterogeneous GPU pools with measurable latency and throughput improvements.</li>
+            <li><strong>Late 2025</strong>: v0.2 release with improved disaggregated prefill/decode support, enhanced prefix-aware routing, better observability, and production hardening based on deployment feedback.</li>
+            <li><strong>January 2026</strong>: Joint submission to CNCF by IBM Research, Red Hat, and Google Cloud.</li>
+            <li><strong>March 2026</strong>: Accepted into CNCF Sandbox.</li>
         </ul>
 
         <h3>How Decisions Are Made</h3>
@@ -726,9 +852,9 @@
         <p>For engineering leaders evaluating infrastructure dependencies, the mechanics of governance matter as much as the label. In llm-d, decisions follow a structured, transparent process:</p>
 
         <ul>
-            <li><strong>RFCs (Request for Comments)</strong>: Significant architectural changes are proposed through RFCs that are publicly posted, reviewed, and discussed. Any community member can comment, object, or propose alternatives. RFCs are not rubber-stamp processes&mdash;they generate genuine technical debate across organizational boundaries.</li>
+            <li><strong>RFCs (Request for Comments)</strong>: Significant architectural changes are proposed through RFCs that are publicly posted, reviewed, and discussed. Any community member can comment, object, or propose alternatives. RFCs are not rubber-stamp processes. They generate genuine technical debate across organizational boundaries.</li>
             <li><strong>Community meetings</strong>: Regular meetings are recorded and published. Agendas are posted in advance. Decisions made in meetings are documented and reviewable. This transparency is what makes it possible for a company that missed a meeting to understand and accept decisions made in their absence.</li>
-            <li><strong>Consensus across organizational boundaries</strong>: Merge authority is distributed across maintainers from multiple organizations. No single company holds majority control over the maintainer group. Release decisions require consensus. This is not a courtesy arrangement&mdash;it is a structural requirement of the governance framework.</li>
+            <li><strong>Consensus across organizational boundaries</strong>: Merge authority is distributed across maintainers from multiple organizations. No single company holds majority control over the maintainer group. Release decisions require consensus. This is not a courtesy arrangement; it is a structural requirement of the governance framework.</li>
             <li><strong>Apache 2.0 licensing</strong>: The project is licensed under Apache 2.0, one of the most permissive open-source licenses. Companies can use, modify, and distribute llm-d in commercial products without copyleft obligations. This licensing choice maximizes adoption by removing legal friction.</li>
         </ul>
 
@@ -744,7 +870,121 @@
             <li><strong>Documentation quality</strong>: Comprehensive user documentation, contributor documentation, and architectural documentation that enables independent adoption.</li>
         </ul>
 
-        <blockquote><p>For companies building their inference stack on llm-d, CNCF governance answers a critical question: what happens if the project's primary sponsor changes strategy? Under CNCF governance, no single company can unilaterally change the license, close the source, or redirect the project. It is a contractual guarantee against rug-pulls&mdash;and in an industry where open-source license changes have burned adopters repeatedly, that guarantee has real value.</p></blockquote>
+        <blockquote><p>For companies building their inference stack on llm-d, CNCF governance answers a critical question: what happens if the project's primary sponsor changes strategy? Under CNCF governance, no single company can unilaterally change the license, close the source, or redirect the project. It is a contractual guarantee against rug-pulls. In an industry where open-source license changes have burned adopters repeatedly, that guarantee has real value.</p></blockquote>
+
+
+        <h2 id="sandbox-journey">The CNCF Sandbox Journey: What Changed and What Comes Next</h2>
+
+        <p>Entering the CNCF Sandbox was not a ceremonial act. It was a structural transformation of how llm-d operates, who controls it, and what guarantees adopters receive. Understanding the specifics of what changed, what did not change, and what comes next is essential for anyone evaluating llm-d as an infrastructure dependency.</p>
+
+        <h3>What Specifically Changed When llm-d Entered Sandbox</h3>
+
+        <p>The day llm-d was accepted into the CNCF Sandbox, several concrete things shifted.</p>
+
+        <p><strong>IP transfer.</strong> The intellectual property for the project, previously held by the contributing companies, was transferred to the Linux Foundation (the CNCF's parent entity). This is not a symbolic gesture. It means that if Red Hat, Google Cloud, or IBM Research were to change corporate strategy tomorrow, walk away from the project entirely, or even attempt to relicense the code, they could not. The IP belongs to the foundation. The Apache 2.0 license is permanent. This single fact is the most important guarantee the CNCF provides.</p>
+
+        <p><strong>CI infrastructure.</strong> The project's continuous integration and continuous delivery pipelines moved to CNCF-provided infrastructure. Before Sandbox, builds ran on infrastructure donated by contributing companies. That arrangement works fine when relationships are healthy, but it creates a subtle dependency: the company hosting the CI has implicit power to slow or block releases. Under CNCF infrastructure, no single company controls whether the project can build, test, or ship software. The project's release cadence is governed by the community, not by any company's infrastructure budget or internal priorities.</p>
+
+        <p><strong>Neutral governance.</strong> While llm-d's governance framework was designed to be multi-vendor from day one, CNCF Sandbox formalized it. The CNCF's governance requirements mandate specific structures: documented decision-making processes, defined maintainer roles with clear criteria for election and removal, conflict resolution escalation paths, and a code of conduct with enforcement mechanisms. These requirements are not optional guidelines. They are conditions of continued Sandbox membership.</p>
+
+        <p><strong>Visibility and discoverability.</strong> The project now appears in the CNCF landscape, the definitive map of cloud-native technologies that platform engineering teams consult when evaluating infrastructure options. It is listed on the CNCF project page. It is eligible for speaking slots at KubeCon and CNCF-sponsored events. For a project trying to attract contributors and adopters, this visibility matters enormously.</p>
+
+        <h3>The Due Diligence Process</h3>
+
+        <p>The CNCF TOC does not accept projects on reputation alone. The due diligence process for llm-d's Sandbox application evaluated several dimensions.</p>
+
+        <p>The TOC assessed whether the project addresses a <strong>genuine gap in the cloud-native ecosystem</strong>. For llm-d, this was straightforward: no existing CNCF project provides inference-aware routing for LLM workloads. KServe handles model lifecycle management. Gateway API handles traffic management at the Kubernetes level. Neither provides the GPU-aware, KV-cache-aware, inference-state-aware routing that LLM workloads demand. The problem space was clearly unoccupied.</p>
+
+        <p>The TOC reviewed the project's <strong>technical architecture</strong> for soundness. They evaluated whether the design was extensible, whether it relied on open standards, whether it avoided unnecessary coupling to specific vendors or implementations. llm-d's use of Gateway API, its pluggable scheduling framework, and its clean separation from the inference engine (vLLM) all strengthened this assessment.</p>
+
+        <p>The TOC examined the <strong>contributor and governance health</strong> of the project. The joint submission from three major companies, the existing multi-vendor maintainer group, and the documented governance framework were all positive signals. The TOC specifically looks for projects that have already demonstrated the ability to collaborate across organizational boundaries, because single-company projects that enter Sandbox and then try to attract external contributors often struggle with the cultural shift.</p>
+
+        <h3>What Sandbox Does NOT Mean</h3>
+
+        <p>It is equally important to understand what Sandbox status does not confer. There are common misconceptions worth addressing directly.</p>
+
+        <p><strong>Sandbox is not an endorsement of production readiness.</strong> The CNCF explicitly states that Sandbox projects are early-stage. They may have incomplete features, limited documentation, breaking API changes between releases, and small user bases. Organizations that adopt Sandbox projects in production should do so with the understanding that they are early adopters accepting early-adopter risk.</p>
+
+        <p><strong>Sandbox does not guarantee the project will succeed.</strong> Some Sandbox projects thrive and progress to Incubation and Graduation. Others plateau, lose contributor momentum, or discover that their problem space is better served by a different approach. The CNCF periodically reviews Sandbox projects and can archive those that are no longer actively maintained.</p>
+
+        <p><strong>Sandbox does not mean the CNCF has deeply audited the code.</strong> The due diligence process evaluates architecture, governance, and community health. It does not include a comprehensive security audit or a thorough code review. Those come later, as requirements for Incubation.</p>
+
+        <h3>Concrete Next Steps Toward Incubation</h3>
+
+        <p>The llm-d community has a clear set of milestones on the path to Incubation. These are not aspirational goals; they are the specific criteria the TOC will evaluate.</p>
+
+        <ul>
+            <li><strong>Production adopters</strong>: The project needs documented production deployments from multiple organizations willing to serve as public references. These cannot all be founding partners. The TOC wants to see organic adoption by organizations that chose llm-d on its merits, not because they helped build it.</li>
+            <li><strong>Third-party security audit</strong>: A comprehensive security audit by an independent firm, with findings published and remediated. This is a hard requirement for Incubation.</li>
+            <li><strong>Contributor growth beyond founding companies</strong>: Sustained contributions from engineers not employed by the five founding partners. The TOC evaluates contributor diversity as a signal of community health and resilience.</li>
+            <li><strong>Stable APIs</strong>: The project needs to demonstrate API stability, or at least a clear versioning and deprecation policy that adopters can rely on for production planning.</li>
+            <li><strong>Governance stress test</strong>: The TOC looks for evidence that the governance framework has been tested. Has the community navigated a significant disagreement? Has a contested RFC been resolved through the documented process? Has a maintainer transition occurred? These events demonstrate that governance is not just documented but functional.</li>
+        </ul>
+
+        <h3>Comparison with Other Sandbox-to-Incubation Timelines</h3>
+
+        <p>For context, here is how other notable CNCF projects have progressed through the maturity model:</p>
+
+        <ul>
+            <li><strong>Argo</strong> spent roughly two years in Sandbox before moving to Incubation, supported by strong adoption in the CI/CD space and contributions from multiple companies.</li>
+            <li><strong>Backstage</strong> (by Spotify) moved from Sandbox to Incubation in about eighteen months, driven by rapid developer-portal adoption across the industry.</li>
+            <li><strong>Crossplane</strong> progressed to Incubation after approximately two years, aided by strong alignment with the Kubernetes resource model and broad cloud provider interest.</li>
+            <li><strong>Some projects</strong> have spent three or more years in Sandbox, and a meaningful number have been archived entirely when contributor activity declined.</li>
+        </ul>
+
+        <p>llm-d's trajectory suggests a faster-than-average path, driven by the urgency of the AI infrastructure moment and the strength of the founding coalition. But timelines depend on execution, not momentum. The community needs to deliver on the Incubation criteria methodically rather than assuming that excitement alone will carry them forward.</p>
+
+
+        <h2 id="governance-mechanics">Community Governance Mechanics: How Decisions Actually Get Made</h2>
+
+        <p>Governance documents describe the rules. This section describes how those rules play out in practice, because the lived experience of governance is what determines whether people trust the process enough to invest their time.</p>
+
+        <h3>How the RFC Process Actually Works</h3>
+
+        <p>When someone wants to propose a significant change to llm-d (a new scheduling algorithm, a change to the EPP protocol, a new integration pattern) the process follows a defined sequence.</p>
+
+        <p><strong>Step 1: Proposal.</strong> The author writes an RFC document following the project's template. The template asks for the problem statement, the proposed solution, alternatives considered, and the impact on existing users. This structure matters because it forces the author to demonstrate they have thought through the problem, not just arrived with a solution. The RFC is submitted as a pull request to the project's RFC repository, which means every version of the document is tracked and the full discussion history is preserved.</p>
+
+        <p><strong>Step 2: Discussion.</strong> The RFC enters a review period (typically two weeks, though complex proposals may warrant longer). Any community member can comment. In practice, the discussion involves maintainers from multiple organizations, sometimes with genuinely different perspectives rooted in their companies' deployment patterns. A Red Hat engineer might push back on a design that assumes homogeneous GPU pools because OpenShift customers run mixed hardware. A Google Cloud engineer might raise scalability concerns based on traffic patterns they observe at hyperscaler scale. An IBM Research contributor might point out that a proposed heuristic contradicts findings from their published research. These discussions are constructive, technically grounded, and visible to everyone.</p>
+
+        <p><strong>Step 3: Revision.</strong> Based on feedback, the author revises the proposal. Sometimes this means minor tweaks. Sometimes it means a fundamental redesign. The revision history is transparent; anyone can see how the proposal evolved in response to community input.</p>
+
+        <p><strong>Step 4: Decision.</strong> Maintainers reach consensus on whether to accept, reject, or defer the RFC. Consensus does not mean unanimity. It means no maintainer has a sustained objection that cannot be addressed. If consensus cannot be reached, the governance framework provides an escalation path (described below).</p>
+
+        <h3>SIG Structure for Focused Work</h3>
+
+        <p>As the project has grown, the community has organized into Special Interest Groups (SIGs), each focused on a specific area. SIGs allow contributors to go deep on their area of expertise without needing to track every conversation across the entire project.</p>
+
+        <ul>
+            <li><strong>SIG Scheduling</strong>: Owns the routing algorithms, scheduling policies, and load balancing logic. This is where IBM Research's algorithmic contributions are most active, and where academic contributors tend to engage first.</li>
+            <li><strong>SIG Hardware</strong>: Focuses on hardware integration, GPU-aware scheduling, and the interfaces between llm-d and hardware-specific libraries like NIXL and Dynamo. NVIDIA's contributions are concentrated here.</li>
+            <li><strong>SIG Gateway API</strong>: Maintains the Gateway API integration, ensuring llm-d stays aligned with upstream Gateway API developments and that new inference-specific extensions are proposed back to the Gateway API community. Google Cloud leads much of this work.</li>
+            <li><strong>SIG Docs</strong>: Owns documentation, tutorials, onboarding guides, and the contributor experience for newcomers. This SIG has an outsized impact on community growth because the quality of documentation directly determines how many new contributors successfully make their first PR.</li>
+        </ul>
+
+        <p>Each SIG has its own regular meetings, its own leads, and its own backlog. SIG leads report to the broader maintainer group, but individual SIGs have autonomy to make decisions within their scope. This structure scales community decision-making without requiring every maintainer to weigh in on every issue.</p>
+
+        <h3>How Maintainer Elections Work</h3>
+
+        <p>Maintainers are not appointed by companies. They are elected by the existing maintainer group based on demonstrated contribution and trust. The process is documented and follows a clear pattern.</p>
+
+        <p>A contributor becomes eligible for maintainer nomination after demonstrating sustained, high-quality contributions over a meaningful period (typically six months or more). Contributions include code, reviews, documentation, community support, and governance participation. An existing maintainer nominates the candidate, providing evidence of their contributions and a rationale for why they should be trusted with maintainer responsibilities. The existing maintainer group discusses the nomination (typically asynchronously, with a defined decision window). If there are no sustained objections, the candidate is accepted.</p>
+
+        <p>Critically, maintainer status is tied to individuals, not companies. If a maintainer changes employers, they retain their maintainer status. This prevents companies from "owning" maintainer seats and ensures that the maintainer group reflects individual merit rather than corporate representation.</p>
+
+        <h3>Conflict Resolution: When Red Hat and Google Disagree</h3>
+
+        <p>In any multi-vendor project, the question is not whether major contributors will disagree. It is how the community handles disagreement when it happens. The governance framework provides a layered approach.</p>
+
+        <p><strong>Level 1: Technical discussion.</strong> Most disagreements are resolved through normal RFC and review processes. Engineers from different companies present their perspectives, the community evaluates the technical merits, and consensus emerges. This handles the vast majority of disputes.</p>
+
+        <p><strong>Level 2: Maintainer vote.</strong> When consensus cannot be reached through discussion, maintainers can call a formal vote. Votes require a supermajority (typically two-thirds of active maintainers). Because the maintainer group spans multiple organizations, no single company can dictate outcomes through voting alone.</p>
+
+        <p><strong>Level 3: Governance committee escalation.</strong> For disputes that touch governance itself (changes to the decision-making process, maintainer removal, scope changes) the project's governance committee provides a higher-level forum. The governance committee includes members from multiple founding organizations and is designed to handle exactly these meta-level disputes.</p>
+
+        <p><strong>Level 4: CNCF TOC as backstop.</strong> In the unlikely event that a governance dispute cannot be resolved internally, the CNCF Technical Oversight Committee serves as the final arbiter. The TOC has authority over all CNCF projects and can intervene in governance disputes, though in practice this is extremely rare. The mere existence of this backstop changes behavior: knowing that an external authority can be invoked encourages parties to find internal resolution.</p>
+
+        <blockquote><p>The strength of a governance framework is not measured by how well it works when everyone agrees. It is measured by how well it works when people disagree, and whether all parties trust the process enough to accept outcomes they did not prefer. llm-d's layered approach, with CNCF as the final backstop, provides that trust.</p></blockquote>
 
 
         <h2 id="contributors">The Contributor Journey: From Corporate Mandate to Organic Community</h2>
@@ -753,7 +993,7 @@
 
         <h3>Corporate Mandate Contributors</h3>
 
-        <p><strong>"My company told me to contribute to llm-d."</strong> This is common for partner organizations and is not a negative signal despite its bureaucratic sound. When a company strategically assigns engineers to an open-source project, those engineers typically bring deep domain expertise&mdash;GPU scheduling, Kubernetes networking, inference optimization, distributed systems. They arrive with context about why their company considers this project strategically important, and they often have the backing to invest sustained effort rather than drive-by contributions. Corporate mandate contributors are the foundation of the founding phase. They establish the code quality standards, review culture, and architectural patterns that define the project's identity.</p>
+        <p><strong>"My company told me to contribute to llm-d."</strong> This is common for partner organizations and is not a negative signal despite its bureaucratic sound. When a company strategically assigns engineers to an open-source project, those engineers typically bring deep domain expertise in GPU scheduling, Kubernetes networking, inference optimization, or distributed systems. They arrive with context about why their company considers this project strategically important, and they often have the backing to invest sustained effort rather than drive-by contributions. Corporate mandate contributors are the foundation of the founding phase. They establish the code quality standards, review culture, and architectural patterns that define the project's identity.</p>
 
         <h3>Problem-Driven Contributors</h3>
 
@@ -761,7 +1001,7 @@
 
         <h3>Academic Contributors</h3>
 
-        <p><strong>"My research is relevant to llm-d."</strong> Researchers working on inference optimization, KV cache management, scheduling algorithms, or distributed systems find that llm-d offers something rare: a production-grade codebase where research ideas can be validated at scale against real-world workloads. The academic contributors from UC Berkeley (vLLM) and University of Chicago (LMCache) set the template, but the pattern extends to researchers at other institutions working on adjacent problems&mdash;heterogeneous scheduling, speculative decoding coordination, multi-model serving optimization. These contributors bring algorithmic rigor and peer-reviewed validation that strengthens the project's technical foundation.</p>
+        <p><strong>"My research is relevant to llm-d."</strong> Researchers working on inference optimization, KV cache management, scheduling algorithms, or distributed systems find that llm-d offers something rare: a production-grade codebase where research ideas can be validated at scale against real-world workloads. The academic contributors from UC Berkeley (vLLM) and University of Chicago (LMCache) set the template, but the pattern extends to researchers at other institutions working on adjacent problems like heterogeneous scheduling, speculative decoding coordination, and multi-model serving optimization. These contributors bring algorithmic rigor and peer-reviewed validation that strengthens the project's technical foundation.</p>
 
         <h3>Ecosystem Contributors</h3>
 
@@ -780,7 +1020,7 @@
             <li><strong>Maintainer candidate</strong>: Demonstrated sustained contribution, deep understanding of the codebase, and ability to make sound architectural judgments</li>
         </ol>
 
-        <p>The community has grown from the <strong>5 founding organizations to over 15 organizations with more than 100 contributors</strong>. The governance framework makes the path from first PR to maintainer explicit and achievable&mdash;you do not need to work for a founding partner to become a maintainer. This is not just a stated aspiration; the maintainer group already includes individuals from organizations that were not part of the founding coalition.</p>
+        <p>The community has grown from the <strong>5 founding organizations to over 15 organizations with more than 100 contributors</strong>. The governance framework makes the path from first PR to maintainer explicit and achievable. You do not need to work for a founding partner to become a maintainer. This is not just a stated aspiration; the maintainer group already includes individuals from organizations that were not part of the founding coalition.</p>
 
         <h3>What Makes This Community Different</h3>
 
@@ -789,21 +1029,105 @@
         <p>llm-d's community structure is different in a structural sense, not just a rhetorical one. Multiple companies had maintainer-level access from day one. The roadmap was never controlled by a single organization. Architectural decisions were made through public RFCs from the beginning, not retroactively opened up after the hard decisions were already made. This is harder and slower than single-company control, but it produces a community that competing companies actually trust enough to depend on.</p>
 
 
+        <h2 id="origin-stories">Three Contributor Origin Stories</h2>
+
+        <p>Abstract descriptions of contributor types are useful for understanding the community's structure. But the real texture of an open-source community lives in the specific stories of how people found the project, what made them stay, and what they built. Here are three stories (composited and anonymized to protect privacy) that illustrate the paths people actually walk into llm-d.</p>
+
+        <div class="story-card">
+            <div class="story-label">Contributor Story</div>
+            <h3>Chen: The Platform Engineer Who Found $40K/Month in Wasted GPU Cycles</h3>
+            <p>Chen is a platform engineer at a mid-size fintech company that started deploying LLMs for document processing and customer interaction analysis about eighteen months ago. His team ran three different models on a cluster of A100 GPUs, and the GPU utilization numbers were painful to look at. On average, their GPUs were running at 35% utilization. Some workers sat nearly idle while others queued requests for seconds at a time. The company was spending roughly $40,000 per month on GPU compute that was being used at a third of its capacity.</p>
+            <p>Chen had tried everything within reach. He tuned the Kubernetes HPA settings. He experimented with custom load balancer configurations. He wrote a hacky sidecar that attempted to distribute requests based on response times. Nothing worked well because the fundamental problem was that no off-the-shelf load balancer understood inference state. A worker could have low CPU utilization but a completely full KV cache, meaning it looked healthy to a traditional load balancer but would queue the next request for seconds while it evicted cache entries.</p>
+            <p>He first heard about llm-d at a KubeCon talk. The presenter showed a demo of prefix-aware routing, and Chen recognized his problem immediately. He went back to his hotel room that night and started reading the documentation. Within a week of returning home, he had llm-d running in a test environment alongside his existing cluster.</p>
+            <p>The first thing he noticed was a bug. The EPP was not correctly handling the health-check format his vLLM version used, and the routing layer was falling back to round-robin for about 15% of requests. He dug into the code, found the issue (a version-specific API response format that the EPP parser did not handle), and submitted a fix. It was his first pull request to any open-source project that was not an internal company tool.</p>
+            <p>The PR was reviewed within two days. A Red Hat engineer left thoughtful feedback, suggested a more robust approach to version detection, and approved the revised PR. Chen describes that review as the moment he stopped being a user and started being a participant. Someone he had never met, working at a completely different company, took his contribution seriously and made it better.</p>
+            <p>Six months later, Chen reviews scheduling PRs regularly. His company's GPU utilization is now at 72%, and the $40,000/month problem has been cut by more than half. He contributes because the project is solving a problem that directly affects his team's budget, and because every improvement he makes upstream saves him from maintaining a fork.</p>
+        </div>
+
+        <div class="story-card">
+            <div class="story-label">Contributor Story</div>
+            <h3>Priya: The PhD Student Whose Dissertation Found a Production Home</h3>
+            <p>Priya is a third-year PhD student researching KV cache optimization strategies for multi-tenant LLM serving. Her dissertation work focuses on scheduling algorithms that minimize redundant KV cache computation across requests that share structural similarities, not just exact prefix matches. The work is mathematically rigorous, published at a top systems conference, and (until she found llm-d) entirely theoretical.</p>
+            <p>Her advisor had been pushing her to find a way to validate her algorithms against real production workloads. Simulations with synthetic data are publishable, but the systems research community increasingly expects empirical validation against actual deployment conditions. The problem was that no production LLM serving system was open enough for a PhD student to meaningfully integrate her research.</p>
+            <p>Priya found llm-d through a citation trail. A paper she was reviewing cited vLLM's PagedAttention work. She followed the references and discovered that vLLM was being used as the inference engine beneath a new routing layer with a pluggable scheduling framework. She started reading llm-d's architecture documentation and immediately ran into a problem: the docs assumed familiarity with both Kubernetes internals and inference engine architecture, and the relationship between the two was not well explained for newcomers.</p>
+            <p>Her first contribution was a documentation improvement. She rewrote the architecture overview to explain the data flow from request arrival through scheduling decision to inference engine dispatch, with diagrams that made the system's structure clear to someone who understood distributed systems but had never operated a Kubernetes cluster. The documentation PR received enthusiastic feedback. Multiple maintainers commented that they had not realized how confusing the existing docs were to outsiders.</p>
+            <p>Her second contribution was substantial. She implemented a scheduling algorithm improvement based on her dissertation research: a similarity-aware routing heuristic that could identify requests with structurally similar (not just identical) prefixes and route them to workers likely to have relevant cached state. The implementation required understanding both the theoretical scheduling model and the practical constraints of the EPP protocol, GPU memory management, and the latency budget for routing decisions. She spent two months on the PR, with regular guidance from an IBM Research maintainer who understood the scheduling theory and a Red Hat engineer who helped her navigate the codebase.</p>
+            <p>Priya is now a reviewer for scheduling-related PRs. Her advisor uses llm-d as a case study in his course on "how academic research reaches production." And her dissertation has a validation chapter that no purely theoretical thesis could match.</p>
+        </div>
+
+        <div class="story-card">
+            <div class="story-label">Contributor Story</div>
+            <h3>Marcus: The DevOps Engineer Who Had Never Contributed to a CNCF Project</h3>
+            <p>Marcus is a DevOps engineer at a healthcare AI startup. His company runs a clinical NLP pipeline that uses multiple models: a small, fast model for initial triage and classification, a larger model for detailed entity extraction, and a specialized model for clinical summarization. The models have different latency requirements, different GPU memory footprints, and different traffic patterns. Some are bursty (clinical notes arrive in batches during shift changes). Some are steady (the triage model runs continuously). All of them share a single GPU cluster.</p>
+            <p>Marcus needed multi-model routing that understood these differences. He needed the routing layer to send triage requests to the small model on the GPU with the most available compute, extraction requests to the large model on the GPU with the most available memory, and summarization requests to whichever GPU had finished its current batch. No existing tool did this well. Most treated all models as interchangeable endpoints, which meant the triage model (fast, cheap) and the summarization model (slow, expensive) competed for the same resources without any awareness of their different characteristics.</p>
+            <p>He opened an issue on the llm-d repository describing his use case in detail. He expected the issue to sit in a backlog for months. Instead, within three days, a maintainer responded with questions about his deployment architecture and invited him to present his use case at the next community call. Marcus had never attended an open-source community call before. He joined, described his pipeline, and was surprised by the engagement. Multiple attendees had encountered similar multi-model routing challenges. The maintainers suggested that his use case was exactly the kind of scenario the scheduling framework should support natively.</p>
+            <p>Then came the part he did not expect: they suggested he implement it himself, with guidance. A CoreWeave engineer offered to pair with him on the scheduling logic. A Google Cloud contributor walked him through the Gateway API integration patterns. The IBM Research scheduling lead reviewed his algorithmic approach and suggested optimizations. Over six weeks, Marcus went from someone who had never contributed to a CNCF project to someone who implemented a feature in one.</p>
+            <p>The experience changed his professional trajectory. He presented the multi-model routing work at a regional cloud-native meetup. He wrote a blog post about the implementation that became one of the most-shared pieces about llm-d on social media. And now he mentors other newcomers through their first PRs, paying forward the guidance he received. He specifically focuses on contributors from smaller companies and startups, because he remembers what it felt like to open an issue on a major project and not know whether anyone would respond.</p>
+        </div>
+
+        <p>These stories share a common thread. In each case, the contributor did not arrive with the intention of becoming a community member. They arrived with a problem. The community's response to that problem (thoughtful code review, genuine engagement with use cases, willingness to mentor) is what converted them from users into contributors. This is not accidental. It is the result of deliberate community design: contribution guidelines that welcome newcomers, review processes that are educational rather than gatekeeping, and a culture that treats every issue and every PR as an opportunity to grow the community.</p>
+
+
+        <h2 id="economics">The Economics of Open-Source Contribution</h2>
+
+        <p>Open-source contribution is not charity. It is an investment with measurable returns for individuals, teams, and companies. Understanding the economics is important because it explains why contribution is sustainable (when it works) and why it collapses (when it does not). The economics of contributing to llm-d are particularly favorable because of the project's position in the AI infrastructure stack and its CNCF affiliation.</p>
+
+        <h3>Career Impact: The CNCF Visibility Effect</h3>
+
+        <p>The CNCF ecosystem is the professional home of cloud-native engineering. KubeCon is one of the largest technical conferences in the world. Maintainers of CNCF projects are recognized figures in the community. And the demand for engineers who understand both Kubernetes and AI infrastructure is growing faster than the supply.</p>
+
+        <p>Contributing to llm-d creates career capital in several ways. <strong>Conference speaking opportunities</strong> are one of the most visible. CNCF events actively seek talks from project contributors, and a talk about real-world experience with LLM inference routing at a healthcare AI startup or a fintech platform is the kind of content that conference program committees prioritize. These talks reach thousands of engineers, many of whom are hiring managers or technical decision-makers at companies that need exactly the expertise the speaker demonstrates.</p>
+
+        <p><strong>Job market advantage</strong> is another concrete return. The intersection of Kubernetes expertise and LLM serving knowledge is a narrow and valuable niche. Engineers who can point to merged PRs in llm-d, participation in architectural RFCs, and experience deploying the system in production have a demonstrable skill set that is difficult to credentialize through any other means. No certification proves you can debug a KV cache routing issue at scale. A merged PR that fixes one does.</p>
+
+        <p><strong>Professional network effects</strong> compound over time. Regular contributors build relationships with engineers at Red Hat, Google, IBM, NVIDIA, and CoreWeave, plus the growing community of adopters. These relationships are professional, technical, and reciprocal. They open doors that cold applications cannot.</p>
+
+        <h3>Skill Development: Working with World-Class Engineers</h3>
+
+        <p>Code review is one of the most effective learning mechanisms in software engineering, and the quality of learning is directly proportional to the quality of the reviewers. When you submit a PR to llm-d, your code is reviewed by engineers who have built production systems at the scale of Google Cloud, who have published peer-reviewed research on scheduling algorithms at IBM, who have designed GPU communication primitives at NVIDIA, and who have operated GPU clusters at CoreWeave's scale.</p>
+
+        <p>This is not a hypothetical benefit. It is a concrete, repeated interaction. Every PR review is a focused, technical conversation about your code with someone who is likely an expert in the relevant domain. The feedback is specific, actionable, and educational. Over time, regular contributors report that the review process accelerates their technical growth in ways that no course, book, or internal mentorship program can match.</p>
+
+        <p>The skill domains you develop through llm-d contribution are also unusually broad. In a single project, you might work with Kubernetes custom resources, GPU memory management, distributed scheduling theory, gRPC protocol design, Prometheus metric instrumentation, and Gateway API traffic routing. Few other projects offer this cross-domain exposure.</p>
+
+        <h3>Company ROI: Upstream vs. Fork Economics</h3>
+
+        <p>For companies that deploy llm-d, the economic case for contributing upstream (rather than maintaining internal forks) is straightforward when you work through the numbers.</p>
+
+        <p><strong>Maintaining a fork costs more than you think.</strong> Every time the upstream project releases a new version, someone on your team must merge the changes into your fork, resolve conflicts with your local modifications, test the integrated result, and deploy it. This cost recurs with every release. For a project releasing monthly, with an active development pace, the merge cost alone can consume a significant fraction of an engineer's time. And the longer you maintain a divergent fork, the harder each merge becomes.</p>
+
+        <p><strong>Contributing upstream eliminates merge costs.</strong> If your fix or feature is accepted upstream, it ships in every future release. You never merge it again. You never test the integration again. The entire community tests it for you, across deployment environments you would never have tested yourself. The one-time cost of upstreaming a contribution is almost always lower than the recurring cost of maintaining it in a fork.</p>
+
+        <p><strong>Influence over roadmap direction</strong> is the second economic benefit. Companies that contribute to llm-d have a voice in architectural decisions that affect their deployments. If your company's workload pattern requires a specific scheduling optimization, contributing that optimization (and participating in the design discussion that shapes it) ensures the project evolves in a direction compatible with your needs. Companies that only consume the project have no such influence; they are price-takers in a market where contributors are price-setters.</p>
+
+        <p><strong>Recruiting signal</strong> should not be underestimated. Companies with visible open-source contributions attract engineers who want to work on interesting problems in the open. This is especially true in the AI infrastructure space, where the best engineers have multiple offers and choose employers partly based on the technical environment and community engagement the company offers.</p>
+
+        <h3>The Invisible Resume</h3>
+
+        <p>There is a concept in the open-source world sometimes called the "invisible resume." Your GitHub contribution history, your PR discussions, your RFC comments, and your code review feedback constitute a public record of your technical competence that no credential can replicate.</p>
+
+        <p>A traditional resume says "I worked on distributed systems at Company X." Your open-source contribution history says "Here is a scheduling algorithm I designed. Here is the review discussion where I defended the approach against specific technical objections. Here is the production issue I debugged across three time zones. Here is the documentation I wrote that helped 200 people deploy the system for the first time." The specificity and verifiability of open-source contributions make them uniquely credible.</p>
+
+        <p>For engineers early in their careers, open-source contribution to a project like llm-d is one of the fastest ways to build credible evidence of competence in a high-demand domain. For senior engineers, it is a way to maintain visibility and influence beyond the boundaries of their current employer. For engineering managers, their team's open-source contributions demonstrate the team's technical capabilities to the broader community in a way that internal work cannot.</p>
+
+        <blockquote><p>The economics of open-source contribution work when the project matters, the community is welcoming, and the returns are tangible. llm-d checks all three boxes. The project addresses a problem that companies are spending real money on today. The community actively mentors newcomers. And the career, skill, and company-level returns are concrete and measurable.</p></blockquote>
+
+
         <h2 id="comparison">How llm-d Compares to Other CNCF Projects at the Same Stage</h2>
 
         <p>Evaluating a Sandbox project in isolation is difficult. The more useful question is: how does this project compare to other CNCF projects at a similar point in their lifecycle?</p>
 
         <h3>The Kubernetes Comparison (With Caveats)</h3>
 
-        <p>Kubernetes is the obvious reference point, though the comparison requires nuance. Kubernetes predated the CNCF&mdash;it was donated to the foundation in 2015 after Google had already developed it internally and released it as open source. By the time it entered CNCF, it had Google's engineering investment, a clear technical vision, and growing adoption. llm-d entered CNCF earlier in its lifecycle, which is both a risk (less technical maturity) and an opportunity (the community can shape the architecture from the beginning rather than inheriting a single company's design decisions).</p>
+        <p>Kubernetes is the obvious reference point, though the comparison requires nuance. Kubernetes predated the CNCF; it was donated to the foundation in 2015 after Google had already developed it internally and released it as open source. By the time it entered CNCF, it had Google's engineering investment, a clear technical vision, and growing adoption. llm-d entered CNCF earlier in its lifecycle, which is both a risk (less technical maturity) and an opportunity (the community can shape the architecture from the beginning rather than inheriting a single company's design decisions).</p>
 
-        <p>Where the comparison is apt: both projects addressed a problem that multiple companies independently recognized as critical infrastructure. Both attracted founding coalitions of companies that competed in the market but needed shared solutions for undifferentiated infrastructure. Both benefited from the urgency of a technology wave&mdash;cloud-native computing for Kubernetes, LLM deployment at scale for llm-d.</p>
+        <p>Where the comparison is apt: both projects addressed a problem that multiple companies independently recognized as critical infrastructure. Both attracted founding coalitions of companies that competed in the market but needed shared solutions for undifferentiated infrastructure. Both benefited from the urgency of a technology wave: cloud-native computing for Kubernetes, LLM deployment at scale for llm-d.</p>
 
         <h3>AI/ML CNCF Projects: KServe and Kubeflow</h3>
 
-        <p><strong>KServe</strong> is the most directly relevant comparison. KServe provides model serving infrastructure&mdash;lifecycle management, autoscaling, multi-framework support&mdash;and llm-d provides the inference-aware routing layer that KServe needs for LLM-specific workloads. KServe started as KFServing within the Kubeflow project before becoming an independent CNCF project. Its community grew more gradually, starting from a single company's contribution before broadening. llm-d's advantage is launching with multiple major backers from day one, which established multi-vendor governance patterns before the codebase grew large enough for any single company to claim ownership through code volume.</p>
+        <p><strong>KServe</strong> is the most directly relevant comparison. KServe provides model serving infrastructure (lifecycle management, autoscaling, multi-framework support) and llm-d provides the inference-aware routing layer that KServe needs for LLM-specific workloads. KServe started as KFServing within the Kubeflow project before becoming an independent CNCF project. Its community grew more gradually, starting from a single company's contribution before broadening. llm-d's advantage is launching with multiple major backers from day one, which established multi-vendor governance patterns before the codebase grew large enough for any single company to claim ownership through code volume.</p>
 
-        <p><strong>Kubeflow</strong> offers a cautionary comparison. Kubeflow aimed to be a comprehensive ML platform on Kubernetes, but its broad scope and single-company origin made it difficult to build genuine multi-vendor community ownership. llm-d's tighter scope&mdash;LLM inference routing specifically, not all of ML infrastructure&mdash;makes governance more tractable. There are fewer competing visions for what the project should become, because the problem space is more precisely defined.</p>
+        <p><strong>Kubeflow</strong> offers a cautionary comparison. Kubeflow aimed to be a comprehensive ML platform on Kubernetes, but its broad scope and single-company origin made it difficult to build genuine multi-vendor community ownership. llm-d's tighter scope (LLM inference routing specifically, not all of ML infrastructure) makes governance more tractable. There are fewer competing visions for what the project should become, because the problem space is more precisely defined.</p>
 
         <h3>The Multi-Backer Advantage</h3>
 
@@ -811,12 +1135,12 @@
 
         <h3>The Urgency Accelerant</h3>
 
-        <p>The speed of llm-d's community growth relative to typical CNCF Sandbox projects is partly attributable to <strong>the urgency of the AI infrastructure moment</strong>. Every company deploying LLMs at scale needs better routing infrastructure now, not in two years. This urgency compresses the typical open-source adoption timeline. Companies that might normally evaluate a project for a year before contributing are contributing within months because the cost of waiting&mdash;running inefficient inference infrastructure&mdash;is measured in GPU-hours that cost real money.</p>
+        <p>The speed of llm-d's community growth relative to typical CNCF Sandbox projects is partly attributable to <strong>the urgency of the AI infrastructure moment</strong>. Every company deploying LLMs at scale needs better routing infrastructure now, not in two years. This urgency compresses the typical open-source adoption timeline. Companies that might normally evaluate a project for a year before contributing are contributing within months because the cost of waiting (running inefficient inference infrastructure) is measured in GPU-hours that cost real money.</p>
 
 
         <h2 id="ecosystem">The Ecosystem Play: Why Integration Matters</h2>
 
-        <p>llm-d is not a monolith that replaces your existing infrastructure. It is a component that makes your existing infrastructure smarter about LLM inference. This architectural philosophy&mdash;integrate with everything, replace nothing&mdash;is central to the project's adoption strategy and community growth.</p>
+        <p>llm-d is not a monolith that replaces your existing infrastructure. It is a component that makes your existing infrastructure smarter about LLM inference. This architectural philosophy (integrate with everything, replace nothing) is central to the project's adoption strategy and community growth.</p>
 
         <h3>Gateway API: The Kubernetes-Native Interface</h3>
 
@@ -831,11 +1155,11 @@
 
         <h3>KServe: The Model Serving Framework</h3>
 
-        <p><code>KServe</code> handles model lifecycle management&mdash;deploying models, scaling replicas, managing model versions, supporting multiple inference frameworks. llm-d complements KServe by providing the <strong>inference-aware routing layer</strong> that KServe's built-in load balancing cannot provide. Where KServe asks "how many replicas of this model should be running?", llm-d asks "given these running replicas, which one should handle this specific request right now?" The two projects address orthogonal concerns that combine to create a complete LLM serving platform.</p>
+        <p><code>KServe</code> handles model lifecycle management: deploying models, scaling replicas, managing model versions, supporting multiple inference frameworks. llm-d complements KServe by providing the <strong>inference-aware routing layer</strong> that KServe's built-in load balancing cannot provide. Where KServe asks "how many replicas of this model should be running?", llm-d asks "given these running replicas, which one should handle this specific request right now?" The two projects address orthogonal concerns that combine to create a complete LLM serving platform.</p>
 
         <h3>NIXL: The Transfer Primitive</h3>
 
-        <p>NVIDIA's <code>NIXL</code> (Inference Transfer Library) is the low-level primitive that makes disaggregated prefill/decode architectures practical. When llm-d decides that a request's prefill phase should run on GPU pool A and its decode phase should run on GPU pool B, NIXL handles the actual data movement&mdash;transferring the KV cache state between GPU pools with minimal latency using optimized GPU-to-GPU communication, RDMA, and intelligent buffer management. llm-d orchestrates the routing decision; NIXL executes the data transfer. The separation of concerns is clean and essential.</p>
+        <p>NVIDIA's <code>NIXL</code> (Inference Transfer Library) is the low-level primitive that makes disaggregated prefill/decode architectures practical. When llm-d decides that a request's prefill phase should run on GPU pool A and its decode phase should run on GPU pool B, NIXL handles the actual data movement. It transfers the KV cache state between GPU pools with minimal latency using optimized GPU-to-GPU communication, RDMA, and intelligent buffer management. llm-d orchestrates the routing decision; NIXL executes the data transfer. The separation of concerns is clean and essential.</p>
 
         <h3>Kubernetes: The Foundation</h3>
 
@@ -843,20 +1167,20 @@
 
         <h3>Prometheus and Observability</h3>
 
-        <p>llm-d exports metrics in <strong>Prometheus format</strong> that feed into standard Kubernetes monitoring dashboards and autoscaling controllers like <code>KEDA</code>. Request latency, routing decisions, cache hit rates, queue depth across workers, GPU utilization per model&mdash;all exposed through Prometheus metrics that integrate with whatever monitoring stack you already run. You do not need llm-d-specific observability tooling.</p>
+        <p>llm-d exports metrics in <strong>Prometheus format</strong> that feed into standard Kubernetes monitoring dashboards and autoscaling controllers like <code>KEDA</code>. Request latency, routing decisions, cache hit rates, queue depth across workers, GPU utilization per model: all exposed through Prometheus metrics that integrate with whatever monitoring stack you already run. You do not need llm-d-specific observability tooling.</p>
 
-        <blockquote><p>The "slot in" argument is llm-d's strongest adoption pitch: if you already run vLLM on Kubernetes with Prometheus monitoring and KServe for model management, llm-d slots into the architecture you have. It enhances your existing stack rather than asking you to replace it. This composability is not just a technical convenience&mdash;it is a community growth strategy. Every project that integrates with llm-d brings its community along.</p></blockquote>
+        <blockquote><p>The "slot in" argument is llm-d's strongest adoption pitch: if you already run vLLM on Kubernetes with Prometheus monitoring and KServe for model management, llm-d slots into the architecture you have. It enhances your existing stack rather than asking you to replace it. This composability is not just a technical convenience. It is a community growth strategy. Every project that integrates with llm-d brings its community along.</p></blockquote>
 
 
         <h2 id="forward">Forward-Looking: What the Community Needs to Grow</h2>
 
-        <p>The community story is still being written. The founding phase established the governance structure, the core technology, and the multi-vendor collaboration model. The next phase will determine whether llm-d becomes entrenched infrastructure&mdash;like Kubernetes&mdash;or remains a promising project that never achieves critical mass. Several themes will define this next chapter.</p>
+        <p>The community story is still being written. The founding phase established the governance structure, the core technology, and the multi-vendor collaboration model. The next phase will determine whether llm-d becomes entrenched infrastructure (like Kubernetes) or remains a promising project that never achieves critical mass. Several themes will define this next chapter.</p>
 
         <h3>Expanding Hardware Support</h3>
 
         <p>Today, llm-d's deepest optimizations target NVIDIA GPUs through Dynamo and NIXL integration. This reflects NVIDIA's current dominance in the AI accelerator market, but the hardware landscape is diversifying rapidly. <strong>AMD GPUs</strong> (MI300X and successors) are gaining significant traction in large-scale inference deployments. <strong>Intel accelerators</strong> (Gaudi series) serve a different price-performance segment. <strong>Custom AI silicon</strong> from cloud providers and startups introduces architectures with fundamentally different memory hierarchies, compute profiles, and interconnect capabilities.</p>
 
-        <p>For llm-d to become the universal routing layer for LLM inference, it must schedule intelligently across <strong>heterogeneous accelerator architectures</strong>&mdash;not just different models of NVIDIA GPUs, but different vendors' hardware with different programming models, memory systems, and performance characteristics. This requires hardware vendors beyond NVIDIA to contribute scheduling plugins, performance profiles, and integration code. The project's architecture must be extensible enough to accommodate hardware-specific optimization without coupling the core routing logic to any single vendor's ecosystem.</p>
+        <p>For llm-d to become the universal routing layer for LLM inference, it must schedule intelligently across <strong>heterogeneous accelerator architectures</strong>, not just different models of NVIDIA GPUs, but different vendors' hardware with different programming models, memory systems, and performance characteristics. This requires hardware vendors beyond NVIDIA to contribute scheduling plugins, performance profiles, and integration code. The project's architecture must be extensible enough to accommodate hardware-specific optimization without coupling the core routing logic to any single vendor's ecosystem.</p>
 
         <h3>Broader Cloud Provider Representation</h3>
 
@@ -864,11 +1188,11 @@
 
         <h3>More Use Cases</h3>
 
-        <p>The current community is heavily focused on large-scale inference serving&mdash;the use case that motivated the project's creation. But LLM inference routing has applications across a wider spectrum:</p>
+        <p>The current community is heavily focused on large-scale inference serving, the use case that motivated the project's creation. But LLM inference routing has applications across a wider spectrum:</p>
 
         <ul>
             <li><strong>Enterprise RAG patterns</strong>: Routing that understands retrieval-augmented generation pipelines and optimizes for shared context across related queries</li>
-            <li><strong>Multi-model routing</strong>: Intelligent selection of which model to route to based on query complexity, cost constraints, and latency requirements&mdash;not just which worker of a single model</li>
+            <li><strong>Multi-model routing</strong>: Intelligent selection of which model to route to based on query complexity, cost constraints, and latency requirements, not just which worker of a single model</li>
             <li><strong>Edge inference</strong>: Routing decisions for on-premise or edge deployments with constrained hardware and intermittent connectivity</li>
             <li><strong>Cost-optimized routing</strong>: Scheduling that explicitly optimizes for cost per token across heterogeneous hardware with different price points</li>
             <li><strong>Multi-region routing</strong>: Geo-aware request routing that balances latency, data residency requirements, and GPU availability across regions</li>
@@ -888,7 +1212,7 @@
 
         <h3>Documentation and Onboarding</h3>
 
-        <p>The project's current documentation serves its existing contributors well, but the barrier to entry for newcomers remains high. LLM inference routing sits at the intersection of distributed systems, GPU programming, Kubernetes, and machine learning&mdash;a combination that few engineers have deep expertise in all four areas. Making the project approachable means:</p>
+        <p>The project's current documentation serves its existing contributors well, but the barrier to entry for newcomers remains high. LLM inference routing sits at the intersection of distributed systems, GPU programming, Kubernetes, and machine learning, a combination that few engineers have deep expertise in all four areas. Making the project approachable means:</p>
 
         <ul>
             <li>Architecture guides that explain <em>why</em> decisions were made, not just <em>what</em> was decided</li>
@@ -899,11 +1223,11 @@
 
         <h3>Community Events and Relationship Building</h3>
 
-        <p>Open-source communities are built on trust, and trust is built through relationships that extend beyond code review threads. Community events&mdash;both in-person at conferences like KubeCon and virtual through regular community meetings, contributor summits, and working group sessions&mdash;build the cross-organizational relationships that sustain the community through inevitable disagreements and difficult decisions.</p>
+        <p>Open-source communities are built on trust, and trust is built through relationships that extend beyond code review threads. Community events (both in-person at conferences like KubeCon and virtual through regular community meetings, contributor summits, and working group sessions) build the cross-organizational relationships that sustain the community through inevitable disagreements and difficult decisions.</p>
 
         <h3>The Sandbox to Incubation Path</h3>
 
-        <p>The path from Sandbox to Incubation is the project's most visible near-term milestone. Achieving Incubation status requires demonstrating production adoption, healthy contributor metrics, and mature governance&mdash;the same criteria the TOC evaluates for all projects. For llm-d, this means:</p>
+        <p>The path from Sandbox to Incubation is the project's most visible near-term milestone. Achieving Incubation status requires demonstrating production adoption, healthy contributor metrics, and mature governance. For llm-d, this means:</p>
 
         <ul>
             <li>Documented production deployments from multiple organizations with public case studies</li>
@@ -914,28 +1238,28 @@
 
         <h3>The Broader Implication</h3>
 
-        <blockquote><p>If the multi-vendor, CNCF-governed community model works for LLM inference routing, it can work for other layers of the AI infrastructure stack that face the same tension between shared problems and competitive dynamics. Model registry standardization. Training orchestration. Data pipeline management. Evaluation and benchmarking infrastructure. Each of these areas has the same characteristics: every company needs them, no company gains competitive advantage from building them alone, and vendor lock-in risk motivates shared governance. llm-d is not just building routing infrastructure&mdash;it is testing a community model that, if successful, will be replicated across the AI stack.</p></blockquote>
+        <blockquote><p>If the multi-vendor, CNCF-governed community model works for LLM inference routing, it can work for other layers of the AI infrastructure stack that face the same tension between shared problems and competitive dynamics. Model registry standardization. Training orchestration. Data pipeline management. Evaluation and benchmarking infrastructure. Each of these areas has the same characteristics: every company needs them, no company gains competitive advantage from building them alone, and vendor lock-in risk motivates shared governance. llm-d is not just building routing infrastructure. It is testing a community model that, if successful, will be replicated across the AI stack.</p></blockquote>
 
         <p>The infrastructure decisions being made today will determine how LLM serving works for the next decade. llm-d is a bet that the best way to make those decisions is together, in the open, with governance structures that ensure no single company can capture the outcome. The founding coalition was assembled by game theory. The community is sustained by shared investment. And the trajectory suggests that bet is paying off.</p>
 
 
         <h2 id="why-join">Why You Should Join</h2>
 
-        <p>This is not a sales pitch. It is an honest accounting of what different types of contributors get out of participating in llm-d&mdash;because sustainable open-source communities are built on mutual benefit, not charity.</p>
+        <p>This is not a sales pitch. It is an honest accounting of what different types of contributors get out of participating in llm-d, because sustainable open-source communities are built on mutual benefit, not charity.</p>
 
         <div class="why-join-card">
             <h3>If You Run Inference at Scale</h3>
-            <p>You need this routing layer. Every organization running LLM inference at production scale hits the same set of problems&mdash;KV cache mismanagement, suboptimal GPU utilization, routing decisions that ignore inference state. You can build your own solution, or you can contribute to the one that already has five major companies and over a hundred engineers working on it. Contributing means your specific production edge cases get fixed upstream. It means the failure modes unique to your deployment get handled in the core codebase rather than in a fragile fork you maintain alone. And it means you have a seat at the table when architectural decisions are made that will affect your infrastructure for years.</p>
+            <p>You need this routing layer. Every organization running LLM inference at production scale hits the same set of problems: KV cache mismanagement, suboptimal GPU utilization, routing decisions that ignore inference state. You can build your own solution, or you can contribute to the one that already has five major companies and over a hundred engineers working on it. Contributing means your specific production edge cases get fixed upstream. It means the failure modes unique to your deployment get handled in the core codebase rather than in a fragile fork you maintain alone. And it means you have a seat at the table when architectural decisions are made that will affect your infrastructure for years.</p>
         </div>
 
         <div class="why-join-card">
             <h3>If You Do Research</h3>
-            <p>You get something that most research projects never achieve: a production codebase to validate your ideas against real workloads at real scale. Publishing a paper about a scheduling algorithm is one thing. Seeing that algorithm route actual inference traffic across thousands of GPUs and measuring whether the theoretical improvements hold up under production conditions&mdash;that is a different kind of validation entirely. The llm-d community actively welcomes research contributions, and the academic-industry bridge that vLLM and LMCache established is an open pattern for other researchers to follow.</p>
+            <p>You get something that most research projects never achieve: a production codebase to validate your ideas against real workloads at real scale. Publishing a paper about a scheduling algorithm is one thing. Seeing that algorithm route actual inference traffic across thousands of GPUs and measuring whether the theoretical improvements hold up under production conditions? That is a different kind of validation entirely. The llm-d community actively welcomes research contributions, and the academic-industry bridge that vLLM and LMCache established is an open pattern for other researchers to follow.</p>
         </div>
 
         <div class="why-join-card">
             <h3>If You Build Tools in the Kubernetes AI Ecosystem</h3>
-            <p>Integration with llm-d connects your project to every organization in the network. When your monitoring tool, autoscaler, policy engine, or serving framework works with llm-d, it works for every company that deploys llm-d&mdash;and that list is growing. The ecosystem effect is real: every integration makes both projects more valuable, and the cross-project contributor relationships that form during integration work often lead to deeper collaboration on adjacent problems.</p>
+            <p>Integration with llm-d connects your project to every organization in the network. When your monitoring tool, autoscaler, policy engine, or serving framework works with llm-d, it works for every company that deploys llm-d. And that list is growing. The ecosystem effect is real: every integration makes both projects more valuable, and the cross-project contributor relationships that form during integration work often lead to deeper collaboration on adjacent problems.</p>
         </div>
 
         <div class="why-join-card">
@@ -946,15 +1270,59 @@
 
         <!-- CTA -->
         <div class="cta-section" id="cta">
-            <h2>Your First Steps</h2>
-            <p>Every contribution matters, and the community reviews every PR within 48 hours. Here is how to start, in order of increasing commitment:</p>
+            <h2>The Code You Write This Month</h2>
+
+            <div class="impact-statement">
+                <p>The code you write this month will route billions of inference requests next year.</p>
+                <p class="impact-sub">This is not a metaphor. llm-d is becoming the routing layer for production LLM serving across the industry. The scheduling algorithms, failure handling, and integration code being written right now will process real traffic at real scale. Your contribution will be part of that.</p>
+            </div>
+
+            <p>Most calls to action in open-source blog posts say "come join us!" and leave it at that. This one is different, because the specifics matter. Here are concrete steps, with honest time estimates, ordered from ten minutes to ten weeks.</p>
+
+            <h3>The 10-Minute Contribution</h3>
+
+            <p>You do not need to understand the entire codebase to make a real contribution. These are things you can do in ten minutes that genuinely help the project:</p>
+
+            <ul class="ten-min-list">
+                <li><strong>Try the quickstart guide and report where you got stuck.</strong> If the instructions are unclear, file an issue describing what confused you. Documentation bugs are real bugs, and newcomer confusion reports are some of the most valuable feedback the project receives because maintainers have lost the ability to see the docs through fresh eyes.</li>
+                <li><strong>Read an open issue and add context.</strong> If you have encountered the same problem, comment with your environment details, your workaround, or your observations about when it occurs. This information helps maintainers prioritize and debug.</li>
+                <li><strong>Review a PR's documentation changes.</strong> You do not need deep codebase knowledge to evaluate whether a doc change is clear, accurate, and helpful. Fresh-eyes reviews of documentation are always welcome.</li>
+                <li><strong>Fix a typo, broken link, or formatting issue.</strong> These PRs are small, fast to review, and they signal to the community that you are paying attention. Many prolific contributors started with exactly this kind of micro-contribution.</li>
+            </ul>
+
+            <h3>The First Week</h3>
+
             <ol class="cta-steps">
                 <li><strong>Star the repo</strong> and read the architecture overview. Understanding the system takes an afternoon; deploying a local test instance takes an hour.</li>
-                <li><strong>Join the weekly community call</strong> (Thursdays). Show up, listen, ask questions. The meeting notes and recordings are public. No commitment required&mdash;just context.</li>
+                <li><strong>Join the weekly community call</strong> (Thursdays). Show up, listen, ask questions. The meeting notes and recordings are public. No commitment required, just context.</li>
                 <li><strong>Pick up a "good first issue"</strong> from the issue tracker. These are specifically tagged for newcomers, with enough context to be actionable without deep codebase knowledge.</li>
                 <li><strong>Deploy llm-d in a test environment</strong> and report what you find. Bug reports from real deployments are some of the most valuable contributions the project receives.</li>
-                <li><strong>Propose an idea</strong>. If you see a gap&mdash;a use case the routing layer does not handle, a metric that should be exposed, a failure mode that is not covered&mdash;open a discussion or draft an RFC.</li>
+                <li><strong>Propose an idea</strong>. If you see a gap (a use case the routing layer does not handle, a metric that should be exposed, a failure mode that is not covered) open a discussion or draft an RFC.</li>
             </ol>
+
+            <h3>Addressing Your Hesitations</h3>
+
+            <p>Before you close this tab and move on, let us address the three most common reasons people decide not to contribute, and why each one is less of a barrier than it appears.</p>
+
+            <div class="hesitation-card">
+                <h3>"I'm not an expert in LLM inference."</h3>
+                <p>Neither were most of the current contributors when they started. The project spans distributed systems, Kubernetes, GPU programming, and machine learning. Almost nobody is an expert in all four. The community has contributors who came from pure Kubernetes backgrounds, from pure ML research backgrounds, from pure DevOps backgrounds, and from pure systems programming backgrounds. Each brought the expertise they had and learned the rest by contributing. The codebase is approachable if you are comfortable with Go or Python, familiar with Kubernetes concepts, and willing to ask questions. The community actively answers questions from newcomers, because everyone remembers what it felt like to be new.</p>
+            </div>
+
+            <div class="hesitation-card">
+                <h3>"I've never contributed to a CNCF project."</h3>
+                <p>Neither had Marcus (above) before he opened an issue describing his healthcare NLP pipeline. CNCF projects can look intimidating from the outside because of their governance structures, RFC processes, and multi-company contributor lists. But those structures exist to make contribution <em>more</em> predictable, not less accessible. Unlike a single-company project where the rules are unwritten and the power dynamics are invisible, CNCF governance makes everything explicit. The contribution guidelines tell you exactly how to format your PR. The review process tells you exactly what to expect. The maintainer group is listed publicly. There is no hidden knowledge required. If you have contributed to any open-source project, you have the skills. If you have not contributed to any open-source project, llm-d is a good place to start because the community is actively welcoming newcomers.</p>
+            </div>
+
+            <div class="hesitation-card">
+                <h3>"My company won't give me time."</h3>
+                <p>This is the hardest barrier, and the most common. Here is how other contributors have addressed it. First, the 10-minute contributions listed above do not require company time. You can file a documentation bug during a coffee break. Second, if your company uses llm-d (or is evaluating it), contributing upstream is directly aligned with your job. Fixing a bug upstream is faster than maintaining a workaround internally, and it demonstrates technical leadership to your management. Third, many companies have formal or informal open-source contribution policies; check with your manager or your open-source program office. Fourth, some contributors have successfully framed their initial contributions as professional development that makes them more effective at their day job, because learning the internals of the routing layer you depend on in production is legitimate professional development. The economics section of this article provides the framework for making the business case internally.</p>
+            </div>
+
+            <h3>Every Contribution Matters</h3>
+
+            <p>The community reviews every PR within 48 hours. Your first PR will receive thoughtful, constructive feedback from engineers who take newcomer contributions seriously. This is not a project where first-time contributors get ignored or dismissed. The community's growth depends on converting users into contributors, and the maintainers know it.</p>
+
             <div class="cta-links">
                 <a href="https://github.com/llm-d" target="_blank" rel="noopener" class="cta-link">
                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
