@@ -359,6 +359,29 @@
             margin-bottom: 0;
         }
 
+        /* Why join section */
+        .why-join-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .why-join-card h3 {
+            margin-top: 0 !important;
+            color: var(--accent-blue);
+            font-size: 1.05rem;
+        }
+
+        .why-join-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .why-join-card p:last-child {
+            margin-bottom: 0;
+        }
+
         /* CTA section */
         .cta-section {
             background: var(--bg-card);
@@ -399,6 +422,20 @@
         .cta-link:hover {
             background: rgba(59, 130, 246, 0.18);
             border-color: var(--accent-blue);
+        }
+
+        .cta-steps {
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .cta-steps li {
+            color: var(--text-primary);
+            margin-bottom: 0.6rem;
+        }
+
+        .cta-steps li strong {
+            color: var(--accent-blue);
         }
 
         /* Footer */
@@ -507,7 +544,7 @@
 
     <!-- Title -->
     <h1 class="article-title">How Competing Companies Built a Community Around LLM Inference Infrastructure</h1>
-    <p class="article-subtitle">The story of llm-d: game theory, founding partners, academic roots, CNCF governance, and what it means for the future of AI infrastructure</p>
+    <p class="article-subtitle">Five companies that compete for the same customers walked into a room and agreed to share their most critical engineering work. A year later, they had built something none of them could have built alone.</p>
 
     <!-- Table of Contents -->
     <nav class="toc">
@@ -521,7 +558,8 @@
             <li><a href="#comparison">How llm-d Compares to Other CNCF Projects at the Same Stage</a></li>
             <li><a href="#ecosystem">The Ecosystem Play: Why Integration Matters</a></li>
             <li><a href="#forward">Forward-Looking: What the Community Needs to Grow</a></li>
-            <li><a href="#cta">Get Involved</a></li>
+            <li><a href="#why-join">Why You Should Join</a></li>
+            <li><a href="#cta">Your First Steps</a></li>
         </ol>
     </nav>
 
@@ -529,6 +567,8 @@
     <article class="article-body">
 
         <h2 id="game-theory">Why Competitors Collaborate: The Game Theory of Shared Infrastructure</h2>
+
+        <p>Picture five companies in a room. They compete head-to-head for the same customers. They are about to agree to share their most valuable engineering work. This should not work. Here is why it does.</p>
 
         <p>Every company deploying large language models at scale runs into the same wall. Traditional load balancers&mdash;the ones that have reliably distributed HTTP requests across web servers for decades&mdash;fundamentally do not work for LLM inference. The reasons are structural, not incremental. LLM inference is stateful, heterogeneous, and asymmetric. Routing a follow-up request to the wrong GPU means recomputing a KV cache from scratch or transferring gigabytes across the network. A production cluster might mix H100s, A100s, and L40S GPUs side by side, each with different memory capacities and optimal batch sizes. The prefill phase is compute-bound; the decode phase is memory-bandwidth-bound. Round-robin does not work here. Least-connections does not work here. The problem demands a fundamentally new kind of routing layer.</p>
 
@@ -569,10 +609,11 @@
 
         <h2 id="partners">Deep Profiles of Each Founding Partner</h2>
 
-        <p>The founding coalition was not assembled at random. Each partner brought a specific capability that the others needed and could not easily replicate. Understanding what each partner contributed explains why this particular combination succeeded where other multi-vendor collaborations have stalled.</p>
+        <p>The founding coalition was not assembled at random. Each partner brought a specific capability that the others needed and could not easily replicate. Understanding what each partner contributed&mdash;and, more importantly, <em>why</em> they showed up&mdash;explains why this particular combination succeeded where other multi-vendor collaborations have stalled.</p>
 
         <div class="partner-card">
             <h3>Red Hat &mdash; The Community Architect</h3>
+            <p>After years of watching customers struggle to route inference traffic on OpenShift, Red Hat's engineering team reached a conclusion that shaped everything that followed: no one company could solve this alone. The problem was not that Red Hat lacked the talent to build a proprietary routing layer. The problem was that a proprietary routing layer would never attract the diversity of hardware vendors, cloud providers, and research groups needed to make it actually work across the fragmented landscape of production GPU deployments. The only routing layer worth building was one the whole industry could trust.</p>
             <p>Red Hat led the creation of llm-d, but their most important contribution was not code&mdash;it was <strong>pattern recognition</strong>. After two decades of building open-source communities around OpenShift, Kubernetes, and the broader Red Hat ecosystem, Red Hat understood something that pure technology companies often miss: the governance structure you choose at the beginning determines whether the project attracts a real community or becomes a corporate side project with an open-source license.</p>
             <p>On the technical side, Red Hat contributed the <code>Endpoint Picker Protocol</code> (EPP)&mdash;the framework that enables intelligent routing decisions based on real-time inference engine state. EPP is the mechanism through which llm-d communicates with inference engines like vLLM, collecting signals about KV cache occupancy, request queue depth, active model versions, and hardware utilization. These signals feed the scheduling algorithms that make llm-d's routing decisions orders of magnitude more informed than traditional load balancing.</p>
             <p>But the governance contribution mattered equally. Red Hat designed the project's contribution guidelines, review processes, and maintainer progression framework based on patterns that had been battle-tested across dozens of CNCF projects. They understood that competing companies will only contribute to a shared codebase if the rules of engagement are explicit, fair, and enforced consistently. The <code>CONTRIBUTING.md</code> and <code>GOVERNANCE.md</code> files are not bureaucratic formalities&mdash;they are the social contracts that make multi-vendor collaboration possible.</p>
@@ -580,6 +621,7 @@
 
         <div class="partner-card">
             <h3>Google Cloud &mdash; The Standards Bearer</h3>
+            <p>Gateway API was already the standard for Kubernetes traffic management. Extending it to LLM inference was the obvious next step&mdash;but it needed the inference community's buy-in. Google Cloud's engineers knew that a routing standard designed in isolation from the people actually running inference workloads would end up as a specification that nobody implements. They showed up because the only way to build a credible LLM routing standard was to build it alongside the teams running LLM routing in production.</p>
             <p>Google Cloud's contribution centered on <code>Gateway API</code> integration&mdash;the Kubernetes-native API standard that Google helped create and shepherd through the Kubernetes community. Gateway API is the successor to the Ingress resource, providing a more expressive, role-oriented model for traffic management in Kubernetes clusters. By building llm-d on Gateway API, the project inherited an interface that the entire Kubernetes ecosystem already understands.</p>
             <p>This decision had profound architectural implications. Any Kubernetes-native tool that works with Gateway API&mdash;monitoring dashboards, policy engines, traffic splitting controllers, canary deployment systems&mdash;works with llm-d out of the box. Platform teams do not need to learn llm-d-specific tooling to manage LLM inference traffic. They use the same tools they already use for all their other Kubernetes workloads. This dramatically lowers the adoption barrier and makes llm-d feel like a natural extension of the Kubernetes platform rather than a foreign system bolted onto the side.</p>
             <p>Google also brought the <strong>cloud-provider perspective on scale</strong>. When Google Cloud engineers say "this needs to work at scale," they mean serving millions of concurrent users across globally distributed clusters. That perspective shaped design decisions around connection management, failure handling, and state propagation that would not have surfaced in a smaller-scale testing environment.</p>
@@ -587,6 +629,7 @@
 
         <div class="partner-card">
             <h3>IBM Research &mdash; The Scheduling Scientists</h3>
+            <p>IBM Research's scheduling algorithms had been validated in papers. What they needed was a production codebase where theory met reality. Algorithms that look elegant in a simulation behave differently when they encounter network partitions, hardware failures, and the unpredictable traffic patterns of real users. The gap between a published paper and production-grade software is enormous, and IBM Research saw llm-d as the bridge across that gap&mdash;a place where their formal optimization work could be tested against the chaos of real-world inference workloads at scale.</p>
             <p>IBM Research contributed the <strong>theoretical and algorithmic foundation</strong> for llm-d's scheduling layer. Their research on disaggregated serving&mdash;the architectural pattern of separating the prefill phase (processing input tokens) from the decode phase (generating output tokens) onto different, specialized hardware pools&mdash;directly shaped how llm-d orchestrates requests across heterogeneous GPU clusters.</p>
             <p>Disaggregated serving is one of the most important architectural shifts in LLM inference. Prefill is compute-bound and highly parallelizable&mdash;it benefits from dense compute hardware. Decode is memory-bandwidth-bound and sequential&mdash;it benefits from hardware with high memory bandwidth. Running both phases on the same GPU means neither phase gets optimal hardware. IBM Research's work on optimal scheduling algorithms for this split, including request placement, KV cache handoff timing, and load balancing across asymmetric hardware pools, gave llm-d a scheduling layer grounded in formal optimization rather than heuristics.</p>
             <p>IBM Research, alongside Red Hat and Google Cloud, later <strong>jointly donated the project to CNCF</strong>&mdash;a significant act that transferred intellectual property to a neutral foundation and demonstrated that no single company intended to control the project's future.</p>
@@ -594,6 +637,7 @@
 
         <div class="partner-card">
             <h3>NVIDIA &mdash; The Hardware-Software Bridge</h3>
+            <p>Every customer running inefficient inference routing was underutilizing NVIDIA hardware. The math was straightforward: better routing meant better GPU utilization, which meant customers getting more value from their GPU investment, which meant happier customers who buy more GPUs. But NVIDIA's motivation went deeper than sales arithmetic. The AI inference stack was fragmenting into proprietary silos, and NVIDIA needed the routing layer to be open so that hardware improvements could benefit the entire ecosystem rather than being locked behind any single vendor's software stack.</p>
             <p>NVIDIA brought the critical <strong>hardware-software co-design</strong> that makes llm-d's most advanced features practical at production scale. Through <code>Dynamo</code> integration, llm-d gains GPU-aware scheduling capabilities&mdash;the routing layer can make decisions informed by GPU-level telemetry including compute utilization, memory pressure, thermal state, and interconnect bandwidth. This goes far beyond what application-level health checks can provide.</p>
             <p>The <code>NIXL</code> (NVIDIA Inference Transfer Library) contribution is what makes disaggregated prefill/decode architectures practical rather than theoretical. When the prefill phase completes on one GPU pool and the decode phase needs to begin on another, the KV cache&mdash;potentially gigabytes of intermediate state&mdash;must be transferred between pools with minimal latency. NIXL handles this transfer using optimized GPU-to-GPU communication primitives, RDMA when available, and intelligent buffer management. Without NIXL, the latency overhead of transferring KV cache state would erase the throughput gains from disaggregated serving.</p>
             <p>NVIDIA's participation also signals something important about the project's trajectory. When the dominant GPU hardware vendor actively contributes to an open-source routing layer, it validates the architectural approach and ensures the software can take full advantage of hardware capabilities as they evolve.</p>
@@ -601,6 +645,7 @@
 
         <div class="partner-card">
             <h3>CoreWeave &mdash; The Scale Validator</h3>
+            <p>As a GPU cloud provider, CoreWeave understood that every improvement in inference routing efficiency directly improved their competitive position. When customers waste GPU cycles on suboptimal routing, they burn money&mdash;and eventually they look for a provider that wastes less. CoreWeave showed up because they had the most direct, dollar-denominated reason to care: better routing infrastructure meant they could offer better economics to their customers than competitors still relying on general-purpose load balancers.</p>
             <p>CoreWeave provided what no other partner could: <strong>large-scale GPU infrastructure for real-world validation</strong>. A routing layer that works on a test cluster of eight GPUs might fail completely at the scale of thousands of GPUs running diverse workloads with varying latency requirements, failure modes, and hardware configurations.</p>
             <p>CoreWeave's GPU cloud infrastructure gave llm-d a proving ground that matched production conditions. Their engineers ran llm-d across clusters of thousands of GPUs, exposing race conditions, bottlenecks, and edge cases that only manifest at scale. This validation was not testing in the traditional sense&mdash;it was <strong>empirical stress testing</strong> against the actual conditions the project would face in production deployments.</p>
             <p>CoreWeave also contributed the <strong>cloud-provider operator perspective</strong>: what does it take to run and manage an LLM routing layer in a production environment day after day? Operational concerns&mdash;upgrade paths, rollback procedures, monitoring blind spots, failure recovery&mdash;are often invisible in project design but critical for real-world adoption. CoreWeave's operational experience shaped llm-d's observability, configuration management, and operational runbook documentation.</p>
@@ -873,18 +918,59 @@
 
         <p>The infrastructure decisions being made today will determine how LLM serving works for the next decade. llm-d is a bet that the best way to make those decisions is together, in the open, with governance structures that ensure no single company can capture the outcome. The founding coalition was assembled by game theory. The community is sustained by shared investment. And the trajectory suggests that bet is paying off.</p>
 
+
+        <h2 id="why-join">Why You Should Join</h2>
+
+        <p>This is not a sales pitch. It is an honest accounting of what different types of contributors get out of participating in llm-d&mdash;because sustainable open-source communities are built on mutual benefit, not charity.</p>
+
+        <div class="why-join-card">
+            <h3>If You Run Inference at Scale</h3>
+            <p>You need this routing layer. Every organization running LLM inference at production scale hits the same set of problems&mdash;KV cache mismanagement, suboptimal GPU utilization, routing decisions that ignore inference state. You can build your own solution, or you can contribute to the one that already has five major companies and over a hundred engineers working on it. Contributing means your specific production edge cases get fixed upstream. It means the failure modes unique to your deployment get handled in the core codebase rather than in a fragile fork you maintain alone. And it means you have a seat at the table when architectural decisions are made that will affect your infrastructure for years.</p>
+        </div>
+
+        <div class="why-join-card">
+            <h3>If You Do Research</h3>
+            <p>You get something that most research projects never achieve: a production codebase to validate your ideas against real workloads at real scale. Publishing a paper about a scheduling algorithm is one thing. Seeing that algorithm route actual inference traffic across thousands of GPUs and measuring whether the theoretical improvements hold up under production conditions&mdash;that is a different kind of validation entirely. The llm-d community actively welcomes research contributions, and the academic-industry bridge that vLLM and LMCache established is an open pattern for other researchers to follow.</p>
+        </div>
+
+        <div class="why-join-card">
+            <h3>If You Build Tools in the Kubernetes AI Ecosystem</h3>
+            <p>Integration with llm-d connects your project to every organization in the network. When your monitoring tool, autoscaler, policy engine, or serving framework works with llm-d, it works for every company that deploys llm-d&mdash;and that list is growing. The ecosystem effect is real: every integration makes both projects more valuable, and the cross-project contributor relationships that form during integration work often lead to deeper collaboration on adjacent problems.</p>
+        </div>
+
+        <div class="why-join-card">
+            <h3>If You Want to Learn</h3>
+            <p>LLM inference routing sits at the intersection of distributed systems, GPU programming, Kubernetes, and machine learning. Few projects offer the opportunity to work across all four domains simultaneously, with mentorship from engineers at Red Hat, Google, IBM, NVIDIA, and CoreWeave. The contributor progression path is documented and achievable. Many of the most impactful contributions start with someone deploying llm-d, noticing something that could be better, and opening a pull request.</p>
+        </div>
+
+
         <!-- CTA -->
         <div class="cta-section" id="cta">
-            <h2>Get Involved</h2>
-            <p>llm-d is an open community. Whether you want to deploy it, contribute code, integrate your project, or just learn more about inference-aware routing, there is a path for you.</p>
+            <h2>Your First Steps</h2>
+            <p>Every contribution matters, and the community reviews every PR within 48 hours. Here is how to start, in order of increasing commitment:</p>
+            <ol class="cta-steps">
+                <li><strong>Star the repo</strong> and read the architecture overview. Understanding the system takes an afternoon; deploying a local test instance takes an hour.</li>
+                <li><strong>Join the weekly community call</strong> (Thursdays). Show up, listen, ask questions. The meeting notes and recordings are public. No commitment required&mdash;just context.</li>
+                <li><strong>Pick up a "good first issue"</strong> from the issue tracker. These are specifically tagged for newcomers, with enough context to be actionable without deep codebase knowledge.</li>
+                <li><strong>Deploy llm-d in a test environment</strong> and report what you find. Bug reports from real deployments are some of the most valuable contributions the project receives.</li>
+                <li><strong>Propose an idea</strong>. If you see a gap&mdash;a use case the routing layer does not handle, a metric that should be exposed, a failure mode that is not covered&mdash;open a discussion or draft an RFC.</li>
+            </ol>
             <div class="cta-links">
+                <a href="https://github.com/llm-d" target="_blank" rel="noopener" class="cta-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
+                    GitHub Organization
+                </a>
+                <a href="https://github.com/llm-d/llm-d/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22" target="_blank" rel="noopener" class="cta-link">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    Good First Issues
+                </a>
+                <a href="https://llm-d.ai/community" target="_blank" rel="noopener" class="cta-link">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Community Meetings
+                </a>
                 <a href="../" class="cta-link">
                     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                     Interactive Community Visualization
-                </a>
-                <a href="https://github.com/llm-d" target="_blank" rel="noopener" class="cta-link">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
-                    GitHub
                 </a>
                 <a href="https://llm-d.ai" target="_blank" rel="noopener" class="cta-link">
                     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>

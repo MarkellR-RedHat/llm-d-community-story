@@ -59,7 +59,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height
 .hero{text-align:center;padding:48px 24px 40px;position:relative}
 .hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(59,130,246,.1) 0%,transparent 70%);pointer-events:none}
 .hero h1{font-family:var(--font-h);font-weight:900;font-size:clamp(1.8rem,4.5vw,3rem);letter-spacing:-.02em;background:linear-gradient(135deg,#e2e8f4 10%,#3b82f6 55%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px;line-height:1.15}
-.hero p{font-size:1.02rem;color:var(--text2);max-width:580px;margin:0 auto;line-height:1.65}
+.hero p{font-size:1.02rem;color:var(--text2);max-width:620px;margin:0 auto;line-height:1.65}
 
 /* Card */
 .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:border-color var(--t);position:relative;overflow:hidden}
@@ -106,6 +106,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height
 .ep-sec li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0}
 .ep-tags{display:flex;flex-wrap:wrap;gap:6px}
 .ep-tag{font-size:.76rem;padding:4px 12px;border-radius:6px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.12);color:var(--text2)}
+.ep-why{font-size:.88rem;color:var(--text2);line-height:1.65;font-style:italic;padding:2px 0 0 2px;border-left:3px solid var(--blue);padding-left:14px}
 
 /* Timeline */
 .tl-s{overflow-x:auto;padding:20px 0;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
@@ -126,6 +127,14 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height
 .tl-i.active .tl-det{max-height:220px;opacity:1;margin-top:10px}
 .tl-det-in{background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.12);border-radius:10px;padding:14px;font-size:.78rem;color:var(--text2);line-height:1.55;text-align:center}
 
+/* Timeline "NOW" indicator */
+.tl-now{position:relative}
+.tl-now .tl-d{background:var(--green);box-shadow:0 0 18px rgba(16,185,129,.6)}
+.tl-now .tl-d::after{border-color:rgba(16,185,129,.3);animation:tlNowPulse 2.4s ease-in-out infinite}
+.tl-now .tl-date{color:var(--green)}
+.tl-now-label{font-size:.62rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.12em;margin-top:4px;padding:2px 8px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:4px}
+@keyframes tlNowPulse{0%,100%{inset:-4px;border-color:rgba(16,185,129,.3)}50%{inset:-10px;border-color:rgba(16,185,129,.12)}}
+
 /* Stats */
 .sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px}
 .sc{background:rgba(8,12,20,.5);border:1px solid var(--border);border-radius:var(--r);padding:22px 18px 14px;text-align:center;transition:all var(--t);position:relative;overflow:hidden}
@@ -144,6 +153,27 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height
 .sim-btn{font-family:var(--font-b);font-size:.85rem;font-weight:700;padding:9px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:all var(--t)}
 .sim-btn:hover{background:#2563eb;box-shadow:0 4px 16px rgba(59,130,246,.3)}
 
+/* Join CTA */
+.cta-section{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:48px 36px;text-align:center;overflow:hidden}
+.cta-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(59,130,246,.3),rgba(139,92,246,.3),transparent)}
+.cta-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:500px;height:200px;background:radial-gradient(ellipse,rgba(59,130,246,.06) 0%,transparent 70%);pointer-events:none}
+.cta-section h2{font-family:var(--font-h);font-weight:900;font-size:clamp(1.3rem,3vw,1.8rem);background:linear-gradient(135deg,#e2e8f4 20%,#3b82f6 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px;line-height:1.25}
+.cta-story{font-size:.95rem;color:var(--text2);max-width:640px;margin:0 auto 32px;line-height:1.7}
+.cta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:880px;margin:0 auto 32px}
+.cta-item{background:rgba(8,12,20,.5);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:left;transition:all var(--t)}
+.cta-item:hover{border-color:rgba(59,130,246,.2);transform:translateY(-2px)}
+.cta-item h3{font-family:var(--font-h);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:6px}
+.cta-item p{font-size:.82rem;color:var(--text3);line-height:1.55}
+.cta-item a{color:var(--blue);text-decoration:none;font-weight:600;font-size:.82rem;transition:color var(--t)}
+.cta-item a:hover{color:#60a5fa}
+.cta-links{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:8px}
+.cta-link{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-b);font-size:.88rem;font-weight:600;padding:11px 24px;border-radius:10px;text-decoration:none;transition:all var(--t)}
+.cta-link--primary{background:var(--blue);color:#fff;border:1px solid var(--blue)}
+.cta-link--primary:hover{background:#2563eb;box-shadow:0 4px 20px rgba(59,130,246,.3)}
+.cta-link--secondary{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.cta-link--secondary:hover{color:var(--blue);border-color:rgba(59,130,246,.3)}
+.cta-link svg{width:16px;height:16px}
+
 /* Footer */
 .ftr{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 32px;text-align:center;color:var(--text3);font-size:.82rem}
 .ftr a{color:var(--text2);text-decoration:none;transition:color var(--t)}
@@ -157,6 +187,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height
   .sg{grid-template-columns:repeat(2,1fr)} .hero{padding:28px 16px}
   .sim-ctrl{flex-direction:column} .sim-g select{min-width:100%}
   .ep{width:100%;max-width:100%}
+  .cta-section{padding:32px 20px} .cta-grid{grid-template-columns:1fr}
 }
 @media(max-width:480px){.sg{gap:8px} .sc{padding:14px 10px} .sc-num{font-size:1.8rem}}
 </style>
@@ -187,6 +218,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height
   <button data-target="s-governance">Governance</button>
   <button data-target="s-stats">Metrics</button>
   <button data-target="s-sim">Simulator</button>
+  <button data-target="s-join">Join Us</button>
 </nav>
 
 <!-- Explorer overlay + panel -->
@@ -203,8 +235,8 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height
   <!-- Hero -->
   <section class="hero">
     <div class="hero-glow"></div>
-    <h1>Building the Future of<br>LLM Inference, Together</h1>
-    <p>An interactive documentary of the open-source community powering Kubernetes-native LLM serving across 15+ organizations worldwide.</p>
+    <h1>15 Organizations. One Mission.<br>Open-Source LLM Inference for Everyone.</h1>
+    <p>From competitors to collaborators: the story of how cloud providers, hardware vendors, and researchers built a vendor-neutral platform for Kubernetes-native LLM serving -- together.</p>
   </section>
 
   <!-- 1. Partner Network -->
@@ -279,6 +311,40 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height
     <div class="cv" id="simC"><canvas id="simCv"></canvas></div>
   </section>
 
+  <!-- 7. Join Us CTA -->
+  <section class="cta-section" id="s-join">
+    <div class="cta-glow"></div>
+    <h2>Your GPU Clusters Need Better Routing.<br>We Need Your Expertise.</h2>
+    <p class="cta-story">We started with 5 organizations. We are now 15+. The next contributor could be you -- and we mean it. Every PR gets reviewed. Every voice gets heard. No single company controls the roadmap.</p>
+    <div class="cta-grid">
+      <div class="cta-item">
+        <h3>File Your First Issue</h3>
+        <p>Found a bug? Have a feature idea? Issues are where every contribution starts. No idea is too small.</p>
+        <a href="https://github.com/llm-d/llm-d/issues" target="_blank" rel="noopener">Open an issue on GitHub</a>
+      </div>
+      <div class="cta-item">
+        <h3>Join the Weekly Community Call</h3>
+        <p>Thursdays, 10am ET. Meet the maintainers, hear what is in progress, and shape the roadmap in real time.</p>
+        <a href="https://zoom-lfx.platform.linuxfoundation.org/meetings/llm-d" target="_blank" rel="noopener">Add to your calendar</a>
+      </div>
+      <div class="cta-item">
+        <h3>Pick Up a Good First Issue</h3>
+        <p>We label beginner-friendly tasks specifically for new contributors. Real work, not busywork.</p>
+        <a href="https://github.com/llm-d/llm-d/labels/good%20first%20issue" target="_blank" rel="noopener">Browse good-first-issue tasks</a>
+      </div>
+      <div class="cta-item">
+        <h3>Share Your Production War Stories</h3>
+        <p>Running LLM inference at scale? Your hard-won lessons help shape what we build next. Join the discussion.</p>
+        <a href="https://github.com/llm-d/llm-d/discussions" target="_blank" rel="noopener">Start a discussion</a>
+      </div>
+    </div>
+    <div class="cta-links">
+      <a class="cta-link cta-link--primary" href="https://github.com/llm-d" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+      <a class="cta-link cta-link--secondary" href="https://zoom-lfx.platform.linuxfoundation.org/meetings/llm-d" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zM0 8a8 8 0 1116 0A8 8 0 010 8zm9-3a1 1 0 00-2 0v3a1 1 0 00.293.707l2 2a1 1 0 001.414-1.414L9 7.586V5z"/></svg>Community Call</a>
+      <a class="cta-link cta-link--secondary" href="https://www.cncf.io/projects/llm-d/" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1.75V13.5h13V2.5H2v-.75h13.25a.75.75 0 01.75.75v11.5a.75.75 0 01-.75.75H1.25a.75.75 0 01-.75-.75V1.75a.75.75 0 01.75-.75h.75v.75zM4 5h8v1.5H4V5zm0 3h8v1.5H4V8zm0 3h5v1.5H4V11z"/></svg>CNCF Listing</a>
+    </div>
+  </section>
+
 </main>
 
 <footer class="ftr">
@@ -299,72 +365,86 @@ var ORGS = {
     contribs:['Routing / EPP framework','Gateway API integration','Scheduling algorithms','Project governance leadership'],
     components:['llm-d-core','llm-d-epp','Gateway API adapter'],
     focus:['Routing','EPP','Gateway API','Scheduling','Governance'],
-    related:['KServe','Gateway API','Kubernetes']},
+    related:['KServe','Gateway API','Kubernetes'],
+    why:'Needed a vendor-neutral inference routing layer to complement OpenShift AI -- no single company should own the routing plane for LLM serving.'},
   google:    {id:'google',   label:'Google Cloud',  letter:'G',  color:'#4285f4', role:'Founding partner',
     contribs:['Gateway API specification & implementation','Cloud-scale testing','Governance framework'],
     components:['Gateway API conformance tests','GKE integration'],
     focus:['Gateway API','Governance'],
-    related:['Gateway API','Kubernetes','KServe']},
+    related:['Gateway API','Kubernetes','KServe'],
+    why:'Wanted Gateway API adoption for AI workloads on GKE. A shared inference routing standard benefits the entire Kubernetes ecosystem, not just one cloud.'},
   ibm:       {id:'ibm',      label:'IBM Research',  letter:'I',  color:'#0f62fe', role:'Founding partner',
     contribs:['Advanced scheduling algorithms','Disaggregated serving research','CNCF donation co-sponsor'],
     components:['Scheduler module','Research benchmarks'],
     focus:['Scheduling','Governance','Research'],
-    related:['vLLM','KServe']},
+    related:['vLLM','KServe'],
+    why:'Required a production-grade platform to validate disaggregated serving research. Academic papers need real-world deployment, not just benchmarks.'},
   nvidia:    {id:'nvidia',   label:'NVIDIA',        letter:'N',  color:'#76b900', role:'Core partner',
     contribs:['Dynamo integration','NIXL transfer library','GPU-aware scheduling & inference acceleration'],
     components:['NIXL bridge','Hardware acceleration layer'],
     focus:['Hardware Optimization','Inference Engine','NIXL'],
-    related:['vLLM','NIXL','CUDA']},
+    related:['vLLM','NIXL','CUDA'],
+    why:'Needed an open routing layer to maximize GPU utilization across customer deployments. Better routing means customers get more out of every GPU.'},
   coreweave: {id:'coreweave',label:'CoreWeave',     letter:'C',  color:'#00d4aa', role:'Core partner',
     contribs:['Large-scale GPU cluster testing','Production validation','Performance benchmarks'],
     components:['Scale test harness','Benchmarking suite'],
     focus:['Scale Testing','Hardware'],
-    related:['Kubernetes','vLLM']},
+    related:['Kubernetes','vLLM'],
+    why:'Required battle-tested inference routing to differentiate their GPU cloud offering. When you sell GPU time, routing efficiency is a competitive advantage.'},
   amd:       {id:'amd',      label:'AMD',           letter:'A',  color:'#ed1c24', role:'Ecosystem',
     contribs:['ROCm / AMD GPU optimization'],
     components:['ROCm backend support'],
     focus:['Hardware Optimization'],
-    related:['vLLM','ROCm']},
+    related:['vLLM','ROCm'],
+    why:'Needed parity with NVIDIA in the inference routing stack. Open-source routing means AMD GPUs compete on merit, not vendor lock-in.'},
   cisco:     {id:'cisco',    label:'Cisco',         letter:'Ci', color:'#049fd9', role:'Ecosystem',
     contribs:['Network-scale testing','Infrastructure validation'],
     components:['Scale testing infrastructure'],
     focus:['Scale Testing'],
-    related:['Kubernetes','Prometheus']},
+    related:['Kubernetes','Prometheus'],
+    why:'Enterprise customers need validated, network-scale inference infrastructure. Testing at Cisco scale surfaces bugs no one else would find.'},
   hf:        {id:'hf',       label:'Hugging Face',  letter:'HF', color:'#ffcd00', role:'Ecosystem',
     contribs:['Model format support','Model hub integration'],
     components:['Model loader integration'],
     focus:['Model Support'],
-    related:['vLLM','Transformers']},
+    related:['vLLM','Transformers'],
+    why:'The model hub serves millions of models. Open inference routing means those models deploy to production faster, wherever they run.'},
   intel:     {id:'intel',    label:'Intel',         letter:'In', color:'#0071c5', role:'Ecosystem',
     contribs:['Intel hardware optimization','Gaudi accelerator support'],
     components:['Intel accelerator backend'],
     focus:['Hardware Optimization'],
-    related:['vLLM','OpenVINO']},
+    related:['vLLM','OpenVINO'],
+    why:'Gaudi accelerators need first-class inference routing support. Open-source routing ensures Intel hardware is a deployment target, not an afterthought.'},
   lambda:    {id:'lambda',   label:'Lambda',        letter:'L',  color:'#8b5cf6', role:'Ecosystem',
     contribs:['GPU cloud testing','Scale benchmarking'],
     components:['Cloud testing environments'],
     focus:['Scale Testing'],
-    related:['NVIDIA','vLLM']},
+    related:['NVIDIA','vLLM'],
+    why:'GPU cloud customers need efficient inference routing out of the box. Contributing upstream means every Lambda deployment benefits.'},
   mistral:   {id:'mistral',  label:'Mistral AI',    letter:'M',  color:'#f97316', role:'Ecosystem',
     contribs:['Model architecture support','Inference pattern optimization'],
     components:['Mistral model configurations'],
     focus:['Model Support'],
-    related:['vLLM','Hugging Face']},
+    related:['vLLM','Hugging Face'],
+    why:'Open models deserve open inference infrastructure. Contributing model-specific optimizations ensures Mistral models run at peak performance everywhere.'},
   berkeley:  {id:'berkeley', label:'UC Berkeley',   letter:'B',  color:'#003262', role:'Academic',
     contribs:['vLLM inference engine','PagedAttention research'],
     components:['vLLM core engine','PagedAttention'],
     focus:['Inference Engine','Research'],
-    related:['vLLM','PagedAttention']},
+    related:['vLLM','PagedAttention'],
+    why:'Needed a production deployment pathway for research innovations. PagedAttention matters most when it is running in real GPU clusters, not just in papers.'},
   uchicago:  {id:'uchicago', label:'UChicago',      letter:'U',  color:'#800000', role:'Academic',
     contribs:['LMCache caching research','KV-cache optimization'],
     components:['LMCache integration'],
     focus:['Caching','Research'],
-    related:['LMCache','vLLM']},
+    related:['LMCache','vLLM'],
+    why:'Needed a production deployment pathway for caching research. LMCache achieves its real impact when operators deploy it at scale, not in isolated benchmarks.'},
   cncf:      {id:'cncf',     label:'CNCF',          letter:'CN', color:'#426de1', role:'Governance',
     contribs:['Vendor-neutral governance framework','IP & trademark management','Build infrastructure'],
     components:['CNCF Sandbox oversight'],
     focus:['Governance'],
-    related:['Kubernetes','KServe','Prometheus']}
+    related:['Kubernetes','KServe','Prometheus'],
+    why:'The cloud-native ecosystem needs a vendor-neutral home for LLM inference. CNCF governance ensures no single company can capture the project.'}
 };
 var ORG_ARR = Object.keys(ORGS).map(function(k){ return ORGS[k]; });
 
@@ -383,13 +463,13 @@ var EDGES = [
 ];
 
 /* ================================================================
-   0. AMBIENT PARTICLES
+   0. AMBIENT PARTICLES (enhanced visibility/dynamics)
    ================================================================ */
 (function(){
-  var c=document.getElementById('ambientCanvas'),x=c.getContext('2d'),pts=[],N=55;
+  var c=document.getElementById('ambientCanvas'),x=c.getContext('2d'),pts=[],N=75;
   function resize(){var d=devicePixelRatio||1;c.width=innerWidth*d;c.height=innerHeight*d;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';x.setTransform(d,0,0,d,0,0)}
-  function init(){pts=[];for(var i=0;i<N;i++)pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:.4+Math.random()*1.4,vx:(Math.random()-.5)*.12,vy:-.02+(Math.random()-.5)*.1,a:.04+Math.random()*.25,ph:Math.random()*6.28,ps:.003+Math.random()*.005})}
-  function draw(){x.clearRect(0,0,innerWidth,innerHeight);for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;p.ph+=p.ps;if(p.x<-5)p.x=innerWidth+5;if(p.x>innerWidth+5)p.x=-5;if(p.y<-5)p.y=innerHeight+5;if(p.y>innerHeight+5)p.y=-5;var a=p.a*(.6+.4*Math.sin(p.ph));x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);x.fillStyle='rgba(59,130,246,'+a+')';x.fill()}requestAnimationFrame(draw)}
+  function init(){pts=[];for(var i=0;i<N;i++)pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:.5+Math.random()*1.8,vx:(Math.random()-.5)*.18,vy:-.03+(Math.random()-.5)*.14,a:.06+Math.random()*.32,ph:Math.random()*6.28,ps:.004+Math.random()*.007})}
+  function draw(){x.clearRect(0,0,innerWidth,innerHeight);for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;p.ph+=p.ps;if(p.x<-5)p.x=innerWidth+5;if(p.x>innerWidth+5)p.x=-5;if(p.y<-5)p.y=innerHeight+5;if(p.y>innerHeight+5)p.y=-5;var a=p.a*(.55+.45*Math.sin(p.ph));x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);x.fillStyle='rgba(59,130,246,'+a+')';x.fill()}requestAnimationFrame(draw)}
   resize();init();draw();window.addEventListener('resize',function(){resize();init()});
 })();
 
@@ -411,14 +491,16 @@ var EDGES = [
 })();
 
 /* ================================================================
-   EXPLORER PANEL
+   EXPLORER PANEL (with "Why They Joined" section)
    ================================================================ */
 var eoEl=document.getElementById('eo'),epEl=document.getElementById('ep');
 function openExplorer(id){
   var o=ORGS[id]; if(!o)return;
   var rc=o.role==='Founding partner'?'background:rgba(59,130,246,.12);color:#3b82f6;border:1px solid rgba(59,130,246,.2)':o.role==='Core partner'?'background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.2)':o.role==='Academic'?'background:rgba(139,92,246,.12);color:#8b5cf6;border:1px solid rgba(139,92,246,.2)':o.role==='Governance'?'background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.2)':'background:rgba(107,114,128,.12);color:#9ca3af;border:1px solid rgba(107,114,128,.2)';
   document.getElementById('epHead').innerHTML='<div class="ep-badge" style="background:'+o.color+'">'+o.letter+'</div><h3>'+o.label+'</h3><div class="ep-role" style="'+rc+'">'+o.role+'</div>';
-  var html='<div class="ep-sec"><h4>Contributions</h4><ul>'+o.contribs.map(function(c){return '<li>'+c+'</li>'}).join('')+'</ul></div>';
+  var html='';
+  if(o.why){html+='<div class="ep-sec"><h4>Why They Joined</h4><div class="ep-why">"'+o.why+'"</div></div>'}
+  html+='<div class="ep-sec"><h4>Contributions</h4><ul>'+o.contribs.map(function(c){return '<li>'+c+'</li>'}).join('')+'</ul></div>';
   html+='<div class="ep-sec"><h4>Components Maintained</h4><ul>'+o.components.map(function(c){return '<li>'+c+'</li>'}).join('')+'</ul></div>';
   html+='<div class="ep-sec"><h4>Focus Areas</h4><div class="ep-tags">'+o.focus.map(function(f){return '<span class="ep-tag">'+f+'</span>'}).join('')+'</div></div>';
   html+='<div class="ep-sec"><h4>Related Projects</h4><ul>'+o.related.map(function(r){return '<li>'+r+'</li>'}).join('')+'</ul></div>';
@@ -432,11 +514,14 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeExplore
 
 /* ================================================================
    1. PARTNER NETWORK — Force-directed + Particle Flow + Drag
+      + Breathing animation + Random connection flashes
    ================================================================ */
 (function(){
   var container=document.getElementById('graphC'),canvas=document.getElementById('netCv'),ctx=canvas.getContext('2d'),tooltip=document.getElementById('netTT');
   var nodes=[],W,H,dpr,hovered=null,drag=null,mx=-9e3,my=-9e3;
   var flowParts=[];
+  var breathTime=0;
+  var edgeFlashes=[];
 
   function resize(){var r=container.getBoundingClientRect();dpr=devicePixelRatio||1;W=r.width;H=Math.max(480,Math.min(W*.56,620));canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
 
@@ -445,10 +530,18 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeExplore
     var sz=o.role==='Founding partner'?26:o.role==='Core partner'?21:o.role==='Governance'?23:16;
     return{id:o.id,label:o.label,letter:o.letter,color:o.color,role:o.role,focus:o.focus,
       x:cx+Math.cos(a)*rad+(Math.random()-.5)*40,y:cy+Math.sin(a)*rad+(Math.random()-.5)*40,
-      vx:0,vy:0,r:sz,pinned:false}
+      vx:0,vy:0,r:sz,baseR:sz,pinned:false}
   });initFlowParts()}
 
   function initFlowParts(){flowParts=[];EDGES.forEach(function(e){for(var i=0;i<e.w+1;i++){flowParts.push({edge:e,t:Math.random(),sp:(.002+Math.random()*.003)*(.5+e.w*.3),sz:1+e.w*.4})}})}
+
+  /* Spawn a random edge flash every 2-5 seconds */
+  function maybeSpawnFlash(){
+    if(Math.random()<0.012){/* ~0.012 per frame at 60fps => roughly every 1.4s */
+      var e=EDGES[Math.floor(Math.random()*EDGES.length)];
+      edgeFlashes.push({edge:e,t:0,sp:.025+Math.random()*.02,life:1,sz:3+Math.random()*2})
+    }
+  }
 
   function gn(id){for(var i=0;i<nodes.length;i++)if(nodes[i].id===id)return nodes[i];return null}
 
@@ -460,6 +553,18 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeExplore
     for(var i=0;i<nodes.length;i++){var n=nodes[i];if(n.pinned)continue;n.vx+=(cx-n.x)*.0004;n.vy+=(cy-n.y)*.0004;n.vx*=.88;n.vy*=.88;n.x+=n.vx;n.y+=n.vy;var p=n.r+10;n.x=Math.max(p,Math.min(W-p,n.x));n.y=Math.max(p,Math.min(H-p,n.y))}}
 
   function draw(){ctx.clearRect(0,0,W,H);
+    /* Breathing: slow sine wave modifying node radii */
+    breathTime+=0.015;
+    var breathOffset=Math.sin(breathTime)*2;
+    for(var i=0;i<nodes.length;i++){
+      /* Each node has a slight phase offset so they don't all pulse in unison */
+      var phase=breathTime+i*0.4;
+      nodes[i].r=nodes[i].baseR+Math.sin(phase)*2;
+    }
+
+    /* Maybe spawn a new edge flash */
+    maybeSpawnFlash();
+
     /* Edges */
     EDGES.forEach(function(e){var a=gn(e.s),b=gn(e.t);if(!a||!b)return;
       var hl=hovered&&(hovered.id===e.s||hovered.id===e.t);
@@ -470,6 +575,23 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeExplore
       var hl=hovered&&(hovered.id===p.edge.s||hovered.id===p.edge.t),dim=hovered&&!hl;
       var x=a.x+(b.x-a.x)*p.t,y=a.y+(b.y-a.y)*p.t;
       ctx.beginPath();ctx.arc(x,y,p.sz,0,6.28);ctx.fillStyle=p.edge.c;ctx.globalAlpha=dim?.02:(hl?.85:.35);ctx.fill();ctx.globalAlpha=1});
+
+    /* Edge flashes — bright burst traveling along a random edge */
+    for(var fi=edgeFlashes.length-1;fi>=0;fi--){
+      var fl=edgeFlashes[fi];fl.t+=fl.sp;fl.life-=.018;
+      if(fl.life<=0||fl.t>1){edgeFlashes.splice(fi,1);continue}
+      var fa=gn(fl.edge.s),fb=gn(fl.edge.t);if(!fa||!fb){edgeFlashes.splice(fi,1);continue}
+      var fx=fa.x+(fb.x-fa.x)*fl.t,fy=fa.y+(fb.y-fa.y)*fl.t;
+      var flashAlpha=fl.life*0.9;
+      /* Outer glow */
+      ctx.beginPath();ctx.arc(fx,fy,fl.sz+4,0,6.28);
+      ctx.fillStyle=fl.edge.c;ctx.globalAlpha=flashAlpha*0.25;ctx.fill();
+      /* Core */
+      ctx.beginPath();ctx.arc(fx,fy,fl.sz,0,6.28);
+      ctx.fillStyle='#ffffff';ctx.globalAlpha=flashAlpha*0.7;ctx.fill();
+      ctx.globalAlpha=1;
+    }
+
     /* Nodes */
     nodes.forEach(function(n){
       var isH=hovered&&hovered.id===n.id,isC=hovered&&EDGES.some(function(e){return(e.s===hovered.id&&e.t===n.id)||(e.t===hovered.id&&e.s===n.id)}),dim=hovered&&!isH&&!isC;
@@ -500,7 +622,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeExplore
 })();
 
 /* ================================================================
-   2. TIMELINE
+   2. TIMELINE (with NOW indicator on latest milestone)
    ================================================================ */
 (function(){
   var ms=[
@@ -510,11 +632,12 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeExplore
     {d:'Nov 2025',t:'v0.2 Release',desc:'Major release: EPP v2, improved scheduling, NVIDIA Dynamo integration, enhanced prefix-aware routing, production hardening.'},
     {d:'Jan 2026',t:'CNCF Submission',desc:'IBM Research, Red Hat, and Google Cloud jointly submit llm-d to CNCF Sandbox. Multi-vendor sponsorship underscores neutrality.'},
     {d:'Mar 2026',t:'CNCF Sandbox Accepted',desc:'Accepted into CNCF Sandbox. IP transferred to foundation. Vendor-neutral governance formally established.'},
-    {d:'Jun 2026',t:'Growing Ecosystem',desc:'15+ partner organizations, 100+ contributors, multiple production deployments. Expanding hardware and cloud provider support.'}
+    {d:'Jun 2026',t:'Growing Ecosystem',desc:'15+ partner organizations, 100+ contributors, multiple production deployments. Expanding hardware and cloud provider support.',now:true}
   ];
   var track=document.getElementById('tlTrack');
-  ms.forEach(function(m){var item=document.createElement('div');item.className='tl-i';
-    item.innerHTML='<div class="tl-dw"><div class="tl-d"></div></div><div class="tl-date">'+m.d+'</div><div class="tl-lbl">'+m.t+'</div><div class="tl-det"><div class="tl-det-in">'+m.desc+'</div></div>';
+  ms.forEach(function(m){var item=document.createElement('div');item.className='tl-i'+(m.now?' tl-now':'');
+    var extra=m.now?'<div class="tl-now-label">NOW</div>':'';
+    item.innerHTML='<div class="tl-dw"><div class="tl-d"></div></div><div class="tl-date">'+m.d+'</div><div class="tl-lbl">'+m.t+'</div>'+extra+'<div class="tl-det"><div class="tl-det-in">'+m.desc+'</div></div>';
     item.addEventListener('click',function(){var was=item.classList.contains('active');track.querySelectorAll('.tl-i').forEach(function(el){el.classList.remove('active')});if(!was)item.classList.add('active')});
     track.appendChild(item)});
 })();
