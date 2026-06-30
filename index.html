@@ -2,1720 +2,1581 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="author" content="Markell Rawls">
 <title>Community Story | llm-d</title>
 <link rel="icon" type="image/png" href="https://llm-d.ai/img/llm-d-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700;900&family=Red+Hat+Text:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Red+Hat+Text:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0a0e17;
-  --bg-card: #0f1525;
-  --border: #1a2038;
-  --text: #e2e8f4;
-  --text2: #8b98b8;
-  --text3: #5a6580;
-  --blue: #3b82f6;
-  --green: #10b981;
-  --amber: #f59e0b;
-  --red: #ef4444;
-  --purple: #8b5cf6;
-  --font-h: 'Red Hat Display', sans-serif;
-  --font-b: 'Red Hat Text', sans-serif;
-  --font-m: 'SF Mono','Fira Code',Consolas,monospace;
-  --r: 14px;
-  --t: .3s cubic-bezier(.4,0,.2,1);
+/* ============================================
+   RESET & GLOBAL -- NO SCROLLING
+   ============================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  overflow: hidden;
+  width: 100%; height: 100%;
+  font-family: 'Red Hat Text', sans-serif;
+  background: #faf8f5;
+  color: #2d2a26;
+  -webkit-font-smoothing: antialiased;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-#ambientCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+h1, h2, h3, h4, h5 { font-family: 'Red Hat Display', sans-serif; }
 
-/* Header */
-.hdr{position:sticky;top:0;z-index:200;background:rgba(10,14,23,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between}
-.hdr-l{display:flex;align-items:center;gap:14px}
-.hdr-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.hdr-logo img{width:30px;height:30px}
-.hdr-logo span{font-family:var(--font-h);font-weight:900;font-size:1.1rem;color:var(--text)}
-.hdr-sep{width:1px;height:24px;background:var(--border)}
-.hdr-sub{font-family:var(--font-h);font-weight:700;font-size:.88rem;color:var(--text2);letter-spacing:.01em}
-.hdr-r{display:flex;align-items:center;gap:16px}
-.hdr-r a{font-size:.82rem;font-weight:500;color:var(--text2);text-decoration:none;transition:color var(--t);display:inline-flex;align-items:center;gap:5px}
-.hdr-r a:hover{color:var(--blue)}
-.hdr-r a svg{width:15px;height:15px}
-
-/* Section nav */
-.snav{display:flex;gap:6px;padding:12px 32px;overflow-x:auto;background:rgba(10,14,23,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:60px;z-index:190;scrollbar-width:none}
-.snav::-webkit-scrollbar{display:none}
-.snav button{font-family:var(--font-b);font-size:.78rem;font-weight:500;color:var(--text3);background:transparent;border:1px solid transparent;border-radius:8px;padding:7px 14px;cursor:pointer;white-space:nowrap;transition:all var(--t)}
-.snav button:hover{color:var(--text2);background:rgba(59,130,246,.04)}
-.snav button.active{color:var(--blue);border-color:rgba(59,130,246,.25);background:rgba(59,130,246,.06)}
-
-/* Main container */
-.main{position:relative;z-index:1;max-width:1260px;margin:0 auto;padding:28px 24px 80px;display:flex;flex-direction:column;gap:28px}
-
-/* Hero */
-.hero{text-align:center;padding:48px 24px 40px;position:relative}
-.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(59,130,246,.1) 0%,transparent 70%);pointer-events:none}
-.hero h1{font-family:var(--font-h);font-weight:900;font-size:clamp(1.8rem,4.5vw,3rem);letter-spacing:-.02em;background:linear-gradient(135deg,#e2e8f4 10%,#3b82f6 55%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px;line-height:1.15}
-.hero p{font-size:1.02rem;color:var(--text2);max-width:620px;margin:0 auto;line-height:1.65}
-
-/* Card */
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:border-color var(--t);position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(59,130,246,.12),transparent);opacity:0;transition:opacity var(--t)}
-.card:hover{border-color:rgba(59,130,246,.15)}
-.card:hover::before{opacity:1}
-.card-h{display:flex;align-items:center;gap:12px;margin-bottom:22px}
-.card-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
-.card-h h2{font-family:var(--font-h);font-weight:700;font-size:1.2rem}
-.card-h p{font-size:.8rem;color:var(--text3);margin-top:2px}
-
-/* Canvas wrappers */
-.cv{position:relative;width:100%;border-radius:var(--r);overflow:hidden;background:rgba(8,12,20,.6);border:1px solid var(--border)}
-.cv canvas{display:block;width:100%}
-.tt{position:absolute;background:rgba(12,16,28,.97);border:1px solid #253050;border-radius:10px;padding:14px 18px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10;max-width:300px;box-shadow:0 8px 32px rgba(0,0,0,.5)}
-.tt .tn{font-family:var(--font-h);font-weight:700;font-size:.92rem;margin-bottom:3px}
-.tt .tr{font-size:.76rem;color:var(--blue);margin-bottom:6px}
-.tt .td{font-size:.76rem;color:var(--text3);line-height:1.5}
-.tt .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-.tt .tag{font-size:.68rem;padding:2px 8px;border-radius:4px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.12);color:var(--text2)}
-
-/* Legend */
-.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}
-.legend-i{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--text2)}
-.legend-l{width:22px;height:3px;border-radius:2px}
-
-/* Explorer panel */
-.eo{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
-.eo.open{opacity:1;pointer-events:auto}
-.ep{position:fixed;top:0;right:0;width:min(480px,92vw);height:100vh;background:var(--bg-card);border-left:1px solid var(--border);z-index:310;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);overflow-y:auto}
-.eo.open .ep{transform:translateX(0)}
-.ep-close{position:sticky;top:0;z-index:5;display:flex;justify-content:flex-end;padding:16px 16px 0}
-.ep-close button{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text2);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--t)}
-.ep-close button:hover{border-color:var(--blue);color:var(--blue)}
-.ep-head{padding:8px 28px 20px;border-bottom:1px solid var(--border)}
-.ep-badge{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:900;font-size:1.5rem;color:#fff;margin-bottom:16px}
-.ep-head h3{font-family:var(--font-h);font-weight:900;font-size:1.35rem}
-.ep-role{display:inline-block;font-size:.73rem;font-weight:600;padding:3px 10px;border-radius:6px;margin-top:8px}
-.ep-sec{padding:18px 28px;border-bottom:1px solid var(--border)}
-.ep-sec:last-child{border-bottom:none}
-.ep-sec h4{font-family:var(--font-h);font-weight:700;font-size:.85rem;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
-.ep-sec ul{list-style:none}
-.ep-sec li{font-size:.86rem;color:var(--text);padding:6px 0;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(26,32,56,.5)}
-.ep-sec li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0}
-.ep-tags{display:flex;flex-wrap:wrap;gap:6px}
-.ep-tag{font-size:.76rem;padding:4px 12px;border-radius:6px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.12);color:var(--text2)}
-.ep-why{font-size:.88rem;color:var(--text2);line-height:1.65;font-style:italic;padding:2px 0 0 2px;border-left:3px solid var(--blue);padding-left:14px}
-
-/* Timeline */
-.tl-s{overflow-x:auto;padding:20px 0;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.tl-s::-webkit-scrollbar{height:5px}
-.tl-s::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.tl-t{display:flex;align-items:flex-start;position:relative;min-width:max-content;padding:0 24px}
-.tl-line{position:absolute;top:30px;left:24px;right:24px;height:2px;background:linear-gradient(90deg,var(--border),rgba(59,130,246,.3),var(--border))}
-.tl-i{display:flex;flex-direction:column;align-items:center;width:170px;cursor:pointer;position:relative;flex-shrink:0;transition:transform var(--t)}
-.tl-i:hover{transform:translateY(-2px)}
-.tl-dw{width:60px;height:60px;display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
-.tl-d{width:14px;height:14px;border-radius:50%;background:var(--blue);box-shadow:0 0 14px rgba(59,130,246,.5);transition:all var(--t);position:relative}
-.tl-d::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(59,130,246,.18);transition:all var(--t)}
-.tl-i:hover .tl-d,.tl-i.active .tl-d{width:20px;height:20px;box-shadow:0 0 24px rgba(59,130,246,.65)}
-.tl-i.active .tl-d::after{inset:-6px;border-color:rgba(59,130,246,.35)}
-.tl-date{font-size:.72rem;font-weight:700;color:var(--blue);margin-top:10px;font-family:var(--font-m)}
-.tl-lbl{font-size:.82rem;font-weight:700;margin-top:6px;text-align:center;line-height:1.3}
-.tl-det{max-height:0;overflow:hidden;transition:max-height .45s ease,opacity .3s;opacity:0;width:230px;margin-top:0}
-.tl-i.active .tl-det{max-height:220px;opacity:1;margin-top:10px}
-.tl-det-in{background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.12);border-radius:10px;padding:14px;font-size:.78rem;color:var(--text2);line-height:1.55;text-align:center}
-
-/* Timeline "NOW" indicator */
-.tl-now{position:relative}
-.tl-now .tl-d{background:var(--green);box-shadow:0 0 18px rgba(16,185,129,.6)}
-.tl-now .tl-d::after{border-color:rgba(16,185,129,.3);animation:tlNowPulse 2.4s ease-in-out infinite}
-.tl-now .tl-date{color:var(--green)}
-.tl-now-label{font-size:.62rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.12em;margin-top:4px;padding:2px 8px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:4px}
-@keyframes tlNowPulse{0%,100%{inset:-4px;border-color:rgba(16,185,129,.3)}50%{inset:-10px;border-color:rgba(16,185,129,.12)}}
-
-/* Stats */
-.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px}
-.sc{background:rgba(8,12,20,.5);border:1px solid var(--border);border-radius:var(--r);padding:22px 18px 14px;text-align:center;transition:all var(--t);position:relative;overflow:hidden}
-.sc:hover{border-color:rgba(59,130,246,.25);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
-.sc-num{font-family:var(--font-h);font-weight:900;font-size:2.3rem;color:var(--blue);line-height:1;margin-bottom:4px}
-.sc-lbl{font-size:.8rem;color:var(--text2);line-height:1.4;margin-bottom:8px}
-.sc canvas{display:block;width:100%;height:28px}
-
-/* Simulator */
-.sim-ctrl{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:16px}
-.sim-g{display:flex;flex-direction:column;gap:5px}
-.sim-g label{font-size:.73rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
-.sim-g select{font-family:var(--font-b);font-size:.85rem;padding:8px 32px 8px 12px;background:rgba(8,12,20,.7);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;min-width:175px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%235a6580' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
-.sim-g select:focus{outline:none;border-color:var(--blue)}
-.sim-g select option{background:#0f1525;color:var(--text)}
-.sim-btn{font-family:var(--font-b);font-size:.85rem;font-weight:700;padding:9px 24px;background:var(--blue);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:all var(--t)}
-.sim-btn:hover{background:#2563eb;box-shadow:0 4px 16px rgba(59,130,246,.3)}
-
-/* Join CTA */
-.cta-section{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:48px 36px;text-align:center;overflow:hidden}
-.cta-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(59,130,246,.3),rgba(139,92,246,.3),transparent)}
-.cta-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:500px;height:200px;background:radial-gradient(ellipse,rgba(59,130,246,.06) 0%,transparent 70%);pointer-events:none}
-.cta-section h2{font-family:var(--font-h);font-weight:900;font-size:clamp(1.3rem,3vw,1.8rem);background:linear-gradient(135deg,#e2e8f4 20%,#3b82f6 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px;line-height:1.25}
-.cta-story{font-size:.95rem;color:var(--text2);max-width:640px;margin:0 auto 32px;line-height:1.7}
-.cta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:880px;margin:0 auto 32px}
-.cta-item{background:rgba(8,12,20,.5);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:left;transition:all var(--t)}
-.cta-item:hover{border-color:rgba(59,130,246,.2);transform:translateY(-2px)}
-.cta-item h3{font-family:var(--font-h);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:6px}
-.cta-item p{font-size:.82rem;color:var(--text3);line-height:1.55}
-.cta-item a{color:var(--blue);text-decoration:none;font-weight:600;font-size:.82rem;transition:color var(--t)}
-.cta-item a:hover{color:#60a5fa}
-.cta-links{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:8px}
-.cta-link{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-b);font-size:.88rem;font-weight:600;padding:11px 24px;border-radius:10px;text-decoration:none;transition:all var(--t)}
-.cta-link--primary{background:var(--blue);color:#fff;border:1px solid var(--blue)}
-.cta-link--primary:hover{background:#2563eb;box-shadow:0 4px 20px rgba(59,130,246,.3)}
-.cta-link--secondary{background:transparent;color:var(--text2);border:1px solid var(--border)}
-.cta-link--secondary:hover{color:var(--blue);border-color:rgba(59,130,246,.3)}
-.cta-link svg{width:16px;height:16px}
-
-/* =========================================
-   IMPACT CALCULATOR
-   ========================================= */
-.impact-select-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
-.impact-chip{font-family:var(--font-b);font-size:.82rem;font-weight:600;padding:9px 18px;border-radius:8px;background:rgba(8,12,20,.5);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all var(--t)}
-.impact-chip:hover{border-color:rgba(59,130,246,.3);color:var(--text)}
-.impact-chip.active{border-color:var(--blue);background:rgba(59,130,246,.1);color:var(--blue)}
-.impact-viz{position:relative;width:100%;min-height:420px;border-radius:var(--r);background:rgba(8,12,20,.6);border:1px solid var(--border);overflow:hidden}
-.impact-viz canvas{display:block;width:100%}
-.impact-score{text-align:center;margin-top:18px;padding:18px;background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.12);border-radius:12px;opacity:0;transition:opacity .5s}
-.impact-score.visible{opacity:1}
-.impact-score h3{font-family:var(--font-h);font-weight:900;font-size:1.4rem;color:var(--blue);margin-bottom:4px}
-.impact-score p{font-size:.85rem;color:var(--text2);line-height:1.6}
-
-/* =========================================
-   CONTRIBUTOR JOURNEY MAP
-   ========================================= */
-.journey-wrap{position:relative;width:100%;min-height:480px;border-radius:var(--r);background:rgba(8,12,20,.6);border:1px solid var(--border);overflow:hidden}
-.journey-wrap canvas{display:block;width:100%}
-.journey-detail{margin-top:16px;padding:20px;background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.12);border-radius:12px;display:none}
-.journey-detail.visible{display:block;animation:fadeInJourney .4s ease}
-@keyframes fadeInJourney{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.journey-detail h3{font-family:var(--font-h);font-weight:700;font-size:1.05rem;color:var(--blue);margin-bottom:12px}
-.journey-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.journey-detail-item h4{font-family:var(--font-h);font-weight:700;font-size:.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.journey-detail-item p{font-size:.84rem;color:var(--text2);line-height:1.6}
-.journey-detail-item .jd-quote{font-style:italic;border-left:3px solid var(--blue);padding-left:12px;color:var(--text3);font-size:.82rem;line-height:1.55}
-.journey-detail-item .jd-skills{display:flex;flex-wrap:wrap;gap:6px}
-.journey-detail-item .jd-skill{font-size:.74rem;padding:3px 10px;border-radius:6px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.12);color:var(--text2)}
-
-/* =========================================
-   GOOD FIRST ISSUES
-   ========================================= */
-.gfi-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.gfi-tab{font-family:var(--font-b);font-size:.78rem;font-weight:600;padding:7px 14px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text3);cursor:pointer;transition:all var(--t)}
-.gfi-tab:hover{color:var(--text2);border-color:rgba(59,130,246,.2)}
-.gfi-tab.active{color:var(--blue);border-color:rgba(59,130,246,.3);background:rgba(59,130,246,.06)}
-.gfi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
-.gfi-card{background:rgba(8,12,20,.5);border:1px solid var(--border);border-radius:12px;padding:18px;transition:all var(--t);cursor:pointer;text-decoration:none;display:block}
-.gfi-card:hover{border-color:rgba(59,130,246,.25);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.2)}
-.gfi-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.gfi-card-num{font-family:var(--font-m);font-size:.72rem;color:var(--text3)}
-.gfi-card-time{font-size:.7rem;color:var(--text3)}
-.gfi-card-title{font-family:var(--font-h);font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:10px;line-height:1.4}
-.gfi-card-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
-.gfi-badge{font-size:.68rem;font-weight:600;padding:2px 8px;border-radius:4px}
-.gfi-badge-cat{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.15);color:var(--blue)}
-.gfi-badge-help{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.15);color:var(--green)}
-.gfi-badge-comment{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.15);color:var(--purple)}
-.gfi-stars{color:var(--amber);font-size:.72rem;letter-spacing:1px}
-.gfi-impact{font-size:.68rem;font-weight:600;padding:2px 8px;border-radius:4px}
-.gfi-impact-low{background:rgba(16,185,129,.08);color:var(--green)}
-.gfi-impact-med{background:rgba(245,158,11,.08);color:var(--amber)}
-.gfi-impact-high{background:rgba(239,68,68,.08);color:var(--red)}
-.gfi-card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
-.gfi-tags{display:flex;flex-wrap:wrap;gap:4px}
-.gfi-tag{font-size:.66rem;padding:2px 7px;border-radius:4px;background:rgba(107,114,128,.08);border:1px solid rgba(107,114,128,.12);color:var(--text3)}
-.gfi-time-est{font-size:.7rem;color:var(--text3);white-space:nowrap}
-.gfi-card-assignee{display:flex;align-items:center;gap:6px;margin-top:10px}
-.gfi-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#fff;flex-shrink:0}
-.gfi-card-gh{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;color:var(--blue);margin-top:8px;font-weight:600;opacity:.7;transition:opacity var(--t)}
-.gfi-card:hover .gfi-card-gh{opacity:1}
-
-/* =========================================
-   CONTRIBUTOR NETWORK GRAPH
-   ========================================= */
-.cnet-wrap{position:relative;width:100%;border-radius:var(--r);overflow:hidden;background:rgba(8,12,20,.6);border:1px solid var(--border)}
-.cnet-wrap canvas{display:block;width:100%}
-
-/* =========================================
-   FIND YOUR ROLE QUIZ
-   ========================================= */
-.quiz-container{max-width:680px;margin:0 auto}
-.quiz-progress{display:flex;gap:6px;margin-bottom:24px}
-.quiz-dot{width:100%;height:4px;border-radius:2px;background:var(--border);transition:background var(--t)}
-.quiz-dot.done{background:var(--blue)}
-.quiz-dot.current{background:var(--blue);animation:quizPulse 1.2s ease-in-out infinite}
-@keyframes quizPulse{0%,100%{opacity:1}50%{opacity:.5}}
-.quiz-question{font-family:var(--font-h);font-weight:700;font-size:1.15rem;color:var(--text);margin-bottom:18px;line-height:1.4}
-.quiz-q-num{font-size:.76rem;color:var(--blue);font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
-.quiz-options{display:flex;flex-direction:column;gap:10px}
-.quiz-opt{font-family:var(--font-b);font-size:.9rem;padding:14px 18px;border-radius:10px;background:rgba(8,12,20,.5);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all var(--t);text-align:left}
-.quiz-opt:hover{border-color:rgba(59,130,246,.3);color:var(--text);background:rgba(59,130,246,.04)}
-.quiz-opt.selected{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,.08)}
-.quiz-result{display:none;text-align:center;animation:fadeInJourney .5s ease}
-.quiz-result.visible{display:block}
-.quiz-result-badge{width:100px;height:100px;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:2.6rem;animation:quizBadgePop .6s cubic-bezier(.34,1.56,.64,1)}
-@keyframes quizBadgePop{0%{transform:scale(0) rotate(-20deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
-.quiz-result h3{font-family:var(--font-h);font-weight:900;font-size:1.5rem;color:var(--blue);margin-bottom:6px}
-.quiz-result-role{font-size:.82rem;color:var(--text2);margin-bottom:16px}
-.quiz-result-desc{font-size:.9rem;color:var(--text2);line-height:1.65;max-width:560px;margin:0 auto 20px;text-align:left}
-.quiz-result-sections{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left;margin-bottom:20px}
-.quiz-result-sec{background:rgba(8,12,20,.5);border:1px solid var(--border);border-radius:10px;padding:14px}
-.quiz-result-sec h4{font-family:var(--font-h);font-weight:700;font-size:.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.quiz-result-sec ul{list-style:none}
-.quiz-result-sec li{font-size:.82rem;color:var(--text2);padding:4px 0;display:flex;align-items:center;gap:6px}
-.quiz-result-sec li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--blue);flex-shrink:0}
-.quiz-restart{font-family:var(--font-b);font-size:.85rem;font-weight:600;padding:10px 24px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all var(--t)}
-.quiz-restart:hover{border-color:var(--blue);color:var(--blue)}
-
-/* Footer */
-.ftr{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 32px;text-align:center;color:var(--text3);font-size:.82rem}
-.ftr a{color:var(--text2);text-decoration:none;transition:color var(--t)}
-.ftr a:hover{color:var(--blue)}
-.ftr-links{display:flex;gap:20px;justify-content:center;margin-top:10px}
-
-/* Responsive */
-@media(max-width:768px){
-  .hdr{padding:0 16px} .hdr-sub,.hdr-sep{display:none} .hdr-r{gap:10px} .hdr-r a span{display:none}
-  .snav{padding:10px 16px} .main{padding:16px 14px 48px;gap:18px} .card{padding:18px 16px}
-  .sg{grid-template-columns:repeat(2,1fr)} .hero{padding:28px 16px}
-  .sim-ctrl{flex-direction:column} .sim-g select{min-width:100%}
-  .ep{width:100%;max-width:100%}
-  .cta-section{padding:32px 20px} .cta-grid{grid-template-columns:1fr}
-  .gfi-grid{grid-template-columns:1fr}
-  .journey-detail-grid{grid-template-columns:1fr}
-  .quiz-result-sections{grid-template-columns:1fr}
-  .impact-select-row{gap:6px}
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 4px; z-index: 1000;
+  background: linear-gradient(90deg, #f59e0b, #f5736c, #3b82f6, #10b981);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 0 2px 2px 0;
 }
-@media(max-width:480px){.sg{gap:8px} .sc{padding:14px 10px} .sc-num{font-size:1.8rem}}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+.nav-arrows {
+  position: fixed; bottom: 40px; right: 40px; z-index: 100;
+  display: flex; gap: 12px;
+}
+.nav-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,255,255,0.95); border: 1.5px solid #e8e4df;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  color: #2d2a26; font-size: 20px;
+}
+.nav-btn:hover { background: #fff; border-color: #f59e0b; transform: scale(1.1); box-shadow: 0 4px 20px rgba(245,158,11,0.2); }
+.nav-btn:active { transform: scale(0.95); }
+.nav-btn.disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+.nav-dots {
+  position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+  z-index: 100; display: flex; gap: 10px; align-items: center;
+}
+.nav-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #d1cdc7; cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  border: none;
+}
+.nav-dot.active { background: #f59e0b; width: 32px; border-radius: 5px; }
+.nav-dot:hover:not(.active) { background: #a39e97; transform: scale(1.3); }
+
+/* ============================================
+   SLIDE STRUCTURE
+   ============================================ */
+.slides-viewport {
+  width: 100%; height: 100vh;
+  overflow: hidden; position: relative;
+}
+.slides-track {
+  display: flex; height: 100%;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.slide {
+  min-width: 100%; width: 100%; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  padding: 60px 80px;
+}
+
+/* ============================================
+   BACKGROUND GRADIENT BLOBS
+   ============================================ */
+.slide::before {
+  content: ''; position: absolute; top: -20%; right: -10%;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.slide::after {
+  content: ''; position: absolute; bottom: -15%; left: -5%;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ============================================
+   SLIDE CONTENT LAYOUTS
+   ============================================ */
+.slide-content {
+  position: relative; z-index: 1;
+  max-width: 1200px; width: 100%;
+}
+.slide-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+  max-width: 1200px; width: 100%;
+  position: relative; z-index: 1;
+}
+.slide-left, .slide-right { position: relative; }
+.slide-badge {
+  display: inline-block; padding: 6px 16px;
+  border-radius: 20px; font-size: 12px; font-weight: 600;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.badge-amber { background: #fef3c7; color: #92400e; }
+.badge-coral { background: #fee2e2; color: #991b1b; }
+.badge-blue { background: #dbeafe; color: #1e40af; }
+.badge-green { background: #d1fae5; color: #065f46; }
+.badge-purple { background: #ede9fe; color: #5b21b6; }
+
+.slide-title {
+  font-size: 46px; font-weight: 800; line-height: 1.1;
+  margin-bottom: 16px; color: #2d2a26;
+}
+.slide-subtitle {
+  font-size: 20px; font-weight: 400; color: #6b6560;
+  line-height: 1.5; margin-bottom: 24px;
+}
+.slide-body {
+  font-size: 16px; line-height: 1.7; color: #4a4541;
+}
+.highlight { color: #f59e0b; font-weight: 600; }
+.highlight-blue { color: #3b82f6; font-weight: 600; }
+.highlight-green { color: #10b981; font-weight: 600; }
+.highlight-coral { color: #f5736c; font-weight: 600; }
+.highlight-purple { color: #8b5cf6; font-weight: 600; }
+
+/* ============================================
+   CARDS
+   ============================================ */
+.card {
+  background: #ffffff; border-radius: 16px;
+  padding: 24px; border: 1px solid #f0ece7;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+  transition: all 0.4s ease;
+}
+.card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.card-grid {
+  display: grid; gap: 16px;
+}
+.card-grid-2 { grid-template-columns: 1fr 1fr; }
+.card-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.card-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.card-grid-5 { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
+
+.card-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 12px;
+}
+.card-title { font-family: 'Red Hat Display', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.card-text { font-size: 13px; color: #6b6560; line-height: 1.55; }
+
+/* ============================================
+   METRIC BLOCKS
+   ============================================ */
+.metric-row {
+  display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap;
+}
+.metric-block {
+  text-align: center; flex: 1; min-width: 90px;
+}
+.metric-value {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 36px; font-weight: 800;
+}
+.metric-label {
+  font-size: 11px; color: #6b6560; margin-top: 4px;
+  text-transform: uppercase; letter-spacing: 0.8px;
+}
+.metric-unit {
+  font-size: 14px; font-weight: 400; color: #a39e97;
+}
+
+/* ============================================
+   CANVAS CONTAINERS
+   ============================================ */
+.canvas-wrap {
+  width: 100%; aspect-ratio: 4/3;
+  border-radius: 20px; overflow: hidden;
+  background: #faf8f5;
+  border: 1px solid #f0ece7;
+  position: relative;
+}
+.canvas-wrap canvas {
+  width: 100%; height: 100%;
+  display: block;
+}
+
+/* ============================================
+   STAGGERED ENTRANCE ANIMATIONS
+   ============================================ */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeSlideLeft {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeSlideRight {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slideInBounce {
+  0% { opacity: 0; transform: translateY(60px); }
+  60% { opacity: 1; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.3); }
+  50% { box-shadow: 0 0 20px 8px rgba(245,158,11,0.15); }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.anim-hidden { opacity: 0; }
+.anim-fadeUp { animation: fadeSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.anim-fadeLeft { animation: fadeSlideLeft 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.anim-fadeRight { animation: fadeSlideRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.anim-scaleIn { animation: scaleIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.anim-bounce { animation: slideInBounce 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+/* ============================================
+   TIMELINE (horizontal)
+   ============================================ */
+.timeline-row {
+  display: flex; align-items: flex-start; gap: 0; position: relative;
+  width: 100%; margin-top: 16px;
+}
+.tl-item {
+  flex: 1; text-align: center; position: relative; cursor: pointer;
+  padding: 0 4px;
+  transition: transform 0.3s ease;
+}
+.tl-item:hover { transform: translateY(-3px); }
+.tl-dot-wrap {
+  width: 100%; display: flex; align-items: center; justify-content: center;
+  position: relative; height: 40px;
+}
+.tl-dot-wrap::before {
+  content: ''; position: absolute; top: 50%; left: 0; right: 0;
+  height: 2px; background: linear-gradient(90deg, rgba(59,130,246,0.15), rgba(245,158,11,0.25));
+}
+.tl-item:first-child .tl-dot-wrap::before { left: 50%; }
+.tl-item:last-child .tl-dot-wrap::before { right: 50%; }
+.tl-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #3b82f6; position: relative; z-index: 2;
+  box-shadow: 0 0 8px rgba(59,130,246,0.25);
+  transition: all 0.3s ease;
+}
+.tl-item:hover .tl-dot,
+.tl-item.active .tl-dot { width: 20px; height: 20px; box-shadow: 0 0 16px rgba(59,130,246,0.4); }
+.tl-item.tl-now .tl-dot {
+  background: #10b981;
+  box-shadow: 0 0 14px rgba(16,185,129,0.4);
+}
+.tl-date {
+  font-size: 10px; font-weight: 700; color: #3b82f6;
+  font-family: 'SF Mono','Fira Code',Consolas,monospace;
+  margin-top: 8px;
+}
+.tl-item.tl-now .tl-date { color: #10b981; }
+.tl-label {
+  font-size: 11px; font-weight: 600; margin-top: 4px;
+  color: #2d2a26; line-height: 1.3;
+}
+.tl-desc {
+  font-size: 10px; color: #6b6560; line-height: 1.4;
+  margin-top: 4px; max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s;
+  opacity: 0;
+}
+.tl-item.active .tl-desc { max-height: 120px; opacity: 1; }
+.tl-now-tag {
+  font-size: 9px; font-weight: 700; color: #10b981;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-top: 2px;
+  padding: 1px 6px; background: rgba(16,185,129,0.08);
+  border: 1px solid rgba(16,185,129,0.2); border-radius: 3px;
+  display: inline-block;
+}
+
+/* ============================================
+   PARTNER BADGE GRID
+   ============================================ */
+.partner-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+}
+.partner-badge {
+  background: #fff; border: 1px solid #f0ece7; border-radius: 12px;
+  padding: 14px 8px; text-align: center;
+  transition: all 0.3s ease; cursor: default;
+}
+.partner-badge:hover { border-color: rgba(59,130,246,0.3); box-shadow: 0 4px 16px rgba(0,0,0,0.06); transform: translateY(-2px); }
+.partner-letter {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: 900; font-size: 14px; color: #fff;
+  margin: 0 auto 8px;
+}
+.partner-name {
+  font-size: 11px; font-weight: 600; color: #2d2a26;
+  line-height: 1.2;
+}
+.partner-role {
+  font-size: 9px; color: #a39e97; margin-top: 2px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ============================================
+   GOVERNANCE LAYER
+   ============================================ */
+.gov-stack { display: flex; flex-direction: column; gap: 10px; }
+.gov-layer {
+  background: #fff; border: 1px solid #f0ece7; border-radius: 12px;
+  padding: 16px 20px; display: flex; align-items: center; gap: 16px;
+  transition: all 0.3s ease;
+}
+.gov-layer:hover { border-color: rgba(59,130,246,0.2); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.gov-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.gov-layer-title { font-weight: 700; font-size: 14px; color: #2d2a26; }
+.gov-layer-sub { font-size: 12px; color: #6b6560; margin-top: 2px; }
+
+/* ============================================
+   JOURNEY STAGE CARDS
+   ============================================ */
+.journey-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
+}
+.journey-card {
+  background: #fff; border: 1px solid #f0ece7; border-radius: 12px;
+  padding: 16px 12px; text-align: center;
+  transition: all 0.3s ease; cursor: default;
+  position: relative;
+}
+.journey-card:hover { border-color: rgba(59,130,246,0.3); box-shadow: 0 4px 16px rgba(0,0,0,0.06); transform: translateY(-3px); }
+.journey-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #3b82f6; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: 800; font-size: 13px;
+  margin: 0 auto 8px;
+}
+.journey-card:first-child .journey-num { background: #10b981; }
+.journey-stage-name { font-size: 12px; font-weight: 700; color: #2d2a26; margin-bottom: 4px; }
+.journey-stage-time { font-size: 10px; color: #a39e97; }
+.journey-stage-desc { font-size: 10px; color: #6b6560; line-height: 1.4; margin-top: 6px; }
+
+/* ============================================
+   CTA LINKS
+   ============================================ */
+.cta-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Red Hat Text', sans-serif;
+  font-size: 15px; font-weight: 600;
+  padding: 12px 28px; border-radius: 12px;
+  text-decoration: none; transition: all 0.3s ease;
+}
+.cta-link--primary {
+  background: #3b82f6; color: #fff; border: 1px solid #3b82f6;
+}
+.cta-link--primary:hover { background: #2563eb; box-shadow: 0 4px 20px rgba(59,130,246,0.3); }
+.cta-link--secondary {
+  background: transparent; color: #6b6560; border: 1px solid #e8e4df;
+}
+.cta-link--secondary:hover { color: #3b82f6; border-color: rgba(59,130,246,0.3); }
+.cta-link svg { width: 16px; height: 16px; }
+
+/* ============================================
+   LOGO & FOOTER
+   ============================================ */
+.slide-logo {
+  position: absolute; top: 24px; left: 40px;
+  display: flex; align-items: center; gap: 10px;
+  z-index: 10;
+}
+.slide-logo img { height: 28px; }
+.slide-logo span {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 15px; font-weight: 700; color: #6b6560;
+}
+.slide-number {
+  position: absolute; bottom: 24px; left: 40px;
+  font-size: 13px; color: #a39e97; z-index: 10;
+}
+
+/* ============================================
+   TITLE SLIDE HERO
+   ============================================ */
+.hero-title {
+  font-size: 68px; font-weight: 900; line-height: 1.05;
+  letter-spacing: -1.5px;
+  background: linear-gradient(135deg, #2d2a26 0%, #6b6560 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+}
+.hero-accent {
+  background: linear-gradient(135deg, #f59e0b 0%, #f5736c 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-subtitle {
+  font-size: 22px; color: #6b6560; line-height: 1.6;
+  max-width: 640px;
+}
+
+/* ============================================
+   STAT ROW
+   ============================================ */
+.stat-row { display: flex; gap: 32px; flex-wrap: wrap; }
+.stat-item { text-align: center; flex: 1; min-width: 100px; }
+.stat-num {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 42px; font-weight: 900;
+}
+.stat-label {
+  font-size: 12px; color: #6b6560; text-transform: uppercase;
+  letter-spacing: 0.8px; margin-top: 4px;
+}
+
+/* ============================================
+   FEATURE LIST
+   ============================================ */
+.feature-list { list-style: none; padding: 0; }
+.feature-list li {
+  padding: 8px 0; display: flex; gap: 10px;
+  align-items: flex-start; font-size: 14px; line-height: 1.5;
+}
+.feature-list .bullet {
+  width: 7px; height: 7px; border-radius: 50%;
+  margin-top: 6px; flex-shrink: 0;
+}
+.bullet-amber { background: #f59e0b; }
+.bullet-blue { background: #3b82f6; }
+.bullet-green { background: #10b981; }
+.bullet-coral { background: #f5736c; }
+.bullet-purple { background: #8b5cf6; }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 900px) {
+  .slide { padding: 40px 24px; }
+  .slide-split { grid-template-columns: 1fr; gap: 32px; }
+  .hero-title { font-size: 40px; }
+  .slide-title { font-size: 30px; }
+  .card-grid-3, .card-grid-4, .card-grid-5 { grid-template-columns: 1fr 1fr; }
+  .card-grid-2 { grid-template-columns: 1fr; }
+  .nav-arrows { bottom: 20px; right: 20px; }
+  .nav-dots { bottom: 20px; }
+  .partner-grid { grid-template-columns: repeat(3, 1fr); }
+  .journey-grid { grid-template-columns: repeat(3, 1fr); }
+  .stat-row { gap: 16px; }
+  .stat-num { font-size: 32px; }
+}
 </style>
 </head>
 <body>
 
-<canvas id="ambientCanvas"></canvas>
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar" style="width: 12.5%"></div>
 
-<!-- Header -->
-<header class="hdr">
-  <div class="hdr-l">
-    <a href="https://llm-d.ai" class="hdr-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" width="30" height="30" alt="llm-d"><span>llm-d</span></a>
-    <div class="hdr-sep"></div>
-    <div class="hdr-sub">Community Story</div>
-  </div>
-  <div class="hdr-r">
-    <a href="https://github.com/llm-d" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>GitHub</span></a>
-    <a href="https://llm-d.ai" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1116 0A8 8 0 010 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 005.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 01.64-1.539 6.7 6.7 0 01.597-.933A7.025 7.025 0 002.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 00-.656 2.5h2.49zM4.847 5a12.5 12.5 0 00-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 00-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 00.337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 01-.597-.933A9.268 9.268 0 014.09 12H2.255a7.024 7.024 0 003.072 2.472zM3.82 11a13.652 13.652 0 01-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0013.745 12H11.91a9.27 9.27 0 01-.64 1.539 6.688 6.688 0 01-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 01-.312 2.5zm2.802-3.5a6.959 6.959 0 00-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 00-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 00-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg><span>Website</span></a>
-    <a href="./blog/"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.75A.75.75 0 01.75 1h4.253c1.227 0 2.317.59 3 1.501A3.744 3.744 0 0111.006 1h4.245a.75.75 0 01.75.75v10.5a.75.75 0 01-.75.75h-4.507a2.25 2.25 0 00-1.591.659l-.622.621a.75.75 0 01-1.06 0l-.622-.621A2.25 2.25 0 005.258 13H.75a.75.75 0 01-.75-.75V1.75zm7.251 10.324l.004-5.073-.002-2.253A2.25 2.25 0 005.003 2.5H1.5v9h3.757a3.75 3.75 0 011.994.574zM8.755 4.75l-.004 7.322a3.752 3.752 0 011.992-.572H14.5v-9h-3.495a2.25 2.25 0 00-2.25 2.25z"/></svg><span>Read the Blog</span></a>
-  </div>
-</header>
-
-<!-- Section Nav -->
-<nav class="snav" id="sectionNav">
-  <button class="active" data-target="s-network">Partner Network</button>
-  <button data-target="s-timeline">Timeline</button>
-  <button data-target="s-deps">Dependency Map</button>
-  <button data-target="s-governance">Governance</button>
-  <button data-target="s-stats">Metrics</button>
-  <button data-target="s-impact">Impact Calculator</button>
-  <button data-target="s-sim">Simulator</button>
-  <button data-target="s-journey">Contributor Journey</button>
-  <button data-target="s-issues">Good First Issues</button>
-  <button data-target="s-cnet">Contributor Network</button>
-  <button data-target="s-quiz">Find Your Role</button>
-  <button data-target="s-join">Join Us</button>
-</nav>
-
-<!-- Explorer overlay + panel -->
-<div class="eo" id="eo">
-  <div class="ep" id="ep">
-    <div class="ep-close"><button id="epClose">&times;</button></div>
-    <div class="ep-head" id="epHead"></div>
-    <div id="epBody"></div>
-  </div>
+<!-- Navigation Arrows -->
+<div class="nav-arrows">
+  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" aria-label="Previous slide">&#8592;</button>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)" aria-label="Next slide">&#8594;</button>
 </div>
 
-<main class="main">
+<!-- Navigation Dots -->
+<div class="nav-dots" id="navDots"></div>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-glow"></div>
-    <h1>15 Organizations. One Mission.<br>Open-Source LLM Inference for Everyone.</h1>
-    <p>From competitors to collaborators: the story of how cloud providers, hardware vendors, and researchers built a vendor-neutral platform for Kubernetes-native LLM serving, together.</p>
-  </section>
+<!-- ==========================================
+     SLIDES VIEWPORT
+     ========================================== -->
+<div class="slides-viewport">
+<div class="slides-track" id="slidesTrack">
 
-  <!-- 1. Partner Network -->
-  <section class="card" id="s-network">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(59,130,246,.1);color:var(--blue)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a4 4 0 00-4 4c0 1.477.81 2.762 2.009 3.444A5.002 5.002 0 004 14v1a1 1 0 001 1h10a1 1 0 001-1v-1a5.002 5.002 0 00-4.009-4.556A4.001 4.001 0 0010 2zm6 4a3 3 0 01-1.306 2.48 6.012 6.012 0 012.293 3.147A1 1 0 0018 12v-1a4.002 4.002 0 00-3-3.874A2.99 2.99 0 0016 6z"/></svg></div>
-      <div><h2>Partner Network</h2><p>Force-directed ecosystem graph with contribution flow. Click any node to explore.</p></div>
+<!-- ==========================================
+     SLIDE 1: TITLE -- THE ORIGIN
+     ========================================== -->
+<div class="slide" id="slide-0">
+  <canvas id="canvas-hero" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div class="slide-content" style="text-align:center; position:relative; z-index:1;">
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="0">
+      <img src="https://llm-d.ai/img/llm-d-icon.png" alt="llm-d" style="width:80px; margin-bottom:24px; filter: drop-shadow(0 4px 12px rgba(245,158,11,0.3));">
     </div>
-    <div class="cv" id="graphC"><canvas id="netCv"></canvas><div class="tt" id="netTT"><div class="tn"></div><div class="tr"></div><div class="td"></div><div class="tags"></div></div></div>
-    <div class="legend">
-      <div class="legend-i"><div class="legend-l" style="background:#3b82f6"></div>Code</div>
-      <div class="legend-i"><div class="legend-l" style="background:#10b981"></div>Hardware</div>
-      <div class="legend-i"><div class="legend-l" style="background:#8b5cf6"></div>Research</div>
-      <div class="legend-i"><div class="legend-l" style="background:#f59e0b"></div>Governance</div>
-      <div class="legend-i"><div class="legend-l" style="background:#6b7280"></div>Ecosystem</div>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="200">
+      <h1 class="hero-title">15 Organizations.<br><span class="hero-accent">One Mission.</span></h1>
     </div>
-  </section>
-
-  <!-- 2. Timeline -->
-  <section class="card" id="s-timeline">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(245,158,11,.1);color:var(--amber)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg></div>
-      <div><h2>Project Timeline</h2><p>Key milestones in the llm-d journey. Click to expand.</p></div>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="400">
+      <p class="hero-subtitle" style="margin: 0 auto 32px;">
+        From competitors to collaborators: the story of how cloud providers, hardware vendors, and researchers built a vendor-neutral platform for Kubernetes-native LLM serving -- together.
+      </p>
     </div>
-    <div class="tl-s"><div class="tl-t" id="tlTrack"><div class="tl-line"></div></div></div>
-  </section>
-
-  <!-- 3. Dependency Map -->
-  <section class="card" id="s-deps">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(139,92,246,.1);color:var(--purple)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 01.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3.001zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z"/></svg></div>
-      <div><h2>Project Dependency Map</h2><p>How llm-d connects to the cloud-native AI landscape. Hover for compatibility info.</p></div>
-    </div>
-    <div class="cv" id="depC"><canvas id="depCv"></canvas><div class="tt" id="depTT"><div class="tn"></div><div class="tr"></div><div class="td"></div></div></div>
-  </section>
-
-  <!-- 4. Governance -->
-  <section class="card" id="s-governance">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(16,185,129,.1);color:var(--green)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg></div>
-      <div><h2>Governance Structure</h2><p>Animated org chart showing the CNCF governance hierarchy. Hover for details.</p></div>
-    </div>
-    <div class="cv" id="govC"><canvas id="govCv"></canvas><div class="tt" id="govTT"><div class="tn"></div><div class="td" style="margin-top:4px"></div></div></div>
-  </section>
-
-  <!-- 5. Community Metrics -->
-  <section class="card" id="s-stats">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(59,130,246,.1);color:var(--blue)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg></div>
-      <div><h2>Community Metrics</h2><p>Key indicators with trend sparklines</p></div>
-    </div>
-    <div class="sg" id="statsG"></div>
-  </section>
-
-  <!-- NEW: 6. Impact Calculator -->
-  <section class="card" id="s-impact">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(16,185,129,.1);color:var(--green)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"/></svg></div>
-      <div><h2>Impact Calculator</h2><p>See how a single contribution ripples through the entire ecosystem</p></div>
-    </div>
-    <div class="impact-select-row" id="impactChips">
-      <button class="impact-chip active" data-type="code">Code Fix</button>
-      <button class="impact-chip" data-type="feature">New Feature</button>
-      <button class="impact-chip" data-type="docs">Documentation</button>
-      <button class="impact-chip" data-type="test">Test Coverage</button>
-      <button class="impact-chip" data-type="perf">Performance Optimization</button>
-    </div>
-    <div class="impact-viz" id="impactViz"><canvas id="impactCv"></canvas></div>
-    <div class="impact-score" id="impactScore">
-      <h3 id="impactScoreVal"></h3>
-      <p id="impactScoreDesc"></p>
-    </div>
-  </section>
-
-  <!-- 7. Contribution Simulator -->
-  <section class="card" id="s-sim">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(139,92,246,.1);color:var(--purple)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg></div>
-      <div><h2>Contribution Simulator</h2><p>See how contributions flow through project governance</p></div>
-    </div>
-    <div class="sim-ctrl">
-      <div class="sim-g"><label>Organization</label><select id="simOrg">
-        <option>Red Hat</option><option>Google Cloud</option><option>IBM Research</option><option>NVIDIA</option>
-        <option>CoreWeave</option><option>AMD</option><option>Cisco</option><option>Hugging Face</option>
-        <option>Intel</option><option>Lambda</option><option>Mistral AI</option><option>UC Berkeley</option><option>UChicago</option>
-      </select></div>
-      <div class="sim-g"><label>Contribution Type</label><select id="simType">
-        <option>Code</option><option>Documentation</option><option>Testing</option><option>Research</option><option>Hardware Optimization</option>
-      </select></div>
-      <button class="sim-btn" id="simBtn">Simulate Flow</button>
-    </div>
-    <div class="cv" id="simC"><canvas id="simCv"></canvas></div>
-  </section>
-
-  <!-- NEW: 8. Contributor Journey Map -->
-  <section class="card" id="s-journey">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(245,158,11,.1);color:var(--amber)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg></div>
-      <div><h2>Contributor Journey Map</h2><p>Your path from first issue to CNCF contributor. Click any stage to learn more.</p></div>
-    </div>
-    <div class="journey-wrap" id="journeyWrap"><canvas id="journeyCv"></canvas></div>
-    <div class="journey-detail" id="journeyDetail">
-      <h3 id="journeyDetailTitle"></h3>
-      <div class="journey-detail-grid" id="journeyDetailGrid"></div>
-    </div>
-  </section>
-
-  <!-- NEW: 9. Good First Issues Board -->
-  <section class="card" id="s-issues">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(239,68,68,.1);color:var(--red)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg></div>
-      <div><h2>Good First Issues</h2><p>Beginner-friendly tasks ready for new contributors. Real work, not busywork.</p></div>
-    </div>
-    <div class="gfi-tabs" id="gfiTabs">
-      <button class="gfi-tab active" data-cat="all">All</button>
-      <button class="gfi-tab" data-cat="bug">Bug Fix</button>
-      <button class="gfi-tab" data-cat="docs">Documentation</button>
-      <button class="gfi-tab" data-cat="test">Testing</button>
-      <button class="gfi-tab" data-cat="feature">Feature</button>
-      <button class="gfi-tab" data-cat="perf">Performance</button>
-    </div>
-    <div class="gfi-grid" id="gfiGrid"></div>
-  </section>
-
-  <!-- NEW: 10. Contributor Network Graph -->
-  <section class="card" id="s-cnet">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(139,92,246,.1);color:var(--purple)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 17v1h-3zM4.75 14.094A5.973 5.973 0 004 17v1H1v-1a3 3 0 013.75-2.906z"/></svg></div>
-      <div><h2>Contributor Network</h2><p>Individual contributors and their collaboration connections. Hover for stats.</p></div>
-    </div>
-    <div class="cnet-wrap" id="cnetWrap"><canvas id="cnetCv"></canvas><div class="tt" id="cnetTT"><div class="tn"></div><div class="tr"></div><div class="td"></div></div></div>
-    <div class="legend">
-      <div class="legend-i"><div class="legend-l" style="background:#3b82f6"></div>Code</div>
-      <div class="legend-i"><div class="legend-l" style="background:#10b981"></div>Docs</div>
-      <div class="legend-i"><div class="legend-l" style="background:#f59e0b"></div>Testing</div>
-      <div class="legend-i"><div class="legend-l" style="background:#8b5cf6"></div>Research</div>
-      <div class="legend-i"><div class="legend-l" style="background:#ef4444"></div>Community</div>
-    </div>
-  </section>
-
-  <!-- NEW: 11. Find Your Role Quiz -->
-  <section class="card" id="s-quiz">
-    <div class="card-h">
-      <div class="card-ico" style="background:rgba(59,130,246,.1);color:var(--blue)"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg></div>
-      <div><h2>Find Your Role</h2><p>Take this quick quiz to discover where you would fit in the llm-d community</p></div>
-    </div>
-    <div class="quiz-container" id="quizContainer">
-      <div class="quiz-progress" id="quizProgress"></div>
-      <div id="quizBody"></div>
-      <div class="quiz-result" id="quizResult">
-        <div class="quiz-result-badge" id="quizBadge"></div>
-        <h3 id="quizRoleTitle"></h3>
-        <div class="quiz-result-role" id="quizRoleSub"></div>
-        <div class="quiz-result-desc" id="quizRoleDesc"></div>
-        <div class="quiz-result-sections" id="quizRoleSections"></div>
-        <button class="quiz-restart" id="quizRestart">Take Quiz Again</button>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="600">
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <span class="slide-badge badge-amber">Open Source</span>
+        <span class="slide-badge badge-blue">Vendor Neutral</span>
+        <span class="slide-badge badge-green">CNCF Sandbox</span>
+        <span class="slide-badge badge-purple">Community-Driven</span>
       </div>
     </div>
-  </section>
-
-  <!-- 12. Join Us CTA -->
-  <section class="cta-section" id="s-join">
-    <div class="cta-glow"></div>
-    <h2>Your GPU Clusters Need Better Routing.<br>We Need Your Expertise.</h2>
-    <p class="cta-story">We started with 5 organizations. We are now 15+. The next contributor could be you, and we mean it. Every PR gets reviewed. Every voice gets heard. No single company controls the roadmap.</p>
-    <div class="cta-grid">
-      <div class="cta-item">
-        <h3>File Your First Issue</h3>
-        <p>Found a bug? Have a feature idea? Issues are where every contribution starts. No idea is too small.</p>
-        <a href="https://github.com/llm-d/llm-d/issues" target="_blank" rel="noopener">Open an issue on GitHub</a>
-      </div>
-      <div class="cta-item">
-        <h3>Join the Weekly Community Call</h3>
-        <p>Thursdays, 10am ET. Meet the maintainers, hear what is in progress, and shape the roadmap in real time.</p>
-        <a href="https://zoom-lfx.platform.linuxfoundation.org/meetings/llm-d" target="_blank" rel="noopener">Add to your calendar</a>
-      </div>
-      <div class="cta-item">
-        <h3>Pick Up a Good First Issue</h3>
-        <p>We label beginner-friendly tasks specifically for new contributors. Real work, not busywork.</p>
-        <a href="https://github.com/llm-d/llm-d/labels/good%20first%20issue" target="_blank" rel="noopener">Browse good-first-issue tasks</a>
-      </div>
-      <div class="cta-item">
-        <h3>Share Your Production War Stories</h3>
-        <p>Running LLM inference at scale? Your hard-won lessons help shape what we build next. Join the discussion.</p>
-        <a href="https://github.com/llm-d/llm-d/discussions" target="_blank" rel="noopener">Start a discussion</a>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="800">
+      <div class="stat-row" style="max-width:700px; margin: 40px auto 0;">
+        <div class="stat-item">
+          <div class="stat-num" style="color:#f59e0b;" data-count="15">0</div>
+          <div class="stat-label">Organizations</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:#3b82f6;" data-count="100">0</div>
+          <div class="stat-label">Contributors</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:#10b981;" data-count="8">0</div>
+          <div class="stat-label">Integrations</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:#8b5cf6;" data-count="4">0</div>
+          <div class="stat-label">Major Releases</div>
+        </div>
       </div>
     </div>
-    <div class="cta-links">
-      <a class="cta-link cta-link--primary" href="https://github.com/llm-d" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
-      <a class="cta-link cta-link--secondary" href="https://zoom-lfx.platform.linuxfoundation.org/meetings/llm-d" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zM0 8a8 8 0 1116 0A8 8 0 010 8zm9-3a1 1 0 00-2 0v3a1 1 0 00.293.707l2 2a1 1 0 001.414-1.414L9 7.586V5z"/></svg>Community Call</a>
-      <a class="cta-link cta-link--secondary" href="https://www.cncf.io/projects/llm-d/" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1.75V13.5h13V2.5H2v-.75h13.25a.75.75 0 01.75.75v11.5a.75.75 0 01-.75.75H1.25a.75.75 0 01-.75-.75V1.75a.75.75 0 01.75-.75h.75v.75zM4 5h8v1.5H4V5zm0 3h8v1.5H4V8zm0 3h5v1.5H4V11z"/></svg>CNCF Listing</a>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="1100">
+      <p style="margin-top:40px; font-size:14px; color:#a39e97;">Press <kbd style="background:#f0ece7; padding:3px 8px; border-radius:4px; font-size:12px;">&#8594;</kbd> or click to navigate</p>
     </div>
-  </section>
-
-</main>
-
-<footer class="ftr">
-  <p>llm-d is a <a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Sandbox</a> project</p>
-  <div class="ftr-links">
-    <a href="https://github.com/llm-d" target="_blank" rel="noopener">GitHub</a>
-    <a href="https://llm-d.ai" target="_blank" rel="noopener">Website</a>
-    <a href="./blog/">Blog</a>
   </div>
-</footer>
+  <div class="slide-number">01 / 08</div>
+</div>
+
+<!-- ==========================================
+     SLIDE 2: THE PARTNER NETWORK
+     ========================================== -->
+<div class="slide" id="slide-1">
+  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
+  <div class="slide-split">
+    <div class="slide-left">
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="0">
+        <span class="slide-badge badge-amber">Chapter 1 -- A Project Is Born</span>
+      </div>
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="150">
+        <h2 class="slide-title">The Partner<br>Network</h2>
+      </div>
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="300">
+        <p class="slide-subtitle">How 15 organizations came together around a shared vision for open-source LLM inference.</p>
+      </div>
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="450">
+        <p class="slide-body">
+          No single company should own the routing plane for LLM serving. <span class="highlight">Red Hat</span>, <span class="highlight-blue">Google Cloud</span>, and <span class="highlight-purple">IBM Research</span> co-founded llm-d with this conviction. <span class="highlight-green">NVIDIA</span> and <span class="highlight-blue">CoreWeave</span> joined as core partners, bringing GPU expertise and scale testing. Together, they built a vendor-neutral inference platform that benefits the entire Kubernetes ecosystem.
+        </p>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="600">
+        <ul class="feature-list" style="margin-top:16px;">
+          <li><span class="bullet bullet-amber"></span>3 founding partners set governance and routing/EPP framework</li>
+          <li><span class="bullet bullet-blue"></span>2 core partners contributed GPU optimization and scale testing</li>
+          <li><span class="bullet bullet-green"></span>6 ecosystem partners bring hardware and model support</li>
+          <li><span class="bullet bullet-purple"></span>3 academic/governance institutions anchor research and IP</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-right">
+      <div class="anim-hidden" data-anim="fadeLeft" data-delay="200">
+        <div class="canvas-wrap">
+          <canvas id="canvas-network"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">02 / 08</div>
+</div>
+
+<!-- ==========================================
+     SLIDE 3: TIMELINE
+     ========================================== -->
+<div class="slide" id="slide-2">
+  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
+  <div class="slide-content">
+    <div style="text-align:center; margin-bottom: 32px;">
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="0">
+        <span class="slide-badge badge-blue">Chapter 2 -- The Journey</span>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="150">
+        <h2 class="slide-title">From Launch to CNCF Sandbox</h2>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="300">
+        <p class="slide-subtitle" style="max-width:700px; margin:0 auto;">13 months from first commit to CNCF acceptance. Every milestone built on the last.</p>
+      </div>
+    </div>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="450">
+      <div class="timeline-row" id="timelineRow"></div>
+    </div>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="700">
+      <div class="stat-row" style="max-width: 600px; margin: 32px auto 0;">
+        <div class="stat-item">
+          <div class="stat-num" style="color:#f59e0b;">13</div>
+          <div class="stat-label">Months to CNCF</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:#3b82f6;">6</div>
+          <div class="stat-label">Conference Demos</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:#10b981;">4</div>
+          <div class="stat-label">Major Releases</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">03 / 08</div>
+</div>
+
+<!-- ==========================================
+     SLIDE 4: THE ECOSYSTEM
+     ========================================== -->
+<div class="slide" id="slide-3">
+  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
+  <div class="slide-split">
+    <div class="slide-left">
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="0">
+        <span class="slide-badge badge-green">Chapter 3 -- The Ecosystem</span>
+      </div>
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="150">
+        <h2 class="slide-title">Cloud-Native<br>AI Landscape</h2>
+      </div>
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="300">
+        <p class="slide-subtitle">llm-d connects to the broader cloud-native AI ecosystem through 8+ integrations.</p>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="450">
+        <ul class="feature-list">
+          <li><span class="bullet bullet-blue"></span><strong>vLLM</strong> -- High-throughput inference engine with PagedAttention (v0.6+)</li>
+          <li><span class="bullet bullet-green"></span><strong>KServe</strong> -- Model serving platform on Kubernetes (v0.13+)</li>
+          <li><span class="bullet bullet-amber"></span><strong>Gateway API</strong> -- Kubernetes-native routing with Inference Extension (v1.2+)</li>
+          <li><span class="bullet bullet-purple"></span><strong>NIXL</strong> -- NVIDIA GPU-to-GPU KV cache transfer library (v0.3+)</li>
+          <li><span class="bullet bullet-blue"></span><strong>Kubernetes</strong> -- Container orchestration with CRDs and operators (v1.28+)</li>
+          <li><span class="bullet bullet-coral"></span><strong>Prometheus</strong> -- Observability, autoscaling metrics (v2.45+)</li>
+          <li><span class="bullet bullet-green"></span><strong>KEDA</strong> -- Event-driven autoscaling by queue depth (v2.12+)</li>
+          <li><span class="bullet bullet-purple"></span><strong>Envoy</strong> -- Data plane for Gateway API traffic (v1.28+)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-right">
+      <div class="anim-hidden" data-anim="scaleIn" data-delay="200">
+        <div class="canvas-wrap">
+          <canvas id="canvas-deps"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">04 / 08</div>
+</div>
+
+<!-- ==========================================
+     SLIDE 5: GOVERNANCE & METRICS
+     ========================================== -->
+<div class="slide" id="slide-4">
+  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
+  <div class="slide-content">
+    <div style="text-align:center; margin-bottom: 32px;">
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="0">
+        <span class="slide-badge badge-purple">Chapter 4 -- Governance</span>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="150">
+        <h2 class="slide-title">Vendor-Neutral by Design</h2>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="300">
+        <p class="slide-subtitle" style="max-width:750px; margin:0 auto;">CNCF governance ensures no single company controls the roadmap. Contributions flow up, governance flows down.</p>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;">
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="400">
+        <div class="gov-stack">
+          <div class="gov-layer">
+            <div class="gov-dot" style="background:#426de1;"></div>
+            <div><div class="gov-layer-title" style="color:#426de1;">CNCF</div><div class="gov-layer-sub">Cloud Native Computing Foundation -- vendor-neutral home</div></div>
+          </div>
+          <div class="gov-layer">
+            <div class="gov-dot" style="background:#3b82f6;"></div>
+            <div><div class="gov-layer-title" style="color:#3b82f6;">Technical Oversight Committee</div><div class="gov-layer-sub">Evaluates projects, sets technical direction</div></div>
+          </div>
+          <div class="gov-layer">
+            <div class="gov-dot" style="background:#10b981;"></div>
+            <div><div class="gov-layer-title" style="color:#10b981;">CNCF Sandbox</div><div class="gov-layer-sub">Accepted March 2026 -- IP protection, CI infrastructure</div></div>
+          </div>
+          <div class="gov-layer">
+            <div class="gov-dot" style="background:#f59e0b;"></div>
+            <div><div class="gov-layer-title" style="color:#f59e0b;">Maintainers</div><div class="gov-layer-sub">Red Hat, Google Cloud, IBM Research -- merge authority</div></div>
+          </div>
+          <div class="gov-layer">
+            <div class="gov-dot" style="background:#8b5cf6;"></div>
+            <div><div class="gov-layer-title" style="color:#8b5cf6;">Contributors</div><div class="gov-layer-sub">15+ organizations -- PRs evaluated on technical merit</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="anim-hidden" data-anim="fadeLeft" data-delay="500">
+        <div class="canvas-wrap" style="aspect-ratio: 1/1;">
+          <canvas id="canvas-governance"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">05 / 08</div>
+</div>
+
+<!-- ==========================================
+     SLIDE 6: YOUR IMPACT
+     ========================================== -->
+<div class="slide" id="slide-5">
+  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
+  <div class="slide-split">
+    <div class="slide-left">
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="0">
+        <span class="slide-badge badge-coral">Chapter 5 -- Your Impact</span>
+      </div>
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="150">
+        <h2 class="slide-title">One PR.<br>Infinite Ripple.</h2>
+      </div>
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="300">
+        <p class="slide-subtitle">See how a single contribution ripples through the entire ecosystem.</p>
+      </div>
+      <div class="anim-hidden" data-anim="fadeRight" data-delay="450">
+        <p class="slide-body">
+          A single code fix is reviewed by <span class="highlight">3 maintainers</span>, merged into a release used by <span class="highlight-blue">42 organizations</span>, deployed across <span class="highlight-green">180 GPU clusters</span>, routing <span class="highlight-coral">2.4M requests per day</span>, and ultimately serving <span class="highlight-purple">12M end users</span> worldwide.
+        </p>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="600">
+        <div class="card-grid card-grid-2" style="margin-top:20px;">
+          <div class="card" style="padding:16px; text-align:center;">
+            <div style="font-size:11px; color:#6b6560; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">New Feature</div>
+            <div style="font-family:'Red Hat Display',sans-serif; font-size:28px; font-weight:900; color:#3b82f6;">Score 1,284</div>
+            <div style="font-size:11px; color:#a39e97; margin-top:4px;">65 orgs, 310 clusters, 38M users</div>
+          </div>
+          <div class="card" style="padding:16px; text-align:center;">
+            <div style="font-size:11px; color:#6b6560; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">Perf Optimization</div>
+            <div style="font-family:'Red Hat Display',sans-serif; font-size:28px; font-weight:900; color:#10b981;">Score 1,580</div>
+            <div style="font-size:11px; color:#a39e97; margin-top:4px;">72 orgs, 400 clusters, 52M users</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-right">
+      <div class="anim-hidden" data-anim="scaleIn" data-delay="200">
+        <div class="canvas-wrap" style="aspect-ratio: 1/1;">
+          <canvas id="canvas-impact"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">06 / 08</div>
+</div>
+
+<!-- ==========================================
+     SLIDE 7: CONTRIBUTOR JOURNEY
+     ========================================== -->
+<div class="slide" id="slide-6">
+  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
+  <div class="slide-content">
+    <div style="text-align:center; margin-bottom: 28px;">
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="0">
+        <span class="slide-badge badge-amber">Chapter 6 -- Your Journey</span>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="150">
+        <h2 class="slide-title">From First Issue to CNCF Contributor</h2>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="300">
+        <p class="slide-subtitle" style="max-width:750px; margin:0 auto;">Every maintainer started where you are now. Here is the path.</p>
+      </div>
+    </div>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="450">
+      <div class="journey-grid">
+        <div class="journey-card">
+          <div class="journey-num">1</div>
+          <div class="journey-stage-name">First Issue</div>
+          <div class="journey-stage-time">Day 1 -- Week 1</div>
+          <div class="journey-stage-desc">Find a bug, missing doc, or feature idea. File it or comment on one. No code required.</div>
+        </div>
+        <div class="journey-card">
+          <div class="journey-num">2</div>
+          <div class="journey-stage-name">First PR</div>
+          <div class="journey-stage-time">Week 1 -- Month 1</div>
+          <div class="journey-stage-desc">Pick a "good first issue," follow the guide, write tests, submit your first pull request.</div>
+        </div>
+        <div class="journey-card">
+          <div class="journey-num">3</div>
+          <div class="journey-stage-name">Regular Contributor</div>
+          <div class="journey-stage-time">Month 1 -- Month 6</div>
+          <div class="journey-stage-desc">Submit PRs regularly, review others' work, join community calls, build expertise.</div>
+        </div>
+        <div class="journey-card">
+          <div class="journey-num">4</div>
+          <div class="journey-stage-name">Reviewer</div>
+          <div class="journey-stage-time">Month 6 -- Year 1</div>
+          <div class="journey-stage-desc">Maintainers add you as a reviewer. You shape code quality and mentor newer contributors.</div>
+        </div>
+        <div class="journey-card">
+          <div class="journey-num">5</div>
+          <div class="journey-stage-name">Maintainer</div>
+          <div class="journey-stage-time">Year 1+</div>
+          <div class="journey-stage-desc">Merge authority and roadmap direction. Earned through sustained commitment and trust.</div>
+        </div>
+        <div class="journey-card">
+          <div class="journey-num">6</div>
+          <div class="journey-stage-name">CNCF Contributor</div>
+          <div class="journey-stage-time">Year 1+</div>
+          <div class="journey-stage-desc">Speak at KubeCon, co-author whitepapers, shape industry standards across projects.</div>
+        </div>
+      </div>
+    </div>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="700">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px;">
+        <div class="card" style="padding: 16px;">
+          <div style="font-size:12px; color:#3b82f6; font-weight:600; margin-bottom:6px;">A CONTRIBUTOR'S STORY</div>
+          <div style="font-size:13px; color:#6b6560; line-height:1.6; font-style:italic; border-left:3px solid #3b82f6; padding-left:12px;">
+            "My first PR was a two-line fix to a config parser. The review was thorough but kind. They helped me understand the project structure along the way."
+          </div>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <div style="font-size:12px; color:#10b981; font-weight:600; margin-bottom:6px;">BECOMING A MAINTAINER</div>
+          <div style="font-size:13px; color:#6b6560; line-height:1.6; font-style:italic; border-left:3px solid #10b981; padding-left:12px;">
+            "It was not about writing the most code. It was about consistently helping others succeed and earning trust through reliable, thoughtful contributions."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">07 / 08</div>
+</div>
+
+<!-- ==========================================
+     SLIDE 8: JOIN US -- CTA
+     ========================================== -->
+<div class="slide" id="slide-7">
+  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
+  <canvas id="canvas-cta" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div class="slide-content" style="position:relative; z-index:1;">
+    <div style="text-align:center; margin-bottom: 36px;">
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="0">
+        <span class="slide-badge badge-green">Chapter 7 -- Join Us</span>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="150">
+        <h2 class="slide-title">Your GPU Clusters Need Better Routing.<br>We Need Your Expertise.</h2>
+      </div>
+      <div class="anim-hidden" data-anim="fadeUp" data-delay="300">
+        <p class="slide-subtitle" style="max-width:700px; margin:0 auto;">
+          We started with 5 organizations. We are now 15+. The next contributor could be you -- and we mean it. Every PR gets reviewed. Every voice gets heard. No single company controls the roadmap.
+        </p>
+      </div>
+    </div>
+    <div class="card-grid card-grid-2" style="max-width:900px; margin: 0 auto;">
+      <div class="card anim-hidden" data-anim="bounce" data-delay="400">
+        <div class="card-icon" style="background:#fef3c7;">&#128221;</div>
+        <div class="card-title">File Your First Issue</div>
+        <div class="card-text">Found a bug? Have a feature idea? Issues are where every contribution starts. No idea is too small.</div>
+      </div>
+      <div class="card anim-hidden" data-anim="bounce" data-delay="500">
+        <div class="card-icon" style="background:#dbeafe;">&#128222;</div>
+        <div class="card-title">Join the Weekly Community Call</div>
+        <div class="card-text">Thursdays, 10am ET. Meet the maintainers, hear what is in progress, and shape the roadmap in real time.</div>
+      </div>
+      <div class="card anim-hidden" data-anim="bounce" data-delay="600">
+        <div class="card-icon" style="background:#d1fae5;">&#127919;</div>
+        <div class="card-title">Pick Up a Good First Issue</div>
+        <div class="card-text">We label beginner-friendly tasks specifically for new contributors. Real work, not busywork.</div>
+      </div>
+      <div class="card anim-hidden" data-anim="bounce" data-delay="700">
+        <div class="card-icon" style="background:#ede9fe;">&#128172;</div>
+        <div class="card-title">Share Your Production War Stories</div>
+        <div class="card-text">Running LLM inference at scale? Your hard-won lessons help shape what we build next. Join the discussion.</div>
+      </div>
+    </div>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="900">
+      <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:32px;">
+        <a class="cta-link cta-link--primary" href="https://github.com/llm-d" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+        <a class="cta-link cta-link--secondary" href="https://zoom-lfx.platform.linuxfoundation.org/meetings/llm-d" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zM0 8a8 8 0 1116 0A8 8 0 010 8zm9-3a1 1 0 00-2 0v3a1 1 0 00.293.707l2 2a1 1 0 001.414-1.414L9 7.586V5z"/></svg>
+          Community Call
+        </a>
+        <a class="cta-link cta-link--secondary" href="https://www.cncf.io/projects/llm-d/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1.75V13.5h13V2.5H2v-.75h13.25a.75.75 0 01.75.75v11.5a.75.75 0 01-.75.75H1.25a.75.75 0 01-.75-.75V1.75a.75.75 0 01.75-.75h.75v.75zM4 5h8v1.5H4V5zm0 3h8v1.5H4V8zm0 3h5v1.5H4V11z"/></svg>
+          CNCF Listing
+        </a>
+        <a class="cta-link cta-link--secondary" href="https://llm-d.ai" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1116 0A8 8 0 010 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 005.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 01.64-1.539 6.7 6.7 0 01.597-.933A7.025 7.025 0 002.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 00-.656 2.5h2.49zM4.847 5a12.5 12.5 0 00-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 00-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 00.337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 01-.597-.933A9.268 9.268 0 014.09 12H2.255a7.024 7.024 0 003.072 2.472zM3.82 11a13.652 13.652 0 01-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0013.745 12H11.91a9.27 9.27 0 01-.64 1.539 6.688 6.688 0 01-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 01-.312 2.5zm2.802-3.5a6.959 6.959 0 00-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 00-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 00-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>
+          Website
+        </a>
+      </div>
+    </div>
+    <div class="anim-hidden" data-anim="fadeUp" data-delay="1100">
+      <p style="text-align:center; margin-top:28px; font-size:13px; color:#a39e97;">llm-d is a <a href="https://www.cncf.io/" style="color:#6b6560; text-decoration:none;">CNCF Sandbox</a> project</p>
+    </div>
+  </div>
+  <div class="slide-number">08 / 08</div>
+</div>
+
+</div><!-- /slides-track -->
+</div><!-- /slides-viewport -->
+
 
 <script>
-/* ================================================================
-   DATA
-   ================================================================ */
-var ORGS = {
-  redhat:    {id:'redhat',   label:'Red Hat',      letter:'R',  color:'#ee0000', role:'Founding partner',
-    contribs:['Routing / EPP framework','Gateway API integration','Scheduling algorithms','Project governance leadership'],
-    components:['llm-d-core','llm-d-epp','Gateway API adapter'],
-    focus:['Routing','EPP','Gateway API','Scheduling','Governance'],
-    related:['KServe','Gateway API','Kubernetes'],
-    why:'Needed a vendor-neutral inference routing layer to complement OpenShift AI. No single company should own the routing plane for LLM serving.'},
-  google:    {id:'google',   label:'Google Cloud',  letter:'G',  color:'#4285f4', role:'Founding partner',
-    contribs:['Gateway API specification & implementation','Cloud-scale testing','Governance framework'],
-    components:['Gateway API conformance tests','GKE integration'],
-    focus:['Gateway API','Governance'],
-    related:['Gateway API','Kubernetes','KServe'],
-    why:'Wanted Gateway API adoption for AI workloads on GKE. A shared inference routing standard benefits the entire Kubernetes ecosystem, not just one cloud.'},
-  ibm:       {id:'ibm',      label:'IBM Research',  letter:'I',  color:'#0f62fe', role:'Founding partner',
-    contribs:['Advanced scheduling algorithms','Disaggregated serving research','CNCF donation co-sponsor'],
-    components:['Scheduler module','Research benchmarks'],
-    focus:['Scheduling','Governance','Research'],
-    related:['vLLM','KServe'],
-    why:'Required a production-grade platform to validate disaggregated serving research. Academic papers need real-world deployment, not just benchmarks.'},
-  nvidia:    {id:'nvidia',   label:'NVIDIA',        letter:'N',  color:'#76b900', role:'Core partner',
-    contribs:['Dynamo integration','NIXL transfer library','GPU-aware scheduling & inference acceleration'],
-    components:['NIXL bridge','Hardware acceleration layer'],
-    focus:['Hardware Optimization','Inference Engine','NIXL'],
-    related:['vLLM','NIXL','CUDA'],
-    why:'Needed an open routing layer to maximize GPU utilization across customer deployments. Better routing means customers get more out of every GPU.'},
-  coreweave: {id:'coreweave',label:'CoreWeave',     letter:'C',  color:'#00d4aa', role:'Core partner',
-    contribs:['Large-scale GPU cluster testing','Production validation','Performance benchmarks'],
-    components:['Scale test harness','Benchmarking suite'],
-    focus:['Scale Testing','Hardware'],
-    related:['Kubernetes','vLLM'],
-    why:'Required battle-tested inference routing to differentiate their GPU cloud offering. When you sell GPU time, routing efficiency is a competitive advantage.'},
-  amd:       {id:'amd',      label:'AMD',           letter:'A',  color:'#ed1c24', role:'Ecosystem',
-    contribs:['ROCm / AMD GPU optimization'],
-    components:['ROCm backend support'],
-    focus:['Hardware Optimization'],
-    related:['vLLM','ROCm'],
-    why:'Needed parity with NVIDIA in the inference routing stack. Open-source routing means AMD GPUs compete on merit, not vendor lock-in.'},
-  cisco:     {id:'cisco',    label:'Cisco',         letter:'Ci', color:'#049fd9', role:'Ecosystem',
-    contribs:['Network-scale testing','Infrastructure validation'],
-    components:['Scale testing infrastructure'],
-    focus:['Scale Testing'],
-    related:['Kubernetes','Prometheus'],
-    why:'Enterprise customers need validated, network-scale inference infrastructure. Testing at Cisco scale surfaces bugs no one else would find.'},
-  hf:        {id:'hf',       label:'Hugging Face',  letter:'HF', color:'#ffcd00', role:'Ecosystem',
-    contribs:['Model format support','Model hub integration'],
-    components:['Model loader integration'],
-    focus:['Model Support'],
-    related:['vLLM','Transformers'],
-    why:'The model hub serves millions of models. Open inference routing means those models deploy to production faster, wherever they run.'},
-  intel:     {id:'intel',    label:'Intel',         letter:'In', color:'#0071c5', role:'Ecosystem',
-    contribs:['Intel hardware optimization','Gaudi accelerator support'],
-    components:['Intel accelerator backend'],
-    focus:['Hardware Optimization'],
-    related:['vLLM','OpenVINO'],
-    why:'Gaudi accelerators need first-class inference routing support. Open-source routing ensures Intel hardware is a deployment target, not an afterthought.'},
-  lambda:    {id:'lambda',   label:'Lambda',        letter:'L',  color:'#8b5cf6', role:'Ecosystem',
-    contribs:['GPU cloud testing','Scale benchmarking'],
-    components:['Cloud testing environments'],
-    focus:['Scale Testing'],
-    related:['NVIDIA','vLLM'],
-    why:'GPU cloud customers need efficient inference routing out of the box. Contributing upstream means every Lambda deployment benefits.'},
-  mistral:   {id:'mistral',  label:'Mistral AI',    letter:'M',  color:'#f97316', role:'Ecosystem',
-    contribs:['Model architecture support','Inference pattern optimization'],
-    components:['Mistral model configurations'],
-    focus:['Model Support'],
-    related:['vLLM','Hugging Face'],
-    why:'Open models deserve open inference infrastructure. Contributing model-specific optimizations ensures Mistral models run at peak performance everywhere.'},
-  berkeley:  {id:'berkeley', label:'UC Berkeley',   letter:'B',  color:'#003262', role:'Academic',
-    contribs:['vLLM inference engine','PagedAttention research'],
-    components:['vLLM core engine','PagedAttention'],
-    focus:['Inference Engine','Research'],
-    related:['vLLM','PagedAttention'],
-    why:'Needed a production deployment pathway for research innovations. PagedAttention matters most when it is running in real GPU clusters, not just in papers.'},
-  uchicago:  {id:'uchicago', label:'UChicago',      letter:'U',  color:'#800000', role:'Academic',
-    contribs:['LMCache caching research','KV-cache optimization'],
-    components:['LMCache integration'],
-    focus:['Caching','Research'],
-    related:['LMCache','vLLM'],
-    why:'Needed a production deployment pathway for caching research. LMCache achieves its real impact when operators deploy it at scale, not in isolated benchmarks.'},
-  cncf:      {id:'cncf',     label:'CNCF',          letter:'CN', color:'#426de1', role:'Governance',
-    contribs:['Vendor-neutral governance framework','IP & trademark management','Build infrastructure'],
-    components:['CNCF Sandbox oversight'],
-    focus:['Governance'],
-    related:['Kubernetes','KServe','Prometheus'],
-    why:'The cloud-native ecosystem needs a vendor-neutral home for LLM inference. CNCF governance ensures no single company can capture the project.'}
-};
-var ORG_ARR = Object.keys(ORGS).map(function(k){ return ORGS[k]; });
+/* ============================================
+   SLIDE NAVIGATION ENGINE
+   ============================================ */
+var TOTAL_SLIDES = 8;
+var current = 0;
+var animating = false;
 
-var EDGES = [
-  {s:'redhat',t:'google',c:'#3b82f6',w:3},{s:'redhat',t:'ibm',c:'#3b82f6',w:3},{s:'redhat',t:'nvidia',c:'#3b82f6',w:2},
-  {s:'redhat',t:'coreweave',c:'#3b82f6',w:2},{s:'google',t:'ibm',c:'#3b82f6',w:2},
-  {s:'nvidia',t:'redhat',c:'#10b981',w:2},{s:'nvidia',t:'coreweave',c:'#10b981',w:2},
-  {s:'amd',t:'redhat',c:'#10b981',w:1},{s:'intel',t:'redhat',c:'#10b981',w:1},
-  {s:'berkeley',t:'redhat',c:'#8b5cf6',w:2},{s:'berkeley',t:'ibm',c:'#8b5cf6',w:1},
-  {s:'uchicago',t:'redhat',c:'#8b5cf6',w:2},{s:'uchicago',t:'ibm',c:'#8b5cf6',w:1},
-  {s:'cncf',t:'redhat',c:'#f59e0b',w:2},{s:'cncf',t:'google',c:'#f59e0b',w:2},{s:'cncf',t:'ibm',c:'#f59e0b',w:2},
-  {s:'hf',t:'redhat',c:'#6b7280',w:1},{s:'cisco',t:'redhat',c:'#6b7280',w:1},
-  {s:'lambda',t:'redhat',c:'#6b7280',w:1},{s:'mistral',t:'redhat',c:'#6b7280',w:1},
-  {s:'nvidia',t:'berkeley',c:'#8b5cf6',w:1},{s:'lambda',t:'nvidia',c:'#10b981',w:1},
-  {s:'hf',t:'mistral',c:'#6b7280',w:1}
-];
+var track = document.getElementById('slidesTrack');
+var progressBar = document.getElementById('progressBar');
+var dotsContainer = document.getElementById('navDots');
+var prevBtn = document.getElementById('prevBtn');
+var nextBtn = document.getElementById('nextBtn');
 
-/* ================================================================
-   0. AMBIENT PARTICLES (enhanced visibility/dynamics)
-   ================================================================ */
-(function(){
-  var c=document.getElementById('ambientCanvas'),x=c.getContext('2d'),pts=[],N=75;
-  function resize(){var d=devicePixelRatio||1;c.width=innerWidth*d;c.height=innerHeight*d;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';x.setTransform(d,0,0,d,0,0)}
-  function init(){pts=[];for(var i=0;i<N;i++)pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:.5+Math.random()*1.8,vx:(Math.random()-.5)*.18,vy:-.03+(Math.random()-.5)*.14,a:.06+Math.random()*.32,ph:Math.random()*6.28,ps:.004+Math.random()*.007})}
-  function draw(){x.clearRect(0,0,innerWidth,innerHeight);for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;p.ph+=p.ps;if(p.x<-5)p.x=innerWidth+5;if(p.x>innerWidth+5)p.x=-5;if(p.y<-5)p.y=innerHeight+5;if(p.y>innerHeight+5)p.y=-5;var a=p.a*(.55+.45*Math.sin(p.ph));x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);x.fillStyle='rgba(59,130,246,'+a+')';x.fill()}requestAnimationFrame(draw)}
-  resize();init();draw();window.addEventListener('resize',function(){resize();init()});
-})();
-
-/* ================================================================
-   SECTION NAV
-   ================================================================ */
-(function(){
-  var nav=document.getElementById('sectionNav'),btns=nav.querySelectorAll('button');
-  btns.forEach(function(b){b.addEventListener('click',function(){
-    var t=document.getElementById(b.dataset.target);
-    if(t){var hh=60,nh=nav.offsetHeight;window.scrollTo({top:t.getBoundingClientRect().top+pageYOffset-hh-nh-16,behavior:'smooth'})}
-  })});
-  var secs=Array.from(btns).map(function(b){return document.getElementById(b.dataset.target)});
-  var tick=false;
-  window.addEventListener('scroll',function(){if(!tick){requestAnimationFrame(function(){
-    var sy=scrollY+60+nav.offsetHeight+60,ai=0;
-    secs.forEach(function(s,i){if(s&&s.offsetTop<=sy)ai=i});
-    btns.forEach(function(b,i){b.classList.toggle('active',i===ai)});tick=false});tick=true}});
-})();
-
-/* ================================================================
-   EXPLORER PANEL (with "Why They Joined" section)
-   ================================================================ */
-var eoEl=document.getElementById('eo'),epEl=document.getElementById('ep');
-function openExplorer(id){
-  var o=ORGS[id]; if(!o)return;
-  var rc=o.role==='Founding partner'?'background:rgba(59,130,246,.12);color:#3b82f6;border:1px solid rgba(59,130,246,.2)':o.role==='Core partner'?'background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.2)':o.role==='Academic'?'background:rgba(139,92,246,.12);color:#8b5cf6;border:1px solid rgba(139,92,246,.2)':o.role==='Governance'?'background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.2)':'background:rgba(107,114,128,.12);color:#9ca3af;border:1px solid rgba(107,114,128,.2)';
-  document.getElementById('epHead').innerHTML='<div class="ep-badge" style="background:'+o.color+'">'+o.letter+'</div><h3>'+o.label+'</h3><div class="ep-role" style="'+rc+'">'+o.role+'</div>';
-  var html='';
-  if(o.why){html+='<div class="ep-sec"><h4>Why They Joined</h4><div class="ep-why">"'+o.why+'"</div></div>'}
-  html+='<div class="ep-sec"><h4>Contributions</h4><ul>'+o.contribs.map(function(c){return '<li>'+c+'</li>'}).join('')+'</ul></div>';
-  html+='<div class="ep-sec"><h4>Components Maintained</h4><ul>'+o.components.map(function(c){return '<li>'+c+'</li>'}).join('')+'</ul></div>';
-  html+='<div class="ep-sec"><h4>Focus Areas</h4><div class="ep-tags">'+o.focus.map(function(f){return '<span class="ep-tag">'+f+'</span>'}).join('')+'</div></div>';
-  html+='<div class="ep-sec"><h4>Related Projects</h4><ul>'+o.related.map(function(r){return '<li>'+r+'</li>'}).join('')+'</ul></div>';
-  document.getElementById('epBody').innerHTML=html;
-  eoEl.classList.add('open');document.body.style.overflow='hidden';
+// Build dots
+for (var i = 0; i < TOTAL_SLIDES; i++) {
+  var dot = document.createElement('button');
+  dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+  (function(idx) { dot.addEventListener('click', function() { goTo(idx); }); })(i);
+  dotsContainer.appendChild(dot);
 }
-function closeExplorer(){eoEl.classList.remove('open');document.body.style.overflow=''}
-document.getElementById('epClose').addEventListener('click',closeExplorer);
-eoEl.addEventListener('click',function(e){if(e.target===eoEl)closeExplorer()});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeExplorer()});
 
-/* ================================================================
-   1. PARTNER NETWORK
-   ================================================================ */
-(function(){
-  var container=document.getElementById('graphC'),canvas=document.getElementById('netCv'),ctx=canvas.getContext('2d'),tooltip=document.getElementById('netTT');
-  var nodes=[],W,H,dpr,hovered=null,drag=null,mx=-9e3,my=-9e3;
-  var flowParts=[];
-  var breathTime=0;
-  var edgeFlashes=[];
+function goTo(index) {
+  if (animating || index === current || index < 0 || index >= TOTAL_SLIDES) return;
+  animating = true;
+  current = index;
+  track.style.transform = 'translateX(-' + (current * 100) + '%)';
+  progressBar.style.width = ((current + 1) / TOTAL_SLIDES * 100) + '%';
+  updateDots();
+  updateArrows();
+  setTimeout(function() {
+    animating = false;
+    triggerSlideAnimations(current);
+  }, 650);
+}
 
-  function resize(){var r=container.getBoundingClientRect();dpr=devicePixelRatio||1;W=r.width;H=Math.max(480,Math.min(W*.56,620));canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+function navigate(dir) {
+  goTo(current + dir);
+}
 
-  function initNodes(){var cx=W/2,cy=H/2;nodes=ORG_ARR.map(function(o,i){
-    var a=(i/ORG_ARR.length)*Math.PI*2-Math.PI/2,rad=Math.min(W,H)*.31;
-    var sz=o.role==='Founding partner'?26:o.role==='Core partner'?21:o.role==='Governance'?23:16;
-    return{id:o.id,label:o.label,letter:o.letter,color:o.color,role:o.role,focus:o.focus,
-      x:cx+Math.cos(a)*rad+(Math.random()-.5)*40,y:cy+Math.sin(a)*rad+(Math.random()-.5)*40,
-      vx:0,vy:0,r:sz,baseR:sz,pinned:false}
-  });initFlowParts()}
+function updateDots() {
+  var dots = dotsContainer.querySelectorAll('.nav-dot');
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].classList.toggle('active', i === current);
+  }
+}
 
-  function initFlowParts(){flowParts=[];EDGES.forEach(function(e){for(var i=0;i<e.w+1;i++){flowParts.push({edge:e,t:Math.random(),sp:(.002+Math.random()*.003)*(.5+e.w*.3),sz:1+e.w*.4})}})}
+function updateArrows() {
+  prevBtn.classList.toggle('disabled', current === 0);
+  nextBtn.classList.toggle('disabled', current === TOTAL_SLIDES - 1);
+}
 
-  function maybeSpawnFlash(){
-    if(Math.random()<0.012){
-      var e=EDGES[Math.floor(Math.random()*EDGES.length)];
-      edgeFlashes.push({edge:e,t:0,sp:.025+Math.random()*.02,life:1,sz:3+Math.random()*2})
-    }
+// Keyboard
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); navigate(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+});
+
+// Touch swipe
+var touchStartX = 0;
+document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', function(e) {
+  var dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 60) navigate(dx < 0 ? 1 : -1);
+});
+
+/* ============================================
+   STAGGERED ENTRANCE ANIMATIONS
+   ============================================ */
+var animatedSlides = {};
+
+function triggerSlideAnimations(slideIndex) {
+  if (animatedSlides[slideIndex]) return;
+  animatedSlides[slideIndex] = true;
+  var slide = document.getElementById('slide-' + slideIndex);
+  if (!slide) return;
+  var els = slide.querySelectorAll('[data-anim]');
+  for (var i = 0; i < els.length; i++) {
+    (function(el) {
+      var delay = parseInt(el.dataset.delay || '0', 10);
+      var anim = el.dataset.anim;
+      setTimeout(function() {
+        el.classList.remove('anim-hidden');
+        el.classList.add('anim-' + anim);
+      }, delay);
+    })(els[i]);
   }
 
-  function gn(id){for(var i=0;i<nodes.length;i++)if(nodes[i].id===id)return nodes[i];return null}
+  // Trigger canvas animations per slide
+  if (slideIndex === 0) { startHeroCanvas(); startCountUp(); }
+  if (slideIndex === 1) startNetworkCanvas();
+  if (slideIndex === 2) buildTimeline();
+  if (slideIndex === 3) startDepsCanvas();
+  if (slideIndex === 4) startGovernanceCanvas();
+  if (slideIndex === 5) startImpactCanvas();
+  if (slideIndex === 7) startCtaCanvas();
+}
 
-  function sim(){var cx=W/2,cy=H/2;
-    for(var i=0;i<nodes.length;i++){if(nodes[i].pinned)continue;for(var j=i+1;j<nodes.length;j++){
-      var a=nodes[i],b=nodes[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=3200/(d*d),fx=dx/d*f,fy=dy/d*f;
-      if(!a.pinned){a.vx-=fx;a.vy-=fy}if(!b.pinned){b.vx+=fx;b.vy+=fy}}}
-    EDGES.forEach(function(e){var a=gn(e.s),b=gn(e.t);if(!a||!b)return;var dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)||1,disp=d-Math.min(W,H)*.23,f=.005*disp,fx=dx/d*f,fy=dy/d*f;if(!a.pinned){a.vx+=fx;a.vy+=fy}if(!b.pinned){b.vx-=fx;b.vy-=fy}});
-    for(var i=0;i<nodes.length;i++){var n=nodes[i];if(n.pinned)continue;n.vx+=(cx-n.x)*.0004;n.vy+=(cy-n.y)*.0004;n.vx*=.88;n.vy*=.88;n.x+=n.vx;n.y+=n.vy;var p=n.r+10;n.x=Math.max(p,Math.min(W-p,n.x));n.y=Math.max(p,Math.min(H-p,n.y))}}
+// Initial load
+updateArrows();
+setTimeout(function() { triggerSlideAnimations(0); }, 300);
 
-  function draw(){ctx.clearRect(0,0,W,H);
-    breathTime+=0.015;
-    for(var i=0;i<nodes.length;i++){
-      var phase=breathTime+i*0.4;
-      nodes[i].r=nodes[i].baseR+Math.sin(phase)*2;
-    }
-    maybeSpawnFlash();
-    EDGES.forEach(function(e){var a=gn(e.s),b=gn(e.t);if(!a||!b)return;
-      var hl=hovered&&(hovered.id===e.s||hovered.id===e.t);
-      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=e.c;
-      ctx.globalAlpha=hovered?(hl?.65:.05):.18;ctx.lineWidth=hl?e.w*1+1.5:e.w*.7+.5;ctx.stroke();ctx.globalAlpha=1});
-    flowParts.forEach(function(p){p.t+=p.sp;if(p.t>1)p.t-=1;var a=gn(p.edge.s),b=gn(p.edge.t);if(!a||!b)return;
-      var hl=hovered&&(hovered.id===p.edge.s||hovered.id===p.edge.t),dim=hovered&&!hl;
-      var x=a.x+(b.x-a.x)*p.t,y=a.y+(b.y-a.y)*p.t;
-      ctx.beginPath();ctx.arc(x,y,p.sz,0,6.28);ctx.fillStyle=p.edge.c;ctx.globalAlpha=dim?.02:(hl?.85:.35);ctx.fill();ctx.globalAlpha=1});
-    for(var fi=edgeFlashes.length-1;fi>=0;fi--){
-      var fl=edgeFlashes[fi];fl.t+=fl.sp;fl.life-=.018;
-      if(fl.life<=0||fl.t>1){edgeFlashes.splice(fi,1);continue}
-      var fa=gn(fl.edge.s),fb=gn(fl.edge.t);if(!fa||!fb){edgeFlashes.splice(fi,1);continue}
-      var fx=fa.x+(fb.x-fa.x)*fl.t,fy=fa.y+(fb.y-fa.y)*fl.t;
-      var flashAlpha=fl.life*0.9;
-      ctx.beginPath();ctx.arc(fx,fy,fl.sz+4,0,6.28);
-      ctx.fillStyle=fl.edge.c;ctx.globalAlpha=flashAlpha*0.25;ctx.fill();
-      ctx.beginPath();ctx.arc(fx,fy,fl.sz,0,6.28);
-      ctx.fillStyle='#ffffff';ctx.globalAlpha=flashAlpha*0.7;ctx.fill();
-      ctx.globalAlpha=1;
-    }
-    nodes.forEach(function(n){
-      var isH=hovered&&hovered.id===n.id,isC=hovered&&EDGES.some(function(e){return(e.s===hovered.id&&e.t===n.id)||(e.t===hovered.id&&e.s===n.id)}),dim=hovered&&!isH&&!isC;
-      if(isH){var g=ctx.createRadialGradient(n.x,n.y,n.r,n.x,n.y,n.r+18);g.addColorStop(0,n.color+'40');g.addColorStop(1,n.color+'00');ctx.beginPath();ctx.arc(n.x,n.y,n.r+18,0,6.28);ctx.fillStyle=g;ctx.fill()}
-      else if(isC){ctx.beginPath();ctx.arc(n.x,n.y,n.r+7,0,6.28);ctx.fillStyle=n.color+'15';ctx.fill()}
-      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,6.28);ctx.globalAlpha=dim?.14:1;ctx.fillStyle=n.color;ctx.fill();
-      ctx.font='bold '+(n.r*.78)+'px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=dim?'rgba(255,255,255,.08)':'rgba(255,255,255,.95)';ctx.fillText(n.letter,n.x,n.y+1);ctx.globalAlpha=1;
-      ctx.font='500 '+(dim?'9':'10')+'px "Red Hat Text",sans-serif';ctx.textBaseline='top';ctx.fillStyle=dim?'rgba(226,232,244,.08)':'rgba(226,232,244,.82)';ctx.fillText(n.label,n.x,n.y+n.r+7)});
-    sim();requestAnimationFrame(draw)}
+/* ============================================
+   CANVAS UTILITIES
+   ============================================ */
+function setupCanvas(id) {
+  var c = document.getElementById(id);
+  if (!c) return null;
+  var rect = c.parentElement ? c.parentElement.getBoundingClientRect() : c.getBoundingClientRect();
+  var dpr = window.devicePixelRatio || 1;
+  c.width = rect.width * dpr;
+  c.height = rect.height * dpr;
+  c.style.width = rect.width + 'px';
+  c.style.height = rect.height + 'px';
+  var ctx = c.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return { ctx: ctx, w: rect.width, h: rect.height, c: c };
+}
 
-  function hit(mx,my){for(var i=nodes.length-1;i>=0;i--){var n=nodes[i],dx=mx-n.x,dy=my-n.y;if(dx*dx+dy*dy<=(n.r+8)*(n.r+8))return n}return null}
+function lerp(a, b, t) { return a + (b - a) * t; }
 
-  canvas.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;
-    if(drag){drag.x=mx;drag.y=my;drag.vx=0;drag.vy=0;return}
-    hovered=hit(mx,my);
-    if(hovered){var o=ORGS[hovered.id];tooltip.querySelector('.tn').textContent=hovered.label;tooltip.querySelector('.tr').textContent=hovered.role;
-      tooltip.querySelector('.td').textContent=o?o.contribs.slice(0,2).join(' / '):'';
-      var tagsEl=tooltip.querySelector('.tags');tagsEl.innerHTML='';(hovered.focus||[]).forEach(function(f){var s=document.createElement('span');s.className='tag';s.textContent=f;tagsEl.appendChild(s)});
-      tooltip.style.opacity='1';var tx=mx+18,ty=my-14;if(tx+300>W)tx=mx-300;if(ty<0)ty=my+24;tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';canvas.style.cursor='pointer'}
-    else{tooltip.style.opacity='0';canvas.style.cursor='crosshair'}});
-  canvas.addEventListener('mousedown',function(e){var r=canvas.getBoundingClientRect();var n=hit(e.clientX-r.left,e.clientY-r.top);if(n){drag=n;drag.pinned=true;e.preventDefault()}});
-  canvas.addEventListener('mouseup',function(){if(drag){drag.pinned=false;drag=null}});
-  canvas.addEventListener('mouseleave',function(){mx=-9e3;my=-9e3;hovered=null;tooltip.style.opacity='0';if(drag){drag.pinned=false;drag=null}});
-  canvas.addEventListener('click',function(e){var r=canvas.getBoundingClientRect();var n=hit(e.clientX-r.left,e.clientY-r.top);if(n&&!drag)openExplorer(n.id)});
-  canvas.addEventListener('touchstart',function(e){var t=e.touches[0],r=canvas.getBoundingClientRect();var n=hit(t.clientX-r.left,t.clientY-r.top);if(n)openExplorer(n.id)},{passive:true});
-
-  resize();initNodes();requestAnimationFrame(draw);window.addEventListener('resize',resize);
-})();
-
-/* ================================================================
-   2. TIMELINE (with NOW indicator on latest milestone)
-   ================================================================ */
-(function(){
-  var ms=[
-    {d:'May 2025',t:'Project Launch',desc:'llm-d announced with founding coalition: Red Hat, Google Cloud, IBM Research, CoreWeave, NVIDIA. Initial EPP routing framework and Gateway API support.'},
-    {d:'Jun 2025',t:'First External PRs',desc:'Community contributors beyond founding partners submit first pull requests. Contribution guidelines and review standards established.'},
-    {d:'Aug 2025',t:'KubeCon NA Demo',desc:'Live demo at KubeCon North America showcasing multi-model routing across heterogeneous GPU pools with measurable throughput gains.'},
-    {d:'Nov 2025',t:'v0.2 Release',desc:'Major release: EPP v2, improved scheduling, NVIDIA Dynamo integration, enhanced prefix-aware routing, production hardening.'},
-    {d:'Jan 2026',t:'CNCF Submission',desc:'IBM Research, Red Hat, and Google Cloud jointly submit llm-d to CNCF Sandbox. Multi-vendor sponsorship underscores neutrality.'},
-    {d:'Mar 2026',t:'CNCF Sandbox Accepted',desc:'Accepted into CNCF Sandbox. IP transferred to foundation. Vendor-neutral governance formally established.'},
-    {d:'Jun 2026',t:'Growing Ecosystem',desc:'15+ partner organizations, 100+ contributors, multiple production deployments. Expanding hardware and cloud provider support.',now:true}
-  ];
-  var track=document.getElementById('tlTrack');
-  ms.forEach(function(m){var item=document.createElement('div');item.className='tl-i'+(m.now?' tl-now':'');
-    var extra=m.now?'<div class="tl-now-label">NOW</div>':'';
-    item.innerHTML='<div class="tl-dw"><div class="tl-d"></div></div><div class="tl-date">'+m.d+'</div><div class="tl-lbl">'+m.t+'</div>'+extra+'<div class="tl-det"><div class="tl-det-in">'+m.desc+'</div></div>';
-    item.addEventListener('click',function(){var was=item.classList.contains('active');track.querySelectorAll('.tl-i').forEach(function(el){el.classList.remove('active')});if(!was)item.classList.add('active')});
-    track.appendChild(item)});
-})();
-
-/* ================================================================
-   3. DEPENDENCY MAP
-   ================================================================ */
-(function(){
-  var container=document.getElementById('depC'),canvas=document.getElementById('depCv'),ctx=canvas.getContext('2d'),tooltip=document.getElementById('depTT');
-  var deps=[
-    {id:'vllm',label:'vLLM',desc:'High-throughput inference engine with PagedAttention. llm-d routes requests to vLLM worker pools.',ver:'v0.6+',color:'#3b82f6'},
-    {id:'kserve',label:'KServe',desc:'Model serving platform on Kubernetes. llm-d provides intelligent routing and scheduling layer.',ver:'v0.13+',color:'#10b981'},
-    {id:'gwapi',label:'Gateway API',desc:'Kubernetes-native API gateway. llm-d implements the Inference Extension for LLM-aware routing.',ver:'v1.2+',color:'#f59e0b'},
-    {id:'nixl',label:'NIXL',desc:'NVIDIA transfer library for GPU-to-GPU KV cache transfer in disaggregated architectures.',ver:'v0.3+',color:'#76b900'},
-    {id:'k8s',label:'Kubernetes',desc:'Container orchestration. llm-d runs as cloud-native workloads with CRDs and operators.',ver:'v1.28+',color:'#326ce5'},
-    {id:'prom',label:'Prometheus',desc:'Observability and monitoring. llm-d exports metrics for autoscaling and performance dashboards.',ver:'v2.45+',color:'#e6522c'},
-    {id:'keda',label:'KEDA',desc:'Event-driven autoscaling. Scales llm-d workers based on queue depth and GPU utilization.',ver:'v2.12+',color:'#06b6d4'},
-    {id:'envoy',label:'Envoy',desc:'Edge/service proxy. Gateway API implementations use Envoy as the data plane for llm-d traffic.',ver:'v1.28+',color:'#ac6fce'}
-  ];
-  var W,H,dpr,cx,cy,pos=[],hov=null,dOff=0,pulse=0,dParts=[];
-
-  function resize(){var r=container.getBoundingClientRect();dpr=devicePixelRatio||1;W=r.width;H=Math.max(440,Math.min(W*.54,540));canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);cx=W/2;cy=H/2;comp();initDP()}
-  function comp(){var rad=Math.min(W,H)*.37;pos=deps.map(function(d,i){var a=(i/deps.length)*6.28-1.57;return{id:d.id,label:d.label,desc:d.desc,ver:d.ver,color:d.color,x:cx+Math.cos(a)*rad,y:cy+Math.sin(a)*rad,nr:32}})}
-  function initDP(){dParts=[];pos.forEach(function(p){for(var i=0;i<3;i++){dParts.push({dep:p,t:Math.random(),sp:.003+Math.random()*.005,sz:1+Math.random()*.8})}})}
-
-  function draw(){ctx.clearRect(0,0,W,H);dOff-=.4;pulse+=.025;
-    var cR=42+Math.sin(pulse)*4;
-    pos.forEach(function(p){var isH=hov&&hov.id===p.id;ctx.save();ctx.setLineDash([8,5]);ctx.lineDashOffset=dOff;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p.x,p.y);ctx.strokeStyle=p.color;ctx.globalAlpha=hov?(isH?.8:.07):.22;ctx.lineWidth=isH?2.5:1.5;ctx.stroke();ctx.restore()});
-    dParts.forEach(function(dp){dp.t+=dp.sp;if(dp.t>1)dp.t-=1;var p=dp.dep,isH=hov&&hov.id===p.id,dim=hov&&!isH;
-      var x=cx+(p.x-cx)*dp.t,y=cy+(p.y-cy)*dp.t;ctx.beginPath();ctx.arc(x,y,dp.sz,0,6.28);ctx.fillStyle=p.color;ctx.globalAlpha=dim?.02:(isH?.8:.3);ctx.fill();ctx.globalAlpha=1});
-    var g=ctx.createRadialGradient(cx,cy,cR*.35,cx,cy,cR+20);g.addColorStop(0,'rgba(59,130,246,.28)');g.addColorStop(.6,'rgba(59,130,246,.06)');g.addColorStop(1,'rgba(59,130,246,0)');ctx.beginPath();ctx.arc(cx,cy,cR+20,0,6.28);ctx.fillStyle=g;ctx.fill();
-    ctx.beginPath();ctx.arc(cx,cy,cR,0,6.28);ctx.fillStyle='#3b82f6';ctx.fill();ctx.font='900 16px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';ctx.fillText('llm-d',cx,cy);
-    pos.forEach(function(p){var isH=hov&&hov.id===p.id,dim=hov&&!isH;
-      if(isH){var hg=ctx.createRadialGradient(p.x,p.y,p.nr,p.x,p.y,p.nr+14);hg.addColorStop(0,p.color+'28');hg.addColorStop(1,p.color+'00');ctx.beginPath();ctx.arc(p.x,p.y,p.nr+14,0,6.28);ctx.fillStyle=hg;ctx.fill()}
-      ctx.beginPath();ctx.arc(p.x,p.y,p.nr,0,6.28);ctx.fillStyle=dim?'rgba(15,21,37,.85)':'rgba(15,21,37,.95)';ctx.fill();ctx.strokeStyle=p.color;ctx.globalAlpha=dim?.12:.75;ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=1;
-      ctx.font='700 11px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=dim?'rgba(226,232,244,.08)':p.color;ctx.fillText(p.label,p.x,p.y-5);
-      ctx.font='400 8px "Red Hat Text",sans-serif';ctx.fillStyle=dim?'rgba(226,232,244,.04)':'rgba(226,232,244,.35)';ctx.fillText(p.ver,p.x,p.y+9)});
-    requestAnimationFrame(draw)}
-
-  function hitD(mx,my){for(var i=pos.length-1;i>=0;i--){var p=pos[i],dx=mx-p.x,dy=my-p.y;if(dx*dx+dy*dy<=(p.nr+8)*(p.nr+8))return p}
-    var cdx=mx-cx,cdy=my-cy;if(cdx*cdx+cdy*cdy<=48*48)return{id:'llmd',label:'llm-d',ver:'v0.2+',desc:'Kubernetes-native platform for scalable LLM inference. The central orchestration and routing layer.'};return null}
-
-  canvas.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();var mx=e.clientX-r.left,my=e.clientY-r.top;hov=hitD(mx,my);
-    if(hov){tooltip.querySelector('.tn').textContent=hov.label;tooltip.querySelector('.tr').textContent='Compatible: '+hov.ver;tooltip.querySelector('.td').textContent=hov.desc;tooltip.style.opacity='1';var tx=mx+18,ty=my-14;if(tx+300>W)tx=mx-300;if(ty<0)ty=my+24;tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';canvas.style.cursor='pointer'}
-    else{tooltip.style.opacity='0';canvas.style.cursor='default'}});
-  canvas.addEventListener('mouseleave',function(){hov=null;tooltip.style.opacity='0'});
-  canvas.addEventListener('touchstart',function(e){var t=e.touches[0],r=canvas.getBoundingClientRect();hov=hitD(t.clientX-r.left,t.clientY-r.top);if(hov){tooltip.querySelector('.tn').textContent=hov.label;tooltip.querySelector('.tr').textContent='Compatible: '+hov.ver;tooltip.querySelector('.td').textContent=hov.desc;tooltip.style.opacity='1';tooltip.style.left='10px';tooltip.style.top='10px'}},{passive:true});
-  canvas.addEventListener('touchend',function(){hov=null;tooltip.style.opacity='0'});
-  resize();requestAnimationFrame(draw);window.addEventListener('resize',resize);
-})();
-
-/* ================================================================
-   4. GOVERNANCE
-   ================================================================ */
-(function(){
-  var container=document.getElementById('govC'),canvas=document.getElementById('govCv'),ctx=canvas.getContext('2d'),tooltip=document.getElementById('govTT');
-  var layers=[
-    {label:'CNCF',sub:'Cloud Native Computing Foundation',desc:'The vendor-neutral home for cloud-native open source projects. Provides governance framework, legal structure, and community resources for llm-d.',color:'#426de1'},
-    {label:'Technical Oversight Committee',sub:'TOC',desc:'The CNCF TOC evaluates projects, sets technical direction, and decides on maturity levels (Sandbox, Incubating, Graduated).',color:'#3b82f6'},
-    {label:'CNCF Sandbox',sub:'Early-stage incubation',desc:'Sandbox projects receive IP protection, CI infrastructure, and foundation oversight. llm-d was accepted March 2026.',color:'#10b981'},
-    {label:'Maintainers',sub:'Red Hat, Google Cloud, IBM Research',desc:'Core maintainers with merge authority who review PRs, set roadmap direction, and ensure code quality across the project.',color:'#f59e0b'},
-    {label:'Contributors',sub:'15+ organizations',desc:'Open contributor base spanning hardware vendors, cloud providers, academic institutions, and AI companies. PRs evaluated on technical merit.',color:'#8b5cf6'}
-  ];
-  var W,H,dpr,hovL=null,govParts=[];
-
-  function resize(){var r=container.getBoundingClientRect();dpr=devicePixelRatio||1;W=r.width;H=Math.max(400,Math.min(W*.45,460));canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);compLayers();initGP()}
-  function compLayers(){var lh=50,gap=(H-50-layers.length*lh)/(layers.length);layers.forEach(function(l,i){l.y=30+i*(lh+gap);l.h=lh;l.w=Math.max(220,W*.56-i*20);l.x=(W-l.w)/2})}
-  function initGP(){govParts=[];for(var i=0;i<12;i++){govParts.push({dir:'up',x:W*.32+Math.random()*W*.06,t:Math.random(),sp:.002+Math.random()*.003,sz:1.3+Math.random(),c:'#8b5cf6'})}
-    for(var i=0;i<8;i++){govParts.push({dir:'down',x:W*.62+Math.random()*W*.06,t:Math.random(),sp:.002+Math.random()*.003,sz:1.3+Math.random(),c:'#f59e0b'})}}
-
-  function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath()}
-
-  function draw(){ctx.clearRect(0,0,W,H);
-    var topY=layers[0].y+layers[0].h/2,botY=layers[4].y+layers[4].h/2;
-    ctx.beginPath();ctx.moveTo(W*.35,topY);ctx.lineTo(W*.35,botY);ctx.strokeStyle='rgba(139,92,246,.1)';ctx.lineWidth=1;ctx.stroke();
-    ctx.beginPath();ctx.moveTo(W*.65,topY);ctx.lineTo(W*.65,botY);ctx.strokeStyle='rgba(245,158,11,.1)';ctx.lineWidth=1;ctx.stroke();
-    govParts.forEach(function(p){p.t+=p.sp;if(p.t>1)p.t-=1;var py=p.dir==='up'?botY-(botY-topY)*p.t:topY+(botY-topY)*p.t;var a=Math.sin(p.t*3.14)*.55+.1;ctx.beginPath();ctx.arc(p.x,py,p.sz,0,6.28);ctx.fillStyle=p.c;ctx.globalAlpha=a;ctx.fill();ctx.globalAlpha=1});
-    layers.forEach(function(l,i){var isH=hovL===i;
-      if(isH){ctx.shadowColor=l.color;ctx.shadowBlur=18}
-      roundRect(l.x,l.y,l.w,l.h,10);ctx.fillStyle='rgba(15,21,37,.88)';ctx.fill();ctx.strokeStyle=l.color+(isH?'bb':'35');ctx.lineWidth=isH?2:1;ctx.stroke();ctx.shadowBlur=0;ctx.shadowColor='transparent';
-      ctx.font='700 13px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=l.color;ctx.fillText(l.label,W/2,l.y+l.h/2-7);
-      ctx.font='400 10px "Red Hat Text",sans-serif';ctx.fillStyle='rgba(226,232,244,.4)';ctx.fillText(l.sub,W/2,l.y+l.h/2+9);
-      if(i<layers.length-1){var nxt=layers[i+1];ctx.beginPath();ctx.setLineDash([3,3]);ctx.moveTo(W/2,l.y+l.h);ctx.lineTo(W/2,nxt.y);ctx.strokeStyle='rgba(226,232,244,.08)';ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([])}});
-    ctx.font='500 10px "Red Hat Text",sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(139,92,246,.55)';ctx.fillText('Contributions flow up',W*.35,H-10);
-    ctx.fillStyle='rgba(245,158,11,.55)';ctx.fillText('Governance flows down',W*.65,H-10);
-    requestAnimationFrame(draw)}
-
-  function hitL(mx,my){for(var i=0;i<layers.length;i++){var l=layers[i];if(mx>=l.x&&mx<=l.x+l.w&&my>=l.y&&my<=l.y+l.h)return i}return null}
-
-  canvas.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();var mx=e.clientX-r.left,my=e.clientY-r.top;hovL=hitL(mx,my);
-    if(hovL!==null){var l=layers[hovL];tooltip.querySelector('.tn').textContent=l.label;tooltip.querySelector('.td').textContent=l.desc;tooltip.style.opacity='1';var tx=mx+18,ty=my-14;if(tx+260>W)tx=mx-260;if(ty+80>H)ty=my-80;tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';canvas.style.cursor='pointer'}
-    else{tooltip.style.opacity='0';canvas.style.cursor='default'}});
-  canvas.addEventListener('mouseleave',function(){hovL=null;tooltip.style.opacity='0'});
-  canvas.addEventListener('touchstart',function(e){var t=e.touches[0],r=canvas.getBoundingClientRect();hovL=hitL(t.clientX-r.left,t.clientY-r.top);if(hovL!==null){var l=layers[hovL];tooltip.querySelector('.tn').textContent=l.label;tooltip.querySelector('.td').textContent=l.desc;tooltip.style.opacity='1';tooltip.style.left='10px';tooltip.style.top='10px'}},{passive:true});
-  canvas.addEventListener('touchend',function(){hovL=null;tooltip.style.opacity='0'});
-  resize();requestAnimationFrame(draw);window.addEventListener('resize',resize);
-})();
-
-/* ================================================================
-   5. COMMUNITY METRICS
-   ================================================================ */
-(function(){
-  var stats=[
-    {val:15,suf:'+',label:'Partner Organizations',spark:[2,3,5,6,8,10,12,14,15]},
-    {val:4,suf:'',label:'Major Releases',spark:[0,1,1,2,2,3,3,4,4]},
-    {val:8,suf:'+',label:'Ecosystem Integrations',spark:[1,2,3,4,4,5,6,7,8]},
-    {val:6,suf:'',label:'Conference Presentations',spark:[0,1,2,2,3,4,5,5,6]},
-    {val:100,suf:'+',label:'Contributors',spark:[5,12,25,40,55,68,80,92,100]}
-  ];
-  var grid=document.getElementById('statsG'),numEls=[];
-  stats.forEach(function(s){
-    var card=document.createElement('div');card.className='sc';
-    var numEl=document.createElement('div');numEl.className='sc-num';numEl.textContent='0'+s.suf;numEl.dataset.target=s.val;numEl.dataset.suffix=s.suf;
-    var lblEl=document.createElement('div');lblEl.className='sc-lbl';lblEl.textContent=s.label;
-    var spkCv=document.createElement('canvas');spkCv.width=300;spkCv.height=36;
-    card.appendChild(numEl);card.appendChild(lblEl);card.appendChild(spkCv);grid.appendChild(card);numEls.push(numEl);
-    var sx=spkCv.getContext('2d'),sw=300,sh=36,pad=4,max=Math.max.apply(null,s.spark)||1,segW=(sw-pad*2)/(s.spark.length-1);
-    sx.beginPath();sx.moveTo(pad,sh-pad);
-    s.spark.forEach(function(v,i){var x=pad+i*segW,y=sh-pad-(v/max)*(sh-pad*2);sx.lineTo(x,y)});
-    sx.lineTo(pad+(s.spark.length-1)*segW,sh-pad);sx.closePath();
-    var grd=sx.createLinearGradient(0,0,0,sh);grd.addColorStop(0,'rgba(59,130,246,.12)');grd.addColorStop(1,'rgba(59,130,246,0)');sx.fillStyle=grd;sx.fill();
-    sx.beginPath();s.spark.forEach(function(v,i){var x=pad+i*segW,y=sh-pad-(v/max)*(sh-pad*2);i===0?sx.moveTo(x,y):sx.lineTo(x,y)});sx.strokeStyle='rgba(59,130,246,.45)';sx.lineWidth=1.5;sx.stroke();
-    var lx=pad+(s.spark.length-1)*segW,ly=sh-pad-(s.spark[s.spark.length-1]/max)*(sh-pad*2);sx.beginPath();sx.arc(lx,ly,3,0,6.28);sx.fillStyle='#3b82f6';sx.fill();
-  });
-  var animated=false;
-  function anim(){if(animated)return;animated=true;numEls.forEach(function(el){var tgt=+el.dataset.target,suf=el.dataset.suffix,dur=1400,st=performance.now();
-    (function step(now){var p=Math.min((now-st)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*tgt)+suf;if(p<1)requestAnimationFrame(step)})(st)})}
-  if('IntersectionObserver' in window){var obs=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){anim();obs.disconnect()}})},{threshold:.25});obs.observe(grid)}else anim();
-})();
-
-/* ================================================================
-   6. IMPACT CALCULATOR
-   ================================================================ */
-(function(){
-  var canvas=document.getElementById('impactCv'),ctx=canvas.getContext('2d'),wrap=document.getElementById('impactViz');
-  var scoreEl=document.getElementById('impactScore'),scoreVal=document.getElementById('impactScoreVal'),scoreDesc=document.getElementById('impactScoreDesc');
-  var W,H,dpr;
-  var currentType='code';
-  var animState=null;
-
-  var impactData={
-    code:    {label:'Code Fix',               reviewers:3, orgs:42,  clusters:180,  reqPerDay:2.4,  users:12,   score:847,  unit:'M',userUnit:'M'},
-    feature: {label:'New Feature',            reviewers:5, orgs:65,  clusters:310,  reqPerDay:8.1,  users:38,   score:1284, unit:'M',userUnit:'M'},
-    docs:    {label:'Documentation',          reviewers:2, orgs:28,  clusters:95,   reqPerDay:1.1,  users:5.2,  score:523,  unit:'M',userUnit:'M'},
-    test:    {label:'Test Coverage',          reviewers:3, orgs:50,  clusters:220,  reqPerDay:4.6,  users:18,   score:962,  unit:'M',userUnit:'M'},
-    perf:    {label:'Performance Optimization',reviewers:4, orgs:72,  clusters:400,  reqPerDay:14.5, users:52,   score:1580, unit:'M',userUnit:'M'}
-  };
-
-  var ripples=[];
-  var stages=[];
-
-  function resize(){var r=wrap.getBoundingClientRect();dpr=devicePixelRatio||1;W=r.width;H=420;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
-
-  function startImpact(type){
-    currentType=type;
-    var d=impactData[type];
-    ripples=[];
-    stages=[
-      {label:'1 PR Submitted',value:'',r:0,maxR:30,delay:0,done:false,alpha:0},
-      {label:'Reviewed by '+d.reviewers+' maintainers',value:'',r:0,maxR:65,delay:40,done:false,alpha:0},
-      {label:'Merged into release',value:'Used by '+d.orgs+' organizations',r:0,maxR:110,delay:80,done:false,alpha:0},
-      {label:'Deployed on '+d.clusters+' GPU clusters',value:'',r:0,maxR:160,delay:120,done:false,alpha:0},
-      {label:'Routing '+d.reqPerDay+d.unit+' requests/day',value:'',r:0,maxR:210,delay:160,done:false,alpha:0},
-      {label:'Serving '+d.users+d.userUnit+' end users',value:'',r:0,maxR:260,delay:200,done:false,alpha:0}
-    ];
-    animState={frame:0,done:false};
-    scoreEl.classList.remove('visible');
-    animImpact();
+/* ============================================
+   SLIDE 1: HERO PARTICLES
+   ============================================ */
+function startHeroCanvas() {
+  var setup = setupCanvas('canvas-hero');
+  if (!setup) return;
+  var ctx = setup.ctx, w = setup.w, h = setup.h;
+  var particles = [];
+  var colors = ['#f59e0b', '#f5736c', '#3b82f6', '#10b981', '#8b5cf6'];
+  for (var i = 0; i < 70; i++) {
+    particles.push({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
+      r: Math.random() * 2.5 + 0.8,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: Math.random() * 0.25 + 0.08
+    });
   }
-
-  function animImpact(){
-    if(!animState)return;
-    ctx.clearRect(0,0,W,H);
-    var cx=W/2,cy=H/2;
-    animState.frame++;
-
-    /* Draw concentric ripple rings */
-    for(var i=stages.length-1;i>=0;i--){
-      var s=stages[i];
-      if(animState.frame<s.delay)continue;
-      var prog=Math.min((animState.frame-s.delay)/60,1);
-      var ease=1-Math.pow(1-prog,3);
-      s.r=ease*s.maxR;
-      s.alpha=ease;
-
-      /* Ring */
-      var ringAlpha=Math.max(0,(1-i*0.12))*s.alpha*0.25;
-      ctx.beginPath();ctx.arc(cx,cy,s.r,0,6.28);
-      ctx.strokeStyle='rgba(59,130,246,'+ringAlpha+')';
-      ctx.lineWidth=2-i*0.2;
-      ctx.stroke();
-
-      /* Fill */
-      var g=ctx.createRadialGradient(cx,cy,s.r*0.7,cx,cy,s.r);
-      g.addColorStop(0,'rgba(59,130,246,0)');
-      g.addColorStop(1,'rgba(59,130,246,'+(ringAlpha*0.3)+')');
-      ctx.beginPath();ctx.arc(cx,cy,s.r,0,6.28);
-      ctx.fillStyle=g;ctx.fill();
-
-      /* Label at edge */
-      if(s.alpha>0.3){
-        var angle=-Math.PI/2+i*0.55;
-        var lx=cx+Math.cos(angle)*(s.r+5);
-        var ly=cy+Math.sin(angle)*(s.r+5);
-        /* Connection line */
-        var tx=lx+(lx>cx?15:-15);
-        var ty=ly;
-        ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(tx+(lx>cx?60:-60),ty);
-        ctx.strokeStyle='rgba(59,130,246,'+(s.alpha*0.3)+')';ctx.lineWidth=1;ctx.stroke();
-        /* Text */
-        ctx.font='600 11px "Red Hat Text",sans-serif';
-        ctx.textAlign=lx>cx?'left':'right';
-        ctx.textBaseline='middle';
-        ctx.fillStyle='rgba(226,232,244,'+(s.alpha*0.85)+')';
-        ctx.fillText(s.label,tx+(lx>cx?65:-65),ty);
-        if(s.value){
-          ctx.font='400 9px "Red Hat Text",sans-serif';
-          ctx.fillStyle='rgba(139,152,184,'+(s.alpha*0.6)+')';
-          ctx.fillText(s.value,tx+(lx>cx?65:-65),ty+14);
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.alpha;
+      ctx.fill();
+    }
+    ctx.globalAlpha = 0.03;
+    ctx.strokeStyle = '#6b6560';
+    ctx.lineWidth = 1;
+    for (var i = 0; i < particles.length; i++) {
+      for (var j = i + 1; j < particles.length; j++) {
+        var dx = particles[i].x - particles[j].x;
+        var dy = particles[i].y - particles[j].y;
+        if (dx * dx + dy * dy < 12000) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
         }
       }
     }
-
-    /* Center dot */
-    var cPulse=Math.sin(animState.frame*0.05)*2;
-    ctx.beginPath();ctx.arc(cx,cy,8+cPulse,0,6.28);
-    ctx.fillStyle='#3b82f6';ctx.fill();
-    ctx.beginPath();ctx.arc(cx,cy,14+cPulse,0,6.28);
-    var cg=ctx.createRadialGradient(cx,cy,6,cx,cy,14+cPulse);
-    cg.addColorStop(0,'rgba(59,130,246,.3)');cg.addColorStop(1,'rgba(59,130,246,0)');
-    ctx.fillStyle=cg;ctx.fill();
-
-    /* Expanding ripple particles */
-    if(animState.frame%8===0&&animState.frame<300){
-      for(var rr=0;rr<3;rr++){
-        var ra=Math.random()*6.28;
-        ripples.push({x:cx,y:cy,vx:Math.cos(ra)*(1+Math.random()*1.5),vy:Math.sin(ra)*(1+Math.random()*1.5),life:1,sz:1.5+Math.random()});
-      }
-    }
-    for(var ri=ripples.length-1;ri>=0;ri--){
-      var rp=ripples[ri];
-      rp.x+=rp.vx;rp.y+=rp.vy;rp.life-=0.008;
-      if(rp.life<=0){ripples.splice(ri,1);continue}
-      ctx.beginPath();ctx.arc(rp.x,rp.y,rp.sz*rp.life,0,6.28);
-      ctx.fillStyle='rgba(59,130,246,'+rp.life*0.5+')';ctx.fill();
-    }
-
-    if(animState.frame>280&&!animState.done){
-      animState.done=true;
-      var d=impactData[currentType];
-      scoreVal.textContent='Impact Score: '+d.score;
-      scoreDesc.textContent='Your '+d.label.toLowerCase()+' contribution would be reviewed by '+d.reviewers+' maintainers, merged into a release used by '+d.orgs+' organizations, deployed across '+d.clusters+' GPU clusters, routing '+d.reqPerDay+d.unit+' requests per day, and ultimately serving '+d.users+d.userUnit+' end users worldwide.';
-      scoreEl.classList.add('visible');
-    }
-
-    if(animState.frame<400){requestAnimationFrame(animImpact)}
-    else{animState=null}
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
   }
+  draw();
+}
 
-  /* Chip selection */
-  var chips=document.querySelectorAll('#impactChips .impact-chip');
-  chips.forEach(function(chip){
-    chip.addEventListener('click',function(){
-      chips.forEach(function(c){c.classList.remove('active')});
-      chip.classList.add('active');
-      startImpact(chip.dataset.type);
-    });
-  });
+/* ============================================
+   SLIDE 1: COUNT-UP ANIMATION
+   ============================================ */
+function startCountUp() {
+  var els = document.querySelectorAll('[data-count]');
+  for (var i = 0; i < els.length; i++) {
+    (function(el) {
+      var target = parseInt(el.dataset.count, 10);
+      var suffix = target >= 15 && target !== 100 ? '+' : target === 100 ? '+' : '';
+      var dur = 1400;
+      var start = performance.now();
+      function step(now) {
+        var p = Math.min((now - start) / dur, 1);
+        var ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(ease * target) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    })(els[i]);
+  }
+}
 
-  resize();startImpact('code');
-  window.addEventListener('resize',function(){resize();if(!animState)startImpact(currentType)});
-})();
+/* ============================================
+   SLIDE 2: PARTNER NETWORK CANVAS
+   ============================================ */
+function startNetworkCanvas() {
+  var setup = setupCanvas('canvas-network');
+  if (!setup) return;
+  var ctx = setup.ctx, w = setup.w, h = setup.h;
 
-/* ================================================================
-   7. CONTRIBUTION SIMULATOR
-   ================================================================ */
-(function(){
-  var canvas=document.getElementById('simCv'),ctx=canvas.getContext('2d'),wrap=document.getElementById('simC');
-  var W,H,dpr;
-  var stages=['Contributor','PR\nSubmitted','Code\nReview','Maintainer\nApproval','Merge','Release'];
-  var simState=null;
-  var typeColors={Code:'#3b82f6',Documentation:'#10b981',Testing:'#f59e0b',Research:'#8b5cf6','Hardware Optimization':'#76b900'};
-
-  function resize(){var r=wrap.getBoundingClientRect();dpr=devicePixelRatio||1;W=r.width;H=200;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
-  function stX(i){return 70+i*(W-140)/(stages.length-1)}
-
-  function drawIdle(){ctx.clearRect(0,0,W,H);var cy=H/2;
-    ctx.beginPath();ctx.moveTo(stX(0),cy);ctx.lineTo(stX(stages.length-1),cy);ctx.strokeStyle='rgba(26,32,56,.8)';ctx.lineWidth=2;ctx.stroke();
-    stages.forEach(function(s,i){var x=stX(i);ctx.beginPath();ctx.arc(x,cy,10,0,6.28);ctx.fillStyle='rgba(26,32,56,.8)';ctx.fill();ctx.strokeStyle='#1a2038';ctx.lineWidth=1.5;ctx.stroke();
-      var lines=s.split('\n');ctx.font='500 9px "Red Hat Text",sans-serif';ctx.textAlign='center';ctx.fillStyle='#5a6580';lines.forEach(function(ln,li){ctx.fillText(ln,x,cy+24+li*12)})})}
-
-  function startSim(){var org=document.getElementById('simOrg').value,type=document.getElementById('simType').value;
-    simState={org:org,type:type,stage:0,t:0,done:false,trails:[]};animSim()}
-
-  function animSim(){if(!simState)return;ctx.clearRect(0,0,W,H);var cy=H/2,col=typeColors[simState.type]||'#3b82f6';
-    simState.t+=.014;if(simState.t>=1&&simState.stage<stages.length-1){simState.stage++;simState.t=0}
-    if(simState.stage>=stages.length-1)simState.done=true;
-    stages.forEach(function(s,i){if(i===0)return;var x0=stX(i-1),x1=stX(i);ctx.beginPath();ctx.moveTo(x0,cy);ctx.lineTo(x1,cy);ctx.strokeStyle=i<=simState.stage?col+'80':'rgba(26,32,56,.8)';ctx.lineWidth=2;ctx.stroke()});
-    if(!simState.done&&simState.stage<stages.length-1){var x0=stX(simState.stage),x1=stX(simState.stage+1),px=x0+(x1-x0)*simState.t;
-      ctx.beginPath();ctx.arc(px,cy,5,0,6.28);ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=16;ctx.fill();ctx.shadowBlur=0;
-      for(var k=0;k<4;k++){var tt=simState.t-.025*(k+1);if(tt<0)continue;var tx=x0+(x1-x0)*tt;ctx.beginPath();ctx.arc(tx,cy,3.5-k*.7,0,6.28);ctx.fillStyle=col;ctx.globalAlpha=.35-.08*k;ctx.fill();ctx.globalAlpha=1}}
-    stages.forEach(function(s,i){var x=stX(i),active=i<=simState.stage,cur=i===simState.stage;
-      ctx.beginPath();ctx.arc(x,cy,cur?14:10,0,6.28);
-      if(active){ctx.fillStyle=cur?col:'rgba(59,130,246,.3)';if(cur){ctx.shadowColor=col;ctx.shadowBlur=18}}else ctx.fillStyle='rgba(26,32,56,.8)';
-      ctx.fill();ctx.shadowBlur=0;ctx.shadowColor='transparent';
-      if(active&&!cur){ctx.font='bold 10px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';ctx.fillText('✓',x,cy)}
-      var lines=s.split('\n');ctx.font=(cur?'600':'500')+' 9px "Red Hat Text",sans-serif';ctx.textAlign='center';ctx.textBaseline='top';ctx.fillStyle=active?'#e2e8f4':'#5a6580';lines.forEach(function(ln,li){ctx.fillText(ln,x,cy+24+li*12)})});
-    ctx.font='600 12px "Red Hat Text",sans-serif';ctx.textAlign='left';ctx.fillStyle=col;ctx.fillText(simState.org+' → '+simState.type,stX(0),cy-40);
-    if(simState.done){ctx.font='700 13px "Red Hat Display",sans-serif';ctx.textAlign='center';ctx.fillStyle='#10b981';ctx.fillText('Contribution successfully released!',W/2,cy-40)}
-    if(!simState.done)requestAnimationFrame(animSim);else setTimeout(function(){if(simState&&simState.done){simState=null;drawIdle()}},3000)}
-
-  document.getElementById('simBtn').addEventListener('click',startSim);
-  resize();drawIdle();window.addEventListener('resize',function(){resize();if(!simState||simState.done)drawIdle()});
-})();
-
-/* ================================================================
-   8. CONTRIBUTOR JOURNEY MAP
-   ================================================================ */
-(function(){
-  var wrap=document.getElementById('journeyWrap'),canvas=document.getElementById('journeyCv'),ctx=canvas.getContext('2d');
-  var detailEl=document.getElementById('journeyDetail'),detailTitle=document.getElementById('journeyDetailTitle'),detailGrid=document.getElementById('journeyDetailGrid');
-  var W,H,dpr;
-  var particles=[];
-  var selectedStage=-1;
-  var hoverStage=-1;
-  var pulseTime=0;
-
-  var stageData=[
-    {label:'First Issue',
-      takes:'Find something that interests you: a bug, a missing doc, a feature request. File it or comment on an existing one. No code required yet.',
-      timeline:'Day 1 to Week 1',
-      story:'"I noticed the docs were missing an example for prefix-aware routing. I opened an issue, and within a day a maintainer thanked me and asked if I wanted to write it up."',
-      skills:['GitHub workflow','Reading documentation','Communicating clearly']},
-    {label:'First PR',
-      takes:'Pick up a "good first issue" or address something from your own issue. Follow the contribution guide, write tests, and submit your first pull request.',
-      timeline:'Week 1 to Month 1',
-      story:'"My first PR was a two-line fix to a config parser. The review was thorough but kind. They helped me understand the project structure along the way."',
-      skills:['Git branching','Code review etiquette','Writing tests','CI/CD awareness']},
-    {label:'Regular Contributor',
-      takes:'Keep showing up. Submit PRs regularly, review others\' work, participate in community calls, and develop expertise in a specific area of the codebase.',
-      timeline:'Month 1 to Month 6',
-      story:'"After my fifth PR, I started recognizing patterns in the codebase. I began reviewing other people\'s PRs too. That is when I really started learning."',
-      skills:['Deep codebase knowledge','Code review skills','Technical writing','Collaboration']},
-    {label:'Reviewer',
-      takes:'Maintainers recognize your expertise and add you as a reviewer for specific components. You help shape code quality and mentor newer contributors.',
-      timeline:'Month 6 to Year 1',
-      story:'"Being asked to review PRs felt like a vote of confidence. I take it seriously because I remember how much good reviews helped me when I started."',
-      skills:['Mentoring','Architecture decisions','Performance analysis','Quality standards']},
-    {label:'Maintainer',
-      takes:'Demonstrated sustained commitment, deep technical knowledge, and community leadership. Maintainers have merge authority and set roadmap direction.',
-      timeline:'Year 1+',
-      story:'"Becoming a maintainer was not about writing the most code. It was about consistently helping others succeed and earning trust through reliable, thoughtful contributions."',
-      skills:['Project governance','Release management','Community leadership','Strategic planning']},
-    {label:'CNCF Contributor',
-      takes:'Your work in llm-d connects to the broader cloud-native ecosystem. You contribute to CNCF working groups, speak at KubeCon, and shape industry standards.',
-      timeline:'Year 1+',
-      story:'"I never expected my work on a routing plugin to lead to co-authoring a CNCF whitepaper. Open source really does open doors."',
-      skills:['Standards development','Public speaking','Cross-project collaboration','Industry leadership']}
+  var orgs = [
+    { id: 'redhat', label: 'Red Hat', letter: 'R', color: '#ee0000', r: 22 },
+    { id: 'google', label: 'Google', letter: 'G', color: '#4285f4', r: 22 },
+    { id: 'ibm', label: 'IBM', letter: 'I', color: '#0f62fe', r: 22 },
+    { id: 'nvidia', label: 'NVIDIA', letter: 'N', color: '#76b900', r: 19 },
+    { id: 'coreweave', label: 'CoreWeave', letter: 'C', color: '#00d4aa', r: 19 },
+    { id: 'amd', label: 'AMD', letter: 'A', color: '#ed1c24', r: 14 },
+    { id: 'cisco', label: 'Cisco', letter: 'Ci', color: '#049fd9', r: 14 },
+    { id: 'hf', label: 'HuggingFace', letter: 'HF', color: '#ffcd00', r: 14 },
+    { id: 'intel', label: 'Intel', letter: 'In', color: '#0071c5', r: 14 },
+    { id: 'lambda', label: 'Lambda', letter: 'L', color: '#8b5cf6', r: 14 },
+    { id: 'mistral', label: 'Mistral', letter: 'M', color: '#f97316', r: 14 },
+    { id: 'berkeley', label: 'Berkeley', letter: 'B', color: '#003262', r: 15 },
+    { id: 'uchicago', label: 'UChicago', letter: 'U', color: '#800000', r: 15 },
+    { id: 'cncf', label: 'CNCF', letter: 'CN', color: '#426de1', r: 18 }
   ];
 
-  /* Compute positions as a winding path */
-  var stagePositions=[];
-  function computePositions(){
-    stagePositions=[];
-    var marginX=80,marginY=60;
-    var usableW=W-marginX*2;
-    var usableH=H-marginY*2;
-    var pts=[
-      {x:marginX,y:marginY+usableH*0.3},
-      {x:marginX+usableW*0.22,y:marginY+usableH*0.05},
-      {x:marginX+usableW*0.44,y:marginY+usableH*0.35},
-      {x:marginX+usableW*0.62,y:marginY+usableH*0.08},
-      {x:marginX+usableW*0.78,y:marginY+usableH*0.4},
-      {x:marginX+usableW*0.95,y:marginY+usableH*0.15}
-    ];
-    stagePositions=pts;
+  var edges = [
+    { s: 0, t: 1, c: '#3b82f6' }, { s: 0, t: 2, c: '#3b82f6' }, { s: 0, t: 3, c: '#3b82f6' },
+    { s: 0, t: 4, c: '#3b82f6' }, { s: 1, t: 2, c: '#3b82f6' },
+    { s: 3, t: 0, c: '#10b981' }, { s: 3, t: 4, c: '#10b981' },
+    { s: 5, t: 0, c: '#10b981' }, { s: 8, t: 0, c: '#10b981' },
+    { s: 11, t: 0, c: '#8b5cf6' }, { s: 11, t: 2, c: '#8b5cf6' },
+    { s: 12, t: 0, c: '#8b5cf6' }, { s: 12, t: 2, c: '#8b5cf6' },
+    { s: 13, t: 0, c: '#f59e0b' }, { s: 13, t: 1, c: '#f59e0b' }, { s: 13, t: 2, c: '#f59e0b' },
+    { s: 7, t: 0, c: '#6b7280' }, { s: 6, t: 0, c: '#6b7280' },
+    { s: 9, t: 0, c: '#6b7280' }, { s: 10, t: 0, c: '#6b7280' },
+    { s: 3, t: 11, c: '#8b5cf6' }, { s: 9, t: 3, c: '#10b981' },
+    { s: 7, t: 10, c: '#6b7280' }
+  ];
+
+  var nodes = [];
+  var cx = w / 2, cy = h / 2;
+  var flowParts = [];
+  var breathTime = 0;
+  var hovered = null;
+
+  // Init nodes in circular layout
+  for (var i = 0; i < orgs.length; i++) {
+    var a = (i / orgs.length) * Math.PI * 2 - Math.PI / 2;
+    var rad = Math.min(w, h) * 0.33;
+    nodes.push({
+      x: cx + Math.cos(a) * rad + (Math.random() - 0.5) * 30,
+      y: cy + Math.sin(a) * rad + (Math.random() - 0.5) * 30,
+      vx: 0, vy: 0, r: orgs[i].r, baseR: orgs[i].r
+    });
   }
 
-  function initParticles(){
-    particles=[];
-    for(var i=0;i<15;i++){
-      particles.push({
-        segment:Math.floor(Math.random()*(stagePositions.length-1)),
-        t:Math.random(),
-        sp:0.003+Math.random()*0.004,
-        sz:1.5+Math.random()*1,
-        alpha:0.3+Math.random()*0.4
+  // Flow particles
+  for (var ei = 0; ei < edges.length; ei++) {
+    for (var fi = 0; fi < 2; fi++) {
+      flowParts.push({
+        edge: ei, t: Math.random(),
+        sp: 0.003 + Math.random() * 0.004,
+        sz: 1.2 + Math.random() * 0.6
       });
     }
   }
 
-  function resize(){
-    var r=wrap.getBoundingClientRect();dpr=devicePixelRatio||1;
-    W=r.width;H=Math.max(320,Math.min(W*0.4,400));
-    canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    computePositions();initParticles();
-  }
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    pulseTime+=0.03;
-
-    /* Draw winding path */
-    ctx.beginPath();
-    ctx.moveTo(stagePositions[0].x,stagePositions[0].y);
-    for(var i=1;i<stagePositions.length;i++){
-      var prev=stagePositions[i-1],cur=stagePositions[i];
-      var cpx=(prev.x+cur.x)/2,cpy=prev.y+(cur.y-prev.y)*0.5+(i%2===0?-30:30);
-      ctx.quadraticCurveTo(cpx,cpy,cur.x,cur.y);
-    }
-    ctx.strokeStyle='rgba(59,130,246,.15)';ctx.lineWidth=3;ctx.stroke();
-
-    /* Animated particles along path */
-    for(var pi=0;pi<particles.length;pi++){
-      var pp=particles[pi];
-      pp.t+=pp.sp;
-      if(pp.t>1){pp.t=0;pp.segment++;if(pp.segment>=stagePositions.length-1)pp.segment=0}
-      var pA=stagePositions[pp.segment],pB=stagePositions[pp.segment+1];
-      if(!pA||!pB)continue;
-      var px=pA.x+(pB.x-pA.x)*pp.t;
-      var py=pA.y+(pB.y-pA.y)*pp.t;
-      ctx.beginPath();ctx.arc(px,py,pp.sz,0,6.28);
-      ctx.fillStyle='rgba(59,130,246,'+pp.alpha+')';ctx.fill();
-    }
-
-    /* Draw stage nodes */
-    for(var si=0;si<stagePositions.length;si++){
-      var sp=stagePositions[si];
-      var isFirst=si===0;
-      var isHov=hoverStage===si;
-      var isSel=selectedStage===si;
-      var nodeR=isFirst?18:(isHov||isSel?16:13);
-
-      /* Glow */
-      if(isFirst){
-        var pulseR=nodeR+6+Math.sin(pulseTime)*4;
-        ctx.beginPath();ctx.arc(sp.x,sp.y,pulseR,0,6.28);
-        ctx.strokeStyle='rgba(16,185,129,.3)';ctx.lineWidth=2;ctx.stroke();
-      }
-      if(isHov||isSel){
-        var hg=ctx.createRadialGradient(sp.x,sp.y,nodeR,sp.x,sp.y,nodeR+12);
-        hg.addColorStop(0,'rgba(59,130,246,.2)');hg.addColorStop(1,'rgba(59,130,246,0)');
-        ctx.beginPath();ctx.arc(sp.x,sp.y,nodeR+12,0,6.28);ctx.fillStyle=hg;ctx.fill();
-      }
-
-      /* Node */
-      ctx.beginPath();ctx.arc(sp.x,sp.y,nodeR,0,6.28);
-      ctx.fillStyle=isFirst?'#10b981':(isSel?'#3b82f6':'rgba(59,130,246,.6)');
-      ctx.fill();
-
-      /* Number */
-      ctx.font='700 '+(nodeR*0.7)+'px "Red Hat Display",sans-serif';
-      ctx.textAlign='center';ctx.textBaseline='middle';
-      ctx.fillStyle='rgba(255,255,255,.9)';
-      ctx.fillText(''+(si+1),sp.x,sp.y);
-
-      /* Label */
-      ctx.font='600 11px "Red Hat Text",sans-serif';
-      ctx.textBaseline='top';ctx.textAlign='center';
-      ctx.fillStyle=(isHov||isSel)?'#e2e8f4':'rgba(226,232,244,.7)';
-      ctx.fillText(stageData[si].label,sp.x,sp.y+nodeR+8);
-
-      /* "You Are Here" for first */
-      if(isFirst){
-        ctx.font='600 9px "Red Hat Text",sans-serif';
-        ctx.fillStyle='rgba(16,185,129,'+(0.5+Math.sin(pulseTime)*0.3)+')';
-        ctx.fillText('You Are Here: Start',sp.x,sp.y+nodeR+22);
+  function sim() {
+    for (var i = 0; i < nodes.length; i++) {
+      for (var j = i + 1; j < nodes.length; j++) {
+        var dx = nodes[j].x - nodes[i].x, dy = nodes[j].y - nodes[i].y;
+        var d = Math.sqrt(dx * dx + dy * dy) || 1;
+        var f = 2500 / (d * d);
+        nodes[i].vx -= dx / d * f; nodes[i].vy -= dy / d * f;
+        nodes[j].vx += dx / d * f; nodes[j].vy += dy / d * f;
       }
     }
-
-    requestAnimationFrame(draw);
-  }
-
-  function hitStage(mx,my){
-    for(var i=0;i<stagePositions.length;i++){
-      var sp=stagePositions[i];
-      var dx=mx-sp.x,dy=my-sp.y;
-      if(dx*dx+dy*dy<=22*22)return i;
+    for (var ei = 0; ei < edges.length; ei++) {
+      var e = edges[ei], a = nodes[e.s], b = nodes[e.t];
+      var dx = b.x - a.x, dy = b.y - a.y;
+      var d = Math.sqrt(dx * dx + dy * dy) || 1;
+      var disp = d - Math.min(w, h) * 0.22;
+      var f = 0.004 * disp;
+      a.vx += dx / d * f; a.vy += dy / d * f;
+      b.vx -= dx / d * f; b.vy -= dy / d * f;
     }
-    return -1;
-  }
-
-  function showDetail(idx){
-    if(idx<0||idx>=stageData.length){detailEl.classList.remove('visible');return}
-    var s=stageData[idx];
-    detailTitle.textContent='Stage '+(idx+1)+': '+s.label;
-    detailGrid.innerHTML='<div class="journey-detail-item"><h4>What It Takes</h4><p>'+s.takes+'</p></div>'+
-      '<div class="journey-detail-item"><h4>Typical Timeline</h4><p>'+s.timeline+'</p></div>'+
-      '<div class="journey-detail-item"><h4>A Contributor\'s Story</h4><div class="jd-quote">'+s.story+'</div></div>'+
-      '<div class="journey-detail-item"><h4>Skills You Develop</h4><div class="jd-skills">'+s.skills.map(function(sk){return '<span class="jd-skill">'+sk+'</span>'}).join('')+'</div></div>';
-    detailEl.classList.add('visible');
-  }
-
-  canvas.addEventListener('mousemove',function(e){
-    var r=canvas.getBoundingClientRect();
-    hoverStage=hitStage(e.clientX-r.left,e.clientY-r.top);
-    canvas.style.cursor=hoverStage>=0?'pointer':'default';
-  });
-  canvas.addEventListener('mouseleave',function(){hoverStage=-1});
-  canvas.addEventListener('click',function(e){
-    var r=canvas.getBoundingClientRect();
-    var idx=hitStage(e.clientX-r.left,e.clientY-r.top);
-    if(idx>=0){
-      selectedStage=selectedStage===idx?-1:idx;
-      showDetail(selectedStage);
-    }
-  });
-  canvas.addEventListener('touchstart',function(e){
-    var t=e.touches[0],r=canvas.getBoundingClientRect();
-    var idx=hitStage(t.clientX-r.left,t.clientY-r.top);
-    if(idx>=0){selectedStage=idx;showDetail(idx)}
-  },{passive:true});
-
-  resize();requestAnimationFrame(draw);window.addEventListener('resize',resize);
-})();
-
-/* ================================================================
-   9. GOOD FIRST ISSUES BOARD
-   ================================================================ */
-(function(){
-  var issues=[
-    {num:247,title:'Add request timeout configuration to EPP routing rules',cat:'feature',diff:2,impact:'High',time:'4-6 hours',tags:['Go','EPP','Config'],ago:'2 days ago',initials:'CL',color:'#3b82f6',comments:1,help:true},
-    {num:243,title:'Fix incorrect metric labels in Prometheus exporter',cat:'bug',diff:1,impact:'Medium',time:'1-2 hours',tags:['Go','Prometheus','Metrics'],ago:'3 days ago',initials:'AK',color:'#10b981',comments:0,help:false},
-    {num:241,title:'Document prefix-aware routing configuration examples',cat:'docs',diff:1,impact:'High',time:'2-3 hours',tags:['Markdown','Routing','Docs'],ago:'4 days ago',initials:'SP',color:'#f59e0b',comments:1,help:true},
-    {num:238,title:'Add unit tests for KV-cache eviction logic',cat:'test',diff:2,impact:'Medium',time:'3-4 hours',tags:['Go','Testing','Cache'],ago:'5 days ago',initials:'MR',color:'#8b5cf6',comments:0,help:false},
-    {num:235,title:'Reduce memory allocation in hot path request parser',cat:'perf',diff:3,impact:'High',time:'6-8 hours',tags:['Go','Performance','Memory'],ago:'6 days ago',initials:'JW',color:'#ef4444',comments:3,help:false},
-    {num:232,title:'Fix Gateway API status condition not propagating on error',cat:'bug',diff:2,impact:'High',time:'3-5 hours',tags:['Go','Gateway API','Status'],ago:'1 week ago',initials:'DM',color:'#3b82f6',comments:2,help:true},
-    {num:229,title:'Add getting-started tutorial for Helm chart deployment',cat:'docs',diff:1,impact:'Medium',time:'2-4 hours',tags:['Helm','Kubernetes','Tutorial'],ago:'1 week ago',initials:'NK',color:'#10b981',comments:0,help:true},
-    {num:226,title:'Implement request priority queue for multi-model routing',cat:'feature',diff:3,impact:'High',time:'8-12 hours',tags:['Go','Routing','Queue'],ago:'1 week ago',initials:'RB',color:'#f59e0b',comments:2,help:false},
-    {num:223,title:'Add integration tests for NVIDIA Dynamo bridge',cat:'test',diff:2,impact:'Medium',time:'4-6 hours',tags:['Go','NVIDIA','Integration'],ago:'9 days ago',initials:'LH',color:'#8b5cf6',comments:1,help:false},
-    {num:220,title:'Fix race condition in scheduler worker pool shutdown',cat:'bug',diff:2,impact:'Medium',time:'2-4 hours',tags:['Go','Concurrency','Scheduler'],ago:'10 days ago',initials:'YZ',color:'#ef4444',comments:0,help:false},
-    {num:217,title:'Optimize batch scoring algorithm for large prompt pools',cat:'perf',diff:3,impact:'High',time:'6-10 hours',tags:['Go','Algorithm','Scoring'],ago:'12 days ago',initials:'TC',color:'#3b82f6',comments:1,help:false},
-    {num:214,title:'Add architecture decision records (ADR) for routing design',cat:'docs',diff:2,impact:'Low',time:'3-5 hours',tags:['Markdown','Architecture','ADR'],ago:'2 weeks ago',initials:'EF',color:'#10b981',comments:0,help:true},
-    {num:211,title:'Create benchmark suite for prefix cache hit rate',cat:'test',diff:2,impact:'Medium',time:'4-6 hours',tags:['Go','Benchmark','Cache'],ago:'2 weeks ago',initials:'WK',color:'#f59e0b',comments:0,help:false},
-    {num:208,title:'Add ROCm-specific scheduling hints for AMD GPU pools',cat:'feature',diff:2,impact:'Medium',time:'4-8 hours',tags:['Go','AMD','ROCm'],ago:'2 weeks ago',initials:'PG',color:'#8b5cf6',comments:1,help:true},
-    {num:205,title:'Profile and reduce tail latency in request dispatching',cat:'perf',diff:3,impact:'High',time:'8-12 hours',tags:['Go','Latency','Profiling'],ago:'3 weeks ago',initials:'KM',color:'#ef4444',comments:2,help:false}
-  ];
-
-  var catColors={bug:'#ef4444',docs:'#10b981',test:'#f59e0b',feature:'#3b82f6',perf:'#8b5cf6'};
-  var catLabels={bug:'Bug Fix',docs:'Documentation',test:'Testing',feature:'Feature',perf:'Performance'};
-
-  var grid=document.getElementById('gfiGrid');
-  var tabs=document.querySelectorAll('#gfiTabs .gfi-tab');
-
-  function renderIssues(filter){
-    grid.innerHTML='';
-    var filtered=filter==='all'?issues:issues.filter(function(i){return i.cat===filter});
-    filtered.forEach(function(issue){
-      var stars='';for(var s=0;s<3;s++)stars+=s<issue.diff?'★':'☆';
-      var impactCls=issue.impact==='Low'?'gfi-impact-low':issue.impact==='Medium'?'gfi-impact-med':'gfi-impact-high';
-      var badges='<span class="gfi-badge gfi-badge-cat" style="background:rgba('+hexToRgb(catColors[issue.cat])+',.1);border-color:rgba('+hexToRgb(catColors[issue.cat])+',.2);color:'+catColors[issue.cat]+'">'+catLabels[issue.cat]+'</span>';
-      if(issue.help)badges+='<span class="gfi-badge gfi-badge-help">Help wanted</span>';
-      if(issue.comments>0)badges+='<span class="gfi-badge gfi-badge-comment">'+issue.comments+' comment'+(issue.comments>1?'s':'')+'</span>';
-
-      var card=document.createElement('a');
-      card.className='gfi-card';
-      card.href='https://github.com/llm-d/llm-d/issues';
-      card.target='_blank';
-      card.rel='noopener';
-      card.innerHTML='<div class="gfi-card-top"><span class="gfi-card-num">#'+issue.num+'</span><span class="gfi-card-time">opened '+issue.ago+'</span></div>'+
-        '<div class="gfi-card-title">'+issue.title+'</div>'+
-        '<div class="gfi-card-meta">'+badges+'<span class="gfi-stars">'+stars+'</span><span class="gfi-impact '+impactCls+'">'+issue.impact+'</span></div>'+
-        '<div class="gfi-card-bottom"><div class="gfi-tags">'+issue.tags.map(function(t){return '<span class="gfi-tag">'+t+'</span>'}).join('')+'</div><span class="gfi-time-est">~'+issue.time+'</span></div>'+
-        '<div class="gfi-card-assignee"><div class="gfi-avatar" style="background:'+issue.color+'">'+issue.initials+'</div></div>'+
-        '<div class="gfi-card-gh"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>View on GitHub</div>';
-      grid.appendChild(card);
-    });
-  }
-
-  function hexToRgb(hex){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return r+','+g+','+b}
-
-  tabs.forEach(function(tab){
-    tab.addEventListener('click',function(){
-      tabs.forEach(function(t){t.classList.remove('active')});
-      tab.classList.add('active');
-      renderIssues(tab.dataset.cat);
-    });
-  });
-
-  renderIssues('all');
-})();
-
-/* ================================================================
-   10. FORCE-DIRECTED CONTRIBUTOR NETWORK GRAPH
-   ================================================================ */
-(function(){
-  var wrap=document.getElementById('cnetWrap'),canvas=document.getElementById('cnetCv'),ctx=canvas.getContext('2d'),tooltip=document.getElementById('cnetTT');
-  var W,H,dpr;
-  var nodes=[],edges=[];
-  var hovered=null;
-
-  var typeColors={code:'#3b82f6',docs:'#10b981',testing:'#f59e0b',research:'#8b5cf6',community:'#ef4444'};
-
-  var contributors=[
-    {name:'Chen L.',type:'code',prs:47,reviews:82,joined:'Jan 2025',r:16},
-    {name:'Priya K.',type:'code',prs:38,reviews:64,joined:'Feb 2025',r:14},
-    {name:'Marcus D.',type:'docs',prs:22,reviews:35,joined:'Mar 2025',r:11},
-    {name:'Aisha T.',type:'testing',prs:31,reviews:48,joined:'Jan 2025',r:13},
-    {name:'Raj P.',type:'code',prs:55,reviews:91,joined:'Dec 2024',r:17},
-    {name:'Elena V.',type:'research',prs:18,reviews:29,joined:'Apr 2025',r:10},
-    {name:'Tomoko S.',type:'code',prs:42,reviews:73,joined:'Feb 2025',r:15},
-    {name:'David R.',type:'community',prs:12,reviews:45,joined:'Mar 2025',r:10},
-    {name:'Fatima N.',type:'docs',prs:25,reviews:38,joined:'May 2025',r:12},
-    {name:'Alex M.',type:'testing',prs:29,reviews:52,joined:'Jan 2025',r:13},
-    {name:'Yuki H.',type:'code',prs:36,reviews:58,joined:'Mar 2025',r:14},
-    {name:'Omar B.',type:'code',prs:41,reviews:67,joined:'Feb 2025',r:15},
-    {name:'Sarah W.',type:'research',prs:15,reviews:22,joined:'Jun 2025',r:9},
-    {name:'Javier G.',type:'testing',prs:27,reviews:41,joined:'Apr 2025',r:12},
-    {name:'Lin Z.',type:'code',prs:33,reviews:55,joined:'Mar 2025',r:13},
-    {name:'Kira F.',type:'docs',prs:19,reviews:32,joined:'May 2025',r:10},
-    {name:'Nikolai P.',type:'code',prs:28,reviews:44,joined:'Apr 2025',r:12},
-    {name:'Amara O.',type:'community',prs:8,reviews:52,joined:'Feb 2025',r:9},
-    {name:'Ryan C.',type:'testing',prs:24,reviews:39,joined:'May 2025',r:11},
-    {name:'Mei W.',type:'research',prs:21,reviews:34,joined:'Mar 2025',r:11},
-    {name:'Carlos S.',type:'code',prs:30,reviews:49,joined:'Apr 2025',r:13},
-    {name:'Nadia L.',type:'docs',prs:16,reviews:27,joined:'Jun 2025',r:9},
-    {name:'Kenji T.',type:'code',prs:44,reviews:76,joined:'Jan 2025',r:16},
-    {name:'Ines B.',type:'testing',prs:20,reviews:33,joined:'May 2025',r:10},
-    {name:'Dmitri K.',type:'research',prs:14,reviews:21,joined:'Jun 2025',r:9},
-    {name:'Zara A.',type:'community',prs:10,reviews:58,joined:'Mar 2025',r:10},
-    {name:'Patrick H.',type:'code',prs:35,reviews:60,joined:'Feb 2025',r:14},
-    {name:'Lucia M.',type:'docs',prs:23,reviews:37,joined:'Apr 2025',r:11}
-  ];
-
-  /* Generate edges (review connections) */
-  var edgePairs=[];
-  for(var i=0;i<contributors.length;i++){
-    var numEdges=2+Math.floor(Math.random()*3);
-    for(var e=0;e<numEdges;e++){
-      var j=Math.floor(Math.random()*contributors.length);
-      if(j!==i){
-        var key=Math.min(i,j)+'-'+Math.max(i,j);
-        if(edgePairs.indexOf(key)===-1){edgePairs.push(key);edges.push({a:i,b:j})}
-      }
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i];
+      n.vx += (cx - n.x) * 0.0003; n.vy += (cy - n.y) * 0.0003;
+      n.vx *= 0.88; n.vy *= 0.88;
+      n.x += n.vx; n.y += n.vy;
+      var pad = n.r + 8;
+      n.x = Math.max(pad, Math.min(w - pad, n.x));
+      n.y = Math.max(pad, Math.min(h - pad, n.y));
     }
   }
 
-  function resize(){
-    var r=wrap.getBoundingClientRect();dpr=devicePixelRatio||1;
-    W=r.width;H=Math.max(460,Math.min(W*0.55,580));
-    canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    initNodes();
-  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    breathTime += 0.015;
 
-  function initNodes(){
-    var cx=W/2,cy=H/2;
-    nodes=contributors.map(function(c,i){
-      var a=(i/contributors.length)*6.28;
-      var rad=Math.min(W,H)*0.32;
-      return{
-        idx:i,name:c.name,type:c.type,prs:c.prs,reviews:c.reviews,joined:c.joined,
-        r:c.r,color:typeColors[c.type],
-        x:cx+Math.cos(a)*rad*(0.6+Math.random()*0.4),
-        y:cy+Math.sin(a)*rad*(0.6+Math.random()*0.4),
-        vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5
-      };
-    });
-  }
-
-  function sim(){
-    var cx=W/2,cy=H/2;
-    /* Repulsion */
-    for(var i=0;i<nodes.length;i++){
-      for(var j=i+1;j<nodes.length;j++){
-        var a=nodes[i],b=nodes[j];
-        var dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)||1;
-        var f=800/(d*d);
-        var fx=dx/d*f,fy=dy/d*f;
-        a.vx-=fx;a.vy-=fy;b.vx+=fx;b.vy+=fy;
-      }
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].r = nodes[i].baseR + Math.sin(breathTime + i * 0.4) * 1.5;
     }
-    /* Attraction along edges */
-    edges.forEach(function(e){
-      var a=nodes[e.a],b=nodes[e.b];
-      var dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)||1;
-      var f=0.003*(d-120);
-      a.vx+=dx/d*f;a.vy+=dy/d*f;
-      b.vx-=dx/d*f;b.vy-=dy/d*f;
-    });
-    /* Center gravity + damping */
-    for(var i=0;i<nodes.length;i++){
-      var n=nodes[i];
-      n.vx+=(cx-n.x)*0.0003;n.vy+=(cy-n.y)*0.0003;
-      n.vx*=0.92;n.vy*=0.92;
-      n.x+=n.vx;n.y+=n.vy;
-      var pad=n.r+5;
-      n.x=Math.max(pad,Math.min(W-pad,n.x));
-      n.y=Math.max(pad,Math.min(H-pad,n.y));
-    }
-  }
 
-  var pulseTime=0;
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    pulseTime+=0.015;
+    // Edges
+    for (var ei = 0; ei < edges.length; ei++) {
+      var e = edges[ei], a = nodes[e.s], b = nodes[e.t];
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = e.c;
+      ctx.globalAlpha = 0.15; ctx.lineWidth = 1;
+      ctx.stroke(); ctx.globalAlpha = 1;
+    }
+
+    // Flow particles
+    for (var fi = 0; fi < flowParts.length; fi++) {
+      var fp = flowParts[fi];
+      fp.t += fp.sp; if (fp.t > 1) fp.t -= 1;
+      var e = edges[fp.edge], a = nodes[e.s], b = nodes[e.t];
+      var px = a.x + (b.x - a.x) * fp.t;
+      var py = a.y + (b.y - a.y) * fp.t;
+      ctx.beginPath(); ctx.arc(px, py, fp.sz, 0, 6.28);
+      ctx.fillStyle = e.c; ctx.globalAlpha = 0.35; ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    // Nodes
+    for (var i = 0; i < orgs.length; i++) {
+      var o = orgs[i], n = nodes[i];
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 6.28);
+      ctx.fillStyle = o.color; ctx.fill();
+      ctx.font = 'bold ' + (n.r * 0.72) + 'px "Red Hat Display",sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      ctx.fillText(o.letter, n.x, n.y + 1);
+      ctx.font = '500 9px "Red Hat Text",sans-serif';
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = 'rgba(45,42,38,0.6)';
+      ctx.fillText(o.label, n.x, n.y + n.r + 5);
+    }
+
     sim();
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
 
-    /* Edges */
-    edges.forEach(function(e){
-      var a=nodes[e.a],b=nodes[e.b];
-      var hl=hovered&&(hovered.idx===e.a||hovered.idx===e.b);
-      var dim=hovered&&!hl;
-      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
-      ctx.strokeStyle='rgba(59,130,246,'+(dim?0.02:(hl?0.35:0.08))+')';
-      ctx.lineWidth=hl?1.5:0.8;ctx.stroke();
+/* ============================================
+   SLIDE 3: BUILD TIMELINE
+   ============================================ */
+function buildTimeline() {
+  var milestones = [
+    { d: 'May 2025', t: 'Project Launch', desc: 'Announced with Red Hat, Google Cloud, IBM Research, CoreWeave, NVIDIA. Initial EPP routing framework.' },
+    { d: 'Jun 2025', t: 'First External PRs', desc: 'Community contributors beyond founders submit first pull requests. Contribution guidelines established.' },
+    { d: 'Aug 2025', t: 'KubeCon NA Demo', desc: 'Live demo at KubeCon showcasing multi-model routing across heterogeneous GPU pools.' },
+    { d: 'Nov 2025', t: 'v0.2 Release', desc: 'EPP v2, improved scheduling, NVIDIA Dynamo integration, enhanced prefix-aware routing.' },
+    { d: 'Jan 2026', t: 'CNCF Submission', desc: 'IBM, Red Hat, Google jointly submit to CNCF Sandbox. Multi-vendor sponsorship underscores neutrality.' },
+    { d: 'Mar 2026', t: 'CNCF Accepted', desc: 'Accepted into CNCF Sandbox. IP transferred to foundation. Vendor-neutral governance established.' },
+    { d: 'Jun 2026', t: 'Growing Ecosystem', desc: '15+ partners, 100+ contributors, multiple production deployments. Expanding support.', now: true }
+  ];
+  var row = document.getElementById('timelineRow');
+  if (!row || row.children.length > 0) return;
+  for (var i = 0; i < milestones.length; i++) {
+    var m = milestones[i];
+    var item = document.createElement('div');
+    item.className = 'tl-item' + (m.now ? ' tl-now' : '');
+    var extra = m.now ? '<div class="tl-now-tag">NOW</div>' : '';
+    item.innerHTML = '<div class="tl-dot-wrap"><div class="tl-dot"></div></div>' +
+      '<div class="tl-date">' + m.d + '</div>' +
+      '<div class="tl-label">' + m.t + '</div>' +
+      extra +
+      '<div class="tl-desc">' + m.desc + '</div>';
+    (function(el) {
+      el.addEventListener('click', function() {
+        var was = el.classList.contains('active');
+        var items = row.querySelectorAll('.tl-item');
+        for (var j = 0; j < items.length; j++) items[j].classList.remove('active');
+        if (!was) el.classList.add('active');
+      });
+    })(item);
+    row.appendChild(item);
+  }
+}
 
-      /* Pulsing connection dot */
-      if(hl||(!hovered&&Math.sin(pulseTime*2+e.a*0.3)>0.7)){
-        var t=(Math.sin(pulseTime*3+e.a)*0.5+0.5);
-        var px=a.x+(b.x-a.x)*t,py=a.y+(b.y-a.y)*t;
-        ctx.beginPath();ctx.arc(px,py,1.5,0,6.28);
-        ctx.fillStyle='rgba(59,130,246,'+(dim?0.02:0.4)+')';ctx.fill();
-      }
-    });
+/* ============================================
+   SLIDE 4: DEPENDENCY MAP CANVAS
+   ============================================ */
+function startDepsCanvas() {
+  var setup = setupCanvas('canvas-deps');
+  if (!setup) return;
+  var ctx = setup.ctx, w = setup.w, h = setup.h;
 
-    /* Nodes */
-    nodes.forEach(function(n){
-      var isH=hovered&&hovered.idx===n.idx;
-      var isConn=hovered&&edges.some(function(e){return(e.a===hovered.idx&&e.b===n.idx)||(e.b===hovered.idx&&e.a===n.idx)});
-      var dim=hovered&&!isH&&!isConn;
+  var deps = [
+    { label: 'vLLM', color: '#3b82f6', ver: 'v0.6+' },
+    { label: 'KServe', color: '#10b981', ver: 'v0.13+' },
+    { label: 'Gateway API', color: '#f59e0b', ver: 'v1.2+' },
+    { label: 'NIXL', color: '#76b900', ver: 'v0.3+' },
+    { label: 'Kubernetes', color: '#326ce5', ver: 'v1.28+' },
+    { label: 'Prometheus', color: '#e6522c', ver: 'v2.45+' },
+    { label: 'KEDA', color: '#06b6d4', ver: 'v2.12+' },
+    { label: 'Envoy', color: '#ac6fce', ver: 'v1.28+' }
+  ];
 
-      if(isH){
-        var g=ctx.createRadialGradient(n.x,n.y,n.r,n.x,n.y,n.r+14);
-        g.addColorStop(0,n.color+'30');g.addColorStop(1,n.color+'00');
-        ctx.beginPath();ctx.arc(n.x,n.y,n.r+14,0,6.28);ctx.fillStyle=g;ctx.fill();
-      }
+  var cxc = w / 2, cyc = h / 2;
+  var rad = Math.min(w, h) * 0.36;
+  var pos = [];
+  for (var i = 0; i < deps.length; i++) {
+    var a = (i / deps.length) * 6.28 - 1.57;
+    pos.push({ x: cxc + Math.cos(a) * rad, y: cyc + Math.sin(a) * rad });
+  }
 
-      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,6.28);
-      ctx.globalAlpha=dim?0.12:1;
-      ctx.fillStyle=n.color;ctx.fill();
+  var dParts = [];
+  for (var i = 0; i < deps.length; i++) {
+    for (var j = 0; j < 3; j++) {
+      dParts.push({ idx: i, t: Math.random(), sp: 0.003 + Math.random() * 0.005, sz: 1 + Math.random() * 0.8 });
+    }
+  }
 
-      /* Name label */
-      ctx.font='500 8px "Red Hat Text",sans-serif';
-      ctx.textAlign='center';ctx.textBaseline='top';
-      ctx.fillStyle=dim?'rgba(226,232,244,.06)':'rgba(226,232,244,.65)';
-      ctx.fillText(n.name,n.x,n.y+n.r+4);
-      ctx.globalAlpha=1;
-    });
+  var dOff = 0, pulse = 0;
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    dOff -= 0.4; pulse += 0.025;
+    var cR = 36 + Math.sin(pulse) * 3;
+
+    // Lines
+    for (var i = 0; i < pos.length; i++) {
+      var p = pos[i];
+      ctx.save(); ctx.setLineDash([6, 4]); ctx.lineDashOffset = dOff;
+      ctx.beginPath(); ctx.moveTo(cxc, cyc); ctx.lineTo(p.x, p.y);
+      ctx.strokeStyle = deps[i].color; ctx.globalAlpha = 0.2; ctx.lineWidth = 1.5;
+      ctx.stroke(); ctx.restore();
+    }
+
+    // Flow particles
+    for (var i = 0; i < dParts.length; i++) {
+      var dp = dParts[i];
+      dp.t += dp.sp; if (dp.t > 1) dp.t -= 1;
+      var p = pos[dp.idx];
+      var px = cxc + (p.x - cxc) * dp.t;
+      var py = cyc + (p.y - cyc) * dp.t;
+      ctx.beginPath(); ctx.arc(px, py, dp.sz, 0, 6.28);
+      ctx.fillStyle = deps[dp.idx].color; ctx.globalAlpha = 0.3; ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    // Center node
+    var g = ctx.createRadialGradient(cxc, cyc, cR * 0.35, cxc, cyc, cR + 16);
+    g.addColorStop(0, 'rgba(59,130,246,.25)'); g.addColorStop(0.6, 'rgba(59,130,246,.06)'); g.addColorStop(1, 'rgba(59,130,246,0)');
+    ctx.beginPath(); ctx.arc(cxc, cyc, cR + 16, 0, 6.28); ctx.fillStyle = g; ctx.fill();
+    ctx.beginPath(); ctx.arc(cxc, cyc, cR, 0, 6.28); ctx.fillStyle = '#3b82f6'; ctx.fill();
+    ctx.font = '900 14px "Red Hat Display",sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#fff'; ctx.fillText('llm-d', cxc, cyc);
+
+    // Outer nodes
+    for (var i = 0; i < pos.length; i++) {
+      var p = pos[i], d = deps[i];
+      ctx.beginPath(); ctx.arc(p.x, p.y, 28, 0, 6.28);
+      ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.fill();
+      ctx.strokeStyle = d.color; ctx.globalAlpha = 0.7; ctx.lineWidth = 2; ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.font = '700 10px "Red Hat Display",sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = d.color; ctx.fillText(d.label, p.x, p.y - 4);
+      ctx.font = '400 8px "Red Hat Text",sans-serif'; ctx.fillStyle = 'rgba(87,83,78,0.5)';
+      ctx.fillText(d.ver, p.x, p.y + 8);
+    }
 
     requestAnimationFrame(draw);
   }
+  draw();
+}
 
-  function hitNode(mx,my){
-    for(var i=nodes.length-1;i>=0;i--){
-      var n=nodes[i],dx=mx-n.x,dy=my-n.y;
-      if(dx*dx+dy*dy<=(n.r+6)*(n.r+6))return n;
-    }
-    return null;
+/* ============================================
+   SLIDE 5: GOVERNANCE CANVAS (flow animation)
+   ============================================ */
+function startGovernanceCanvas() {
+  var setup = setupCanvas('canvas-governance');
+  if (!setup) return;
+  var ctx = setup.ctx, w = setup.w, h = setup.h;
+
+  var upParts = [], downParts = [];
+  for (var i = 0; i < 15; i++) {
+    upParts.push({ t: Math.random(), sp: 0.003 + Math.random() * 0.004, x: w * 0.3 + Math.random() * w * 0.08, sz: 1.2 + Math.random() });
+    downParts.push({ t: Math.random(), sp: 0.003 + Math.random() * 0.004, x: w * 0.62 + Math.random() * w * 0.08, sz: 1.2 + Math.random() });
   }
 
-  canvas.addEventListener('mousemove',function(e){
-    var r=canvas.getBoundingClientRect();
-    var mx=e.clientX-r.left,my=e.clientY-r.top;
-    hovered=hitNode(mx,my);
-    if(hovered){
-      tooltip.querySelector('.tn').textContent=hovered.name;
-      tooltip.querySelector('.tr').textContent=hovered.type.charAt(0).toUpperCase()+hovered.type.slice(1)+' contributor';
-      tooltip.querySelector('.td').textContent=hovered.prs+' PRs merged, '+hovered.reviews+' reviews, joined '+hovered.joined;
-      tooltip.style.opacity='1';
-      var tx=mx+18,ty=my-14;if(tx+280>W)tx=mx-280;if(ty<0)ty=my+24;
-      tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';
-      canvas.style.cursor='pointer';
-    } else {
-      tooltip.style.opacity='0';canvas.style.cursor='default';
-    }
-  });
-  canvas.addEventListener('mouseleave',function(){hovered=null;tooltip.style.opacity='0'});
-  canvas.addEventListener('touchstart',function(e){
-    var t=e.touches[0],r=canvas.getBoundingClientRect();
-    hovered=hitNode(t.clientX-r.left,t.clientY-r.top);
-    if(hovered){
-      tooltip.querySelector('.tn').textContent=hovered.name;
-      tooltip.querySelector('.tr').textContent=hovered.type.charAt(0).toUpperCase()+hovered.type.slice(1)+' contributor';
-      tooltip.querySelector('.td').textContent=hovered.prs+' PRs merged, '+hovered.reviews+' reviews, joined '+hovered.joined;
-      tooltip.style.opacity='1';tooltip.style.left='10px';tooltip.style.top='10px';
-    }
-  },{passive:true});
-  canvas.addEventListener('touchend',function(){hovered=null;tooltip.style.opacity='0'});
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    var topY = 30, botY = h - 30;
 
-  resize();requestAnimationFrame(draw);window.addEventListener('resize',resize);
-})();
+    // Vertical lines
+    ctx.beginPath(); ctx.moveTo(w * 0.35, topY); ctx.lineTo(w * 0.35, botY);
+    ctx.strokeStyle = 'rgba(139,92,246,0.08)'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w * 0.65, topY); ctx.lineTo(w * 0.65, botY);
+    ctx.strokeStyle = 'rgba(245,158,11,0.08)'; ctx.lineWidth = 1; ctx.stroke();
 
-/* ================================================================
-   11. FIND YOUR ROLE QUIZ
-   ================================================================ */
-(function(){
-  var questions=[
-    {q:'What excites you most about infrastructure?',opts:['Making things faster','Making things clearer','Making things reliable','Breaking things to fix them'],map:[0,1,2,3]},
-    {q:'Your ideal Saturday project:',opts:['Optimizing a database query','Writing a tutorial','Setting up a test harness','Sketching system architecture'],map:[0,1,2,3]},
-    {q:'When you read code, you first notice:',opts:['Performance bottlenecks','Missing comments','Untested edge cases','Architectural patterns'],map:[0,1,2,3]},
-    {q:'At a hackathon, you would be the person who:',opts:['Writes the core algorithm','Creates the README','Sets up CI/CD','Designs the API'],map:[0,1,2,3]},
-    {q:'Your superpower:',opts:['I can profile anything','I explain complex things simply','I find bugs nobody else sees','I see the big picture'],map:[0,1,2,3]}
+    // Up particles (contributions)
+    for (var i = 0; i < upParts.length; i++) {
+      var p = upParts[i];
+      p.t += p.sp; if (p.t > 1) p.t -= 1;
+      var py = botY - (botY - topY) * p.t;
+      var a = Math.sin(p.t * 3.14) * 0.5 + 0.1;
+      ctx.beginPath(); ctx.arc(p.x, py, p.sz, 0, 6.28);
+      ctx.fillStyle = '#8b5cf6'; ctx.globalAlpha = a; ctx.fill(); ctx.globalAlpha = 1;
+    }
+
+    // Down particles (governance)
+    for (var i = 0; i < downParts.length; i++) {
+      var p = downParts[i];
+      p.t += p.sp; if (p.t > 1) p.t -= 1;
+      var py = topY + (botY - topY) * p.t;
+      var a = Math.sin(p.t * 3.14) * 0.5 + 0.1;
+      ctx.beginPath(); ctx.arc(p.x, py, p.sz, 0, 6.28);
+      ctx.fillStyle = '#f59e0b'; ctx.globalAlpha = a; ctx.fill(); ctx.globalAlpha = 1;
+    }
+
+    // Labels
+    ctx.font = '500 10px "Red Hat Text",sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(139,92,246,0.5)';
+    ctx.fillText('Contributions flow up', w * 0.35, h - 10);
+    ctx.fillStyle = 'rgba(245,158,11,0.5)';
+    ctx.fillText('Governance flows down', w * 0.65, h - 10);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ============================================
+   SLIDE 6: IMPACT RIPPLE CANVAS
+   ============================================ */
+function startImpactCanvas() {
+  var setup = setupCanvas('canvas-impact');
+  if (!setup) return;
+  var ctx = setup.ctx, w = setup.w, h = setup.h;
+
+  var cxc = w / 2, cyc = h / 2;
+  var stages = [
+    { label: '1 PR Submitted', maxR: 25, delay: 0 },
+    { label: '3 maintainers review', maxR: 55, delay: 30 },
+    { label: '42 organizations', maxR: 90, delay: 60 },
+    { label: '180 GPU clusters', maxR: 130, delay: 90 },
+    { label: '2.4M req/day', maxR: 170, delay: 120 },
+    { label: '12M end users', maxR: 210, delay: 150 }
   ];
+  var ripples = [];
+  var frame = 0;
 
-  var roles=[
-    {title:'Performance Engineer',emoji:'⚡',color:'#3b82f6',
-      desc:'You have a natural instinct for making things faster. In the llm-d community, you would thrive in profiling request routing latency, optimizing batch scheduling algorithms, and squeezing every last drop of throughput from GPU clusters. Your contributions directly impact how many requests the system can handle per second.',
-      issues:['Reduce memory allocation in hot path request parser','Optimize batch scoring algorithm for large prompt pools','Profile and reduce tail latency in request dispatching'],
-      skills:['Go profiling (pprof)','GPU utilization analysis','Benchmarking methodology','Cache optimization'],
-      examples:['Reduced EPP routing latency by 23% through connection pooling','Optimized KV-cache eviction to improve prefix hit rates by 40%','Benchmarked disaggregated vs. colocated serving at 10K QPS']},
-    {title:'Documentation Champion',emoji:'📝',color:'#10b981',
-      desc:'You make complex systems understandable. In llm-d, you would write the tutorials that help new users deploy their first routing setup, create architecture decision records that preserve institutional knowledge, and maintain API references that developers actually enjoy reading. Clear docs are what turn a good project into a great one.',
-      issues:['Document prefix-aware routing configuration examples','Add getting-started tutorial for Helm chart deployment','Add architecture decision records (ADR) for routing design'],
-      skills:['Technical writing','Diagram creation','API documentation','Tutorial design'],
-      examples:['Created the quickstart guide that reduced time-to-first-deploy by 60%','Wrote the architecture overview that is now linked in every onboarding issue','Maintained the API reference covering 40+ configuration parameters']},
-    {title:'Quality Guardian',emoji:'🛡️',color:'#f59e0b',
-      desc:'You catch what others miss. In llm-d, you would build the test suites that prevent regressions, set up integration testing across heterogeneous GPU environments, and ensure every release is production-ready. When you find a race condition at 3am, you sleep better knowing production will not encounter it.',
-      issues:['Add unit tests for KV-cache eviction logic','Add integration tests for NVIDIA Dynamo bridge','Create benchmark suite for prefix cache hit rate'],
-      skills:['Test design patterns','CI/CD pipelines','Integration testing','Chaos engineering'],
-      examples:['Built the integration test suite that catches GPU-specific regressions','Discovered a race condition in scheduler shutdown that affected 1 in 10K requests','Set up the conformance testing framework for Gateway API compatibility']},
-    {title:'Architecture Contributor',emoji:'🏗️',color:'#8b5cf6',
-      desc:'You see the forest and the trees. In llm-d, you would design new routing strategies, propose extensions to the EPP framework, and help shape how the system evolves as it scales from hundreds to millions of requests. Your architectural thinking ensures the project can grow without breaking.',
-      issues:['Implement request priority queue for multi-model routing','Add ROCm-specific scheduling hints for AMD GPU pools','Add request timeout configuration to EPP routing rules'],
-      skills:['System design','API design','Distributed systems','Technical leadership'],
-      examples:['Designed the plugin architecture that enabled third-party scheduling policies','Proposed the disaggregated serving extension that became a core feature','Led the Gateway API integration that unified routing across cloud providers']}
-  ];
+  function draw() {
+    frame++;
+    ctx.clearRect(0, 0, w, h);
 
-  var answers=[];
-  var currentQ=0;
-  var progressEl=document.getElementById('quizProgress');
-  var bodyEl=document.getElementById('quizBody');
-  var resultEl=document.getElementById('quizResult');
+    // Ripple rings
+    for (var i = stages.length - 1; i >= 0; i--) {
+      var s = stages[i];
+      if (frame < s.delay) continue;
+      var prog = Math.min((frame - s.delay) / 60, 1);
+      var ease = 1 - Math.pow(1 - prog, 3);
+      var r = ease * s.maxR;
+      var ringAlpha = Math.max(0, (1 - i * 0.12)) * ease * 0.2;
 
-  function init(){
-    answers=[];currentQ=0;
-    resultEl.classList.remove('visible');
-    renderProgress();renderQuestion();
-  }
+      ctx.beginPath(); ctx.arc(cxc, cyc, r, 0, 6.28);
+      ctx.strokeStyle = 'rgba(59,130,246,' + ringAlpha + ')';
+      ctx.lineWidth = 2 - i * 0.2; ctx.stroke();
 
-  function renderProgress(){
-    progressEl.innerHTML='';
-    for(var i=0;i<questions.length;i++){
-      var dot=document.createElement('div');
-      dot.className='quiz-dot'+(i<currentQ?' done':'')+(i===currentQ?' current':'');
-      progressEl.appendChild(dot);
+      var g = ctx.createRadialGradient(cxc, cyc, r * 0.7, cxc, cyc, r);
+      g.addColorStop(0, 'rgba(59,130,246,0)');
+      g.addColorStop(1, 'rgba(59,130,246,' + (ringAlpha * 0.3) + ')');
+      ctx.beginPath(); ctx.arc(cxc, cyc, r, 0, 6.28);
+      ctx.fillStyle = g; ctx.fill();
+
+      if (ease > 0.4) {
+        var angle = -Math.PI / 2 + i * 0.55;
+        var lx = cxc + Math.cos(angle) * (r + 5);
+        var ly = cyc + Math.sin(angle) * (r + 5);
+        var tx = lx + (lx > cxc ? 12 : -12);
+        ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(tx + (lx > cxc ? 50 : -50), ly);
+        ctx.strokeStyle = 'rgba(59,130,246,' + (ease * 0.25) + ')';
+        ctx.lineWidth = 1; ctx.stroke();
+        ctx.font = '600 10px "Red Hat Text",sans-serif';
+        ctx.textAlign = lx > cxc ? 'left' : 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(45,42,38,' + (ease * 0.8) + ')';
+        ctx.fillText(s.label, tx + (lx > cxc ? 55 : -55), ly);
+      }
     }
-  }
 
-  function renderQuestion(){
-    if(currentQ>=questions.length){showResult();return}
-    var q=questions[currentQ];
-    var html='<div class="quiz-q-num">Question '+(currentQ+1)+' of '+questions.length+'</div>';
-    html+='<div class="quiz-question">'+q.q+'</div>';
-    html+='<div class="quiz-options">';
-    q.opts.forEach(function(opt,i){
-      html+='<button class="quiz-opt" data-idx="'+i+'">'+opt+'</button>';
-    });
-    html+='</div>';
-    bodyEl.innerHTML=html;
+    // Center pulse
+    var cPulse = Math.sin(frame * 0.05) * 2;
+    ctx.beginPath(); ctx.arc(cxc, cyc, 7 + cPulse, 0, 6.28);
+    ctx.fillStyle = '#3b82f6'; ctx.fill();
+    var cg = ctx.createRadialGradient(cxc, cyc, 5, cxc, cyc, 13 + cPulse);
+    cg.addColorStop(0, 'rgba(59,130,246,.25)'); cg.addColorStop(1, 'rgba(59,130,246,0)');
+    ctx.beginPath(); ctx.arc(cxc, cyc, 13 + cPulse, 0, 6.28);
+    ctx.fillStyle = cg; ctx.fill();
 
-    bodyEl.querySelectorAll('.quiz-opt').forEach(function(btn){
-      btn.addEventListener('click',function(){
-        bodyEl.querySelectorAll('.quiz-opt').forEach(function(b){b.classList.remove('selected')});
-        btn.classList.add('selected');
-        var idx=parseInt(btn.dataset.idx);
-        answers.push(questions[currentQ].map[idx]);
-        setTimeout(function(){currentQ++;renderProgress();renderQuestion()},350);
-      });
-    });
-  }
-
-  function showResult(){
-    bodyEl.innerHTML='';
-    /* Tally scores */
-    var scores=[0,0,0,0];
-    answers.forEach(function(a){scores[a]++});
-    var maxIdx=0;
-    for(var i=1;i<scores.length;i++){if(scores[i]>scores[maxIdx])maxIdx=i}
-    var role=roles[maxIdx];
-
-    document.getElementById('quizBadge').textContent=role.emoji;
-    document.getElementById('quizBadge').style.background='rgba('+hexToRgb2(role.color)+',.15)';
-    document.getElementById('quizRoleTitle').textContent=role.title;
-    document.getElementById('quizRoleSub').textContent='Your ideal contribution path in the llm-d community';
-    document.getElementById('quizRoleDesc').textContent=role.desc;
-
-    var sectionsHtml='<div class="quiz-result-sec"><h4>Suggested First Issues</h4><ul>'+
-      role.issues.map(function(i){return '<li>'+i+'</li>'}).join('')+'</ul></div>';
-    sectionsHtml+='<div class="quiz-result-sec"><h4>Skills You Would Develop</h4><ul>'+
-      role.skills.map(function(s){return '<li>'+s+'</li>'}).join('')+'</ul></div>';
-    sectionsHtml+='<div class="quiz-result-sec"><h4>Example Contributions</h4><ul>'+
-      role.examples.map(function(e){return '<li>'+e+'</li>'}).join('')+'</ul></div>';
-    sectionsHtml+='<div class="quiz-result-sec"><h4>Role Summary</h4><ul><li>Best fit for: '+role.title+'</li><li>Primary color: <span style="color:'+role.color+';font-weight:700">'+role.title+'</span></li><li>Score confidence: '+Math.round(scores[maxIdx]/questions.length*100)+'%</li></ul></div>';
-
-    document.getElementById('quizRoleSections').innerHTML=sectionsHtml;
-    resultEl.classList.add('visible');
-    progressEl.innerHTML='';
-    for(var i=0;i<questions.length;i++){
-      var dot=document.createElement('div');dot.className='quiz-dot done';progressEl.appendChild(dot);
+    // Scatter particles
+    if (frame % 6 === 0 && frame < 250) {
+      for (var rr = 0; rr < 3; rr++) {
+        var ra = Math.random() * 6.28;
+        ripples.push({ x: cxc, y: cyc, vx: Math.cos(ra) * (1 + Math.random() * 1.2), vy: Math.sin(ra) * (1 + Math.random() * 1.2), life: 1, sz: 1.2 + Math.random() });
+      }
     }
+    for (var ri = ripples.length - 1; ri >= 0; ri--) {
+      var rp = ripples[ri];
+      rp.x += rp.vx; rp.y += rp.vy; rp.life -= 0.008;
+      if (rp.life <= 0) { ripples.splice(ri, 1); continue; }
+      ctx.beginPath(); ctx.arc(rp.x, rp.y, rp.sz * rp.life, 0, 6.28);
+      ctx.fillStyle = 'rgba(59,130,246,' + rp.life * 0.45 + ')'; ctx.fill();
+    }
+
+    // Loop animation every ~350 frames
+    if (frame > 350) { frame = 0; ripples = []; }
+    requestAnimationFrame(draw);
   }
+  draw();
+}
 
-  function hexToRgb2(hex){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return r+','+g+','+b}
-
-  document.getElementById('quizRestart').addEventListener('click',init);
-  init();
-})();
+/* ============================================
+   SLIDE 8: CTA PARTICLES
+   ============================================ */
+function startCtaCanvas() {
+  var setup = setupCanvas('canvas-cta');
+  if (!setup) return;
+  var ctx = setup.ctx, w = setup.w, h = setup.h;
+  var particles = [];
+  var colors = ['#f59e0b', '#3b82f6', '#10b981', '#8b5cf6'];
+  for (var i = 0; i < 45; i++) {
+    particles.push({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 2 + 0.5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: Math.random() * 0.12 + 0.04
+    });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
 </script>
 </body>
 </html>
