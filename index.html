@@ -1,1582 +1,2391 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="author" content="Markell Rawls">
-<title>Community Story | llm-d</title>
-<link rel="icon" type="image/png" href="https://llm-d.ai/img/llm-d-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Red+Hat+Text:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-/* ============================================
-   RESET & GLOBAL -- NO SCROLLING
-   ============================================ */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html, body {
-  overflow: hidden;
-  width: 100%; height: 100%;
-  font-family: 'Red Hat Text', sans-serif;
-  background: #faf8f5;
-  color: #2d2a26;
-  -webkit-font-smoothing: antialiased;
-}
-h1, h2, h3, h4, h5 { font-family: 'Red Hat Display', sans-serif; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Story | llm-d</title>
+    <meta name="author" content="Markell Rawls">
+    <link rel="icon" type="image/png" href="https://llm-d.ai/img/llm-d-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700;900&family=Red+Hat+Text:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           RESET & BASE -- NO SCROLLING
+           ============================================================ */
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html, body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            font-family: 'Red Hat Text', sans-serif;
+            font-weight: 400;
+            color: #2d2a26;
+            line-height: 1.6;
+        }
+        html { background: #faf8f5; }
+        body { background: #faf8f5; }
+        h1,h2,h3,h4,h5,h6 { font-family: 'Red Hat Display', sans-serif; font-weight: 900; color: #2d2a26; }
 
-/* ============================================
-   PROGRESS BAR
-   ============================================ */
-.progress-bar {
-  position: fixed; top: 0; left: 0; height: 4px; z-index: 1000;
-  background: linear-gradient(90deg, #f59e0b, #f5736c, #3b82f6, #10b981);
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  border-radius: 0 2px 2px 0;
-}
+        /* ============================================================
+           FLOWING BACKGROUND GRADIENT (slow 20s cycle)
+           ============================================================ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: linear-gradient(135deg, #faf8f5 0%, #fef6ee 25%, #f5f0fa 50%, #eef5f2 75%, #faf8f5 100%);
+            background-size: 400% 400%;
+            animation: bgFlow 20s ease infinite;
+        }
+        @keyframes bgFlow {
+            0%   { background-position: 0% 50%; }
+            25%  { background-position: 50% 0%; }
+            50%  { background-position: 100% 50%; }
+            75%  { background-position: 50% 100%; }
+            100% { background-position: 0% 50%; }
+        }
 
-/* ============================================
-   NAVIGATION
-   ============================================ */
-.nav-arrows {
-  position: fixed; bottom: 40px; right: 40px; z-index: 100;
-  display: flex; gap: 12px;
-}
-.nav-btn {
-  width: 52px; height: 52px; border-radius: 50%;
-  background: rgba(255,255,255,0.95); border: 1.5px solid #e8e4df;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all 0.3s ease;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  color: #2d2a26; font-size: 20px;
-}
-.nav-btn:hover { background: #fff; border-color: #f59e0b; transform: scale(1.1); box-shadow: 0 4px 20px rgba(245,158,11,0.2); }
-.nav-btn:active { transform: scale(0.95); }
-.nav-btn.disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+        /* ============================================================
+           PROGRESS BAR (top)
+           ============================================================ */
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #f59e0b, #f5736c, #3b82f6, #10b981);
+            z-index: 1000;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0 2px 2px 0;
+        }
 
-.nav-dots {
-  position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-  z-index: 100; display: flex; gap: 10px; align-items: center;
-}
-.nav-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: #d1cdc7; cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  border: none;
-}
-.nav-dot.active { background: #f59e0b; width: 32px; border-radius: 5px; }
-.nav-dot:hover:not(.active) { background: #a39e97; transform: scale(1.3); }
+        /* ============================================================
+           SLIDES VIEWPORT & TRACK
+           ============================================================ */
+        .slides-viewport {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            position: relative;
+        }
+        .slides-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slide {
+            min-width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 48px 100px;
+            position: relative;
+            overflow: hidden;
+        }
 
-/* ============================================
-   SLIDE STRUCTURE
-   ============================================ */
-.slides-viewport {
-  width: 100%; height: 100vh;
-  overflow: hidden; position: relative;
-}
-.slides-track {
-  display: flex; height: 100%;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
-}
-.slide {
-  min-width: 100%; width: 100%; height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
-  padding: 60px 80px;
-}
+        /* ============================================================
+           SLIDE CONTENT WRAPPERS
+           ============================================================ */
+        .slide-inner {
+            max-width: 1100px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .slide-number {
+            font-family: 'Red Hat Display', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #6b6560;
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .slide.active .slide-number {
+            animation: fadeSlideUp 0.5s 0.1s ease forwards;
+        }
+        .slide-title {
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .slide.active .slide-title {
+            animation: fadeSlideUp 0.6s 0.2s ease forwards;
+        }
+        .slide-subtitle {
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            color: #6b6560;
+            max-width: 700px;
+            margin: 0 auto 36px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .slide.active .slide-subtitle {
+            animation: fadeSlideUp 0.5s 0.35s ease forwards;
+        }
+        .slide-body {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .slide.active .slide-body {
+            animation: fadeSlideUp 0.6s 0.45s ease forwards;
+        }
 
-/* ============================================
-   BACKGROUND GRADIENT BLOBS
-   ============================================ */
-.slide::before {
-  content: ''; position: absolute; top: -20%; right: -10%;
-  width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-.slide::after {
-  content: ''; position: absolute; bottom: -15%; left: -5%;
-  width: 500px; height: 500px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
+        /* ============================================================
+           ENTRANCE ANIMATIONS
+           ============================================================ */
+        @keyframes fadeSlideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.15); }
+            50% { box-shadow: 0 0 40px rgba(245,158,11,0.3); }
+        }
+        @keyframes countUp {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
-/* ============================================
-   SLIDE CONTENT LAYOUTS
-   ============================================ */
-.slide-content {
-  position: relative; z-index: 1;
-  max-width: 1200px; width: 100%;
-}
-.slide-split {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 60px; align-items: center;
-  max-width: 1200px; width: 100%;
-  position: relative; z-index: 1;
-}
-.slide-left, .slide-right { position: relative; }
-.slide-badge {
-  display: inline-block; padding: 6px 16px;
-  border-radius: 20px; font-size: 12px; font-weight: 600;
-  letter-spacing: 1.2px; text-transform: uppercase;
-  margin-bottom: 16px;
-}
-.badge-amber { background: #fef3c7; color: #92400e; }
-.badge-coral { background: #fee2e2; color: #991b1b; }
-.badge-blue { background: #dbeafe; color: #1e40af; }
-.badge-green { background: #d1fae5; color: #065f46; }
-.badge-purple { background: #ede9fe; color: #5b21b6; }
+        /* Staggered card entrance */
+        .stagger-1 { animation-delay: 0.5s !important; }
+        .stagger-2 { animation-delay: 0.65s !important; }
+        .stagger-3 { animation-delay: 0.8s !important; }
+        .stagger-4 { animation-delay: 0.95s !important; }
+        .stagger-5 { animation-delay: 1.1s !important; }
+        .stagger-6 { animation-delay: 1.25s !important; }
+        .stagger-7 { animation-delay: 1.4s !important; }
+        .stagger-8 { animation-delay: 1.55s !important; }
 
-.slide-title {
-  font-size: 46px; font-weight: 800; line-height: 1.1;
-  margin-bottom: 16px; color: #2d2a26;
-}
-.slide-subtitle {
-  font-size: 20px; font-weight: 400; color: #6b6560;
-  line-height: 1.5; margin-bottom: 24px;
-}
-.slide-body {
-  font-size: 16px; line-height: 1.7; color: #4a4541;
-}
-.highlight { color: #f59e0b; font-weight: 600; }
-.highlight-blue { color: #3b82f6; font-weight: 600; }
-.highlight-green { color: #10b981; font-weight: 600; }
-.highlight-coral { color: #f5736c; font-weight: 600; }
-.highlight-purple { color: #8b5cf6; font-weight: 600; }
+        /* ============================================================
+           CARD STYLES
+           ============================================================ */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px 24px;
+            box-shadow: 0 2px 12px rgba(45,42,38,0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(45,42,38,0.1);
+        }
 
-/* ============================================
-   CARDS
-   ============================================ */
-.card {
-  background: #ffffff; border-radius: 16px;
-  padding: 24px; border: 1px solid #f0ece7;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-  transition: all 0.4s ease;
-}
-.card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-2px); }
-.card-grid {
-  display: grid; gap: 16px;
-}
-.card-grid-2 { grid-template-columns: 1fr 1fr; }
-.card-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-.card-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
-.card-grid-5 { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
+        /* ============================================================
+           NAVIGATION ARROWS
+           ============================================================ */
+        .nav-arrows {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            z-index: 500;
+        }
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid #d4cfc9;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            color: #6b6560;
+        }
+        .nav-btn:hover {
+            border-color: #f59e0b;
+            color: #f59e0b;
+            background: #fff;
+            box-shadow: 0 4px 20px rgba(245,158,11,0.2);
+        }
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: default;
+            border-color: #d4cfc9;
+            color: #d4cfc9;
+        }
+        .nav-btn:disabled:hover {
+            box-shadow: none;
+            background: rgba(255,255,255,0.9);
+        }
+        .nav-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
 
-.card-icon {
-  width: 44px; height: 44px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; margin-bottom: 12px;
-}
-.card-title { font-family: 'Red Hat Display', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-.card-text { font-size: 13px; color: #6b6560; line-height: 1.55; }
+        /* ============================================================
+           PROGRESS DOTS (amber pill when active)
+           ============================================================ */
+        .nav-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid #d4cfc9;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+        .nav-dot.active {
+            background: #f59e0b;
+            border-color: #f59e0b;
+            width: 28px;
+            border-radius: 5px;
+        }
+        .nav-dot:hover:not(.active) {
+            border-color: #f59e0b;
+        }
 
-/* ============================================
-   METRIC BLOCKS
-   ============================================ */
-.metric-row {
-  display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap;
-}
-.metric-block {
-  text-align: center; flex: 1; min-width: 90px;
-}
-.metric-value {
-  font-family: 'Red Hat Display', sans-serif;
-  font-size: 36px; font-weight: 800;
-}
-.metric-label {
-  font-size: 11px; color: #6b6560; margin-top: 4px;
-  text-transform: uppercase; letter-spacing: 0.8px;
-}
-.metric-unit {
-  font-size: 14px; font-weight: 400; color: #a39e97;
-}
+        /* ============================================================
+           CANVAS WRAPS
+           ============================================================ */
+        .hero-canvas-wrap {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .hero-canvas-wrap canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .full-canvas-wrap {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .full-canvas-wrap canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .boxed-canvas-wrap {
+            width: 100%;
+            max-width: 900px;
+            height: 340px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .boxed-canvas-wrap canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(45,42,38,0.06);
+        }
 
-/* ============================================
-   CANVAS CONTAINERS
-   ============================================ */
-.canvas-wrap {
-  width: 100%; aspect-ratio: 4/3;
-  border-radius: 20px; overflow: hidden;
-  background: #faf8f5;
-  border: 1px solid #f0ece7;
-  position: relative;
-}
-.canvas-wrap canvas {
-  width: 100%; height: 100%;
-  display: block;
-}
+        /* ============================================================
+           SLIDE 1 - HERO
+           ============================================================ */
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(245,158,11,0.1);
+            border: 1px solid rgba(245,158,11,0.25);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #b45309;
+            margin-bottom: 20px;
+        }
+        .hero-badge img { height: 20px; width: 20px; }
+        .hero-gradient-text {
+            background: linear-gradient(135deg, #f59e0b 0%, #f5736c 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-stat-row {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 36px;
+            flex-wrap: wrap;
+        }
+        .hero-stat-item {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        .slide.active .hero-stat-item {
+            animation: scaleIn 0.5s ease forwards;
+        }
+        .hero-stat-value {
+            font-family: 'Red Hat Display', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            line-height: 1;
+        }
+        .hero-stat-label {
+            font-size: 0.85rem;
+            color: #6b6560;
+            margin-top: 4px;
+        }
 
-/* ============================================
-   STAGGERED ENTRANCE ANIMATIONS
-   ============================================ */
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeSlideLeft {
-  from { opacity: 0; transform: translateX(60px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-@keyframes fadeSlideRight {
-  from { opacity: 0; transform: translateX(-60px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
-}
-@keyframes slideInBounce {
-  0% { opacity: 0; transform: translateY(60px); }
-  60% { opacity: 1; transform: translateY(-8px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.3); }
-  50% { box-shadow: 0 0 20px 8px rgba(245,158,11,0.15); }
-}
-@keyframes floatY {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
+        /* ============================================================
+           SLIDE 2 - PARTNER NETWORK
+           ============================================================ */
+        .partner-split {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            text-align: left;
+        }
+        .partner-text { flex: 1; min-width: 300px; }
+        .partner-canvas-area { flex: 1; min-width: 300px; }
+        .partner-canvas-area .boxed-canvas-wrap { height: 380px; }
+        .partner-text h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+        .partner-list {
+            list-style: none;
+            padding: 0;
+        }
+        .partner-list li {
+            font-size: 0.95rem;
+            color: #6b6560;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .partner-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .partner-list li.amber::before { background: #f59e0b; }
+        .partner-list li.blue::before { background: #3b82f6; }
+        .partner-list li.green::before { background: #10b981; }
+        .partner-list li.purple::before { background: #8b5cf6; }
 
-.anim-hidden { opacity: 0; }
-.anim-fadeUp { animation: fadeSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.anim-fadeLeft { animation: fadeSlideLeft 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.anim-fadeRight { animation: fadeSlideRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.anim-scaleIn { animation: scaleIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.anim-bounce { animation: slideInBounce 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        /* ============================================================
+           SLIDE 3 - TIMELINE
+           ============================================================ */
+        .timeline-canvas-wrap {
+            width: 100%;
+            max-width: 1000px;
+            height: 300px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .timeline-canvas-wrap canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(45,42,38,0.06);
+        }
+        .timeline-stat-row {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        .timeline-stat {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 16px 24px;
+            box-shadow: 0 2px 12px rgba(45,42,38,0.06);
+            text-align: center;
+            min-width: 160px;
+            opacity: 0;
+        }
+        .slide.active .timeline-stat {
+            animation: scaleIn 0.5s ease forwards;
+        }
+        .timeline-stat-val {
+            font-family: 'Red Hat Display', sans-serif;
+            font-weight: 900;
+            font-size: 1.6rem;
+        }
+        .timeline-stat-label {
+            font-size: 0.78rem;
+            color: #6b6560;
+            margin-top: 2px;
+        }
 
-/* ============================================
-   TIMELINE (horizontal)
-   ============================================ */
-.timeline-row {
-  display: flex; align-items: flex-start; gap: 0; position: relative;
-  width: 100%; margin-top: 16px;
-}
-.tl-item {
-  flex: 1; text-align: center; position: relative; cursor: pointer;
-  padding: 0 4px;
-  transition: transform 0.3s ease;
-}
-.tl-item:hover { transform: translateY(-3px); }
-.tl-dot-wrap {
-  width: 100%; display: flex; align-items: center; justify-content: center;
-  position: relative; height: 40px;
-}
-.tl-dot-wrap::before {
-  content: ''; position: absolute; top: 50%; left: 0; right: 0;
-  height: 2px; background: linear-gradient(90deg, rgba(59,130,246,0.15), rgba(245,158,11,0.25));
-}
-.tl-item:first-child .tl-dot-wrap::before { left: 50%; }
-.tl-item:last-child .tl-dot-wrap::before { right: 50%; }
-.tl-dot {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: #3b82f6; position: relative; z-index: 2;
-  box-shadow: 0 0 8px rgba(59,130,246,0.25);
-  transition: all 0.3s ease;
-}
-.tl-item:hover .tl-dot,
-.tl-item.active .tl-dot { width: 20px; height: 20px; box-shadow: 0 0 16px rgba(59,130,246,0.4); }
-.tl-item.tl-now .tl-dot {
-  background: #10b981;
-  box-shadow: 0 0 14px rgba(16,185,129,0.4);
-}
-.tl-date {
-  font-size: 10px; font-weight: 700; color: #3b82f6;
-  font-family: 'SF Mono','Fira Code',Consolas,monospace;
-  margin-top: 8px;
-}
-.tl-item.tl-now .tl-date { color: #10b981; }
-.tl-label {
-  font-size: 11px; font-weight: 600; margin-top: 4px;
-  color: #2d2a26; line-height: 1.3;
-}
-.tl-desc {
-  font-size: 10px; color: #6b6560; line-height: 1.4;
-  margin-top: 4px; max-height: 0; overflow: hidden;
-  transition: max-height 0.4s ease, opacity 0.3s;
-  opacity: 0;
-}
-.tl-item.active .tl-desc { max-height: 120px; opacity: 1; }
-.tl-now-tag {
-  font-size: 9px; font-weight: 700; color: #10b981;
-  text-transform: uppercase; letter-spacing: 1px;
-  margin-top: 2px;
-  padding: 1px 6px; background: rgba(16,185,129,0.08);
-  border: 1px solid rgba(16,185,129,0.2); border-radius: 3px;
-  display: inline-block;
-}
+        /* ============================================================
+           SLIDE 4 - ECOSYSTEM DEPS
+           ============================================================ */
+        .eco-split {
+            display: flex;
+            align-items: flex-start;
+            gap: 40px;
+            text-align: left;
+        }
+        .eco-text { flex: 1; min-width: 280px; }
+        .eco-canvas-area { flex: 1; min-width: 320px; }
+        .eco-canvas-area .boxed-canvas-wrap { height: 400px; }
+        .eco-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 12px;
+        }
+        .eco-list li {
+            font-size: 0.88rem;
+            color: #6b6560;
+            margin-bottom: 6px;
+            padding-left: 18px;
+            position: relative;
+            line-height: 1.5;
+        }
+        .eco-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 7px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+        .eco-list li.c-blue::before { background: #3b82f6; }
+        .eco-list li.c-green::before { background: #10b981; }
+        .eco-list li.c-amber::before { background: #f59e0b; }
+        .eco-list li.c-purple::before { background: #8b5cf6; }
+        .eco-list li.c-coral::before { background: #f5736c; }
+        .eco-list li strong { color: #2d2a26; }
 
-/* ============================================
-   PARTNER BADGE GRID
-   ============================================ */
-.partner-grid {
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
-}
-.partner-badge {
-  background: #fff; border: 1px solid #f0ece7; border-radius: 12px;
-  padding: 14px 8px; text-align: center;
-  transition: all 0.3s ease; cursor: default;
-}
-.partner-badge:hover { border-color: rgba(59,130,246,0.3); box-shadow: 0 4px 16px rgba(0,0,0,0.06); transform: translateY(-2px); }
-.partner-letter {
-  width: 36px; height: 36px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Red Hat Display', sans-serif;
-  font-weight: 900; font-size: 14px; color: #fff;
-  margin: 0 auto 8px;
-}
-.partner-name {
-  font-size: 11px; font-weight: 600; color: #2d2a26;
-  line-height: 1.2;
-}
-.partner-role {
-  font-size: 9px; color: #a39e97; margin-top: 2px;
-  text-transform: uppercase; letter-spacing: 0.5px;
-}
+        /* ============================================================
+           SLIDE 5 - GOVERNANCE
+           ============================================================ */
+        .gov-split {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            text-align: left;
+        }
+        .gov-stack-col { flex: 1; min-width: 280px; }
+        .gov-canvas-col { flex: 1; min-width: 300px; }
+        .gov-canvas-col .boxed-canvas-wrap { height: 380px; }
+        .gov-layer {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(45,42,38,0.05);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            opacity: 0;
+        }
+        .slide.active .gov-layer {
+            animation: fadeSlideUp 0.5s ease forwards;
+        }
+        .gov-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .gov-label {
+            font-family: 'Red Hat Display', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .gov-desc {
+            font-size: 0.75rem;
+            color: #6b6560;
+            margin-top: 2px;
+        }
 
-/* ============================================
-   GOVERNANCE LAYER
-   ============================================ */
-.gov-stack { display: flex; flex-direction: column; gap: 10px; }
-.gov-layer {
-  background: #fff; border: 1px solid #f0ece7; border-radius: 12px;
-  padding: 16px 20px; display: flex; align-items: center; gap: 16px;
-  transition: all 0.3s ease;
-}
-.gov-layer:hover { border-color: rgba(59,130,246,0.2); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-.gov-dot {
-  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
-}
-.gov-layer-title { font-weight: 700; font-size: 14px; color: #2d2a26; }
-.gov-layer-sub { font-size: 12px; color: #6b6560; margin-top: 2px; }
+        /* ============================================================
+           SLIDE 6 - IMPACT RIPPLE
+           ============================================================ */
+        .impact-split {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            text-align: left;
+        }
+        .impact-text { flex: 1; min-width: 300px; }
+        .impact-canvas-area { flex: 1; min-width: 300px; }
+        .impact-canvas-area .boxed-canvas-wrap { height: 380px; }
+        .impact-cards {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .impact-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 14px 18px;
+            box-shadow: 0 2px 8px rgba(45,42,38,0.05);
+            text-align: center;
+            flex: 1;
+            opacity: 0;
+        }
+        .slide.active .impact-card {
+            animation: scaleIn 0.5s ease forwards;
+        }
+        .impact-card-val {
+            font-family: 'Red Hat Display', sans-serif;
+            font-weight: 900;
+            font-size: 1.3rem;
+        }
+        .impact-card-label {
+            font-size: 0.75rem;
+            color: #6b6560;
+            margin-top: 2px;
+        }
 
-/* ============================================
-   JOURNEY STAGE CARDS
-   ============================================ */
-.journey-grid {
-  display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
-}
-.journey-card {
-  background: #fff; border: 1px solid #f0ece7; border-radius: 12px;
-  padding: 16px 12px; text-align: center;
-  transition: all 0.3s ease; cursor: default;
-  position: relative;
-}
-.journey-card:hover { border-color: rgba(59,130,246,0.3); box-shadow: 0 4px 16px rgba(0,0,0,0.06); transform: translateY(-3px); }
-.journey-num {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: #3b82f6; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Red Hat Display', sans-serif;
-  font-weight: 800; font-size: 13px;
-  margin: 0 auto 8px;
-}
-.journey-card:first-child .journey-num { background: #10b981; }
-.journey-stage-name { font-size: 12px; font-weight: 700; color: #2d2a26; margin-bottom: 4px; }
-.journey-stage-time { font-size: 10px; color: #a39e97; }
-.journey-stage-desc { font-size: 10px; color: #6b6560; line-height: 1.4; margin-top: 6px; }
+        /* ============================================================
+           SLIDE 7 - CONTRIBUTOR JOURNEY
+           ============================================================ */
+        .journey-canvas-wrap {
+            width: 100%;
+            max-width: 950px;
+            height: 320px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .journey-canvas-wrap canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(45,42,38,0.06);
+        }
+        .journey-quotes {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .journey-quote {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 2px 12px rgba(45,42,38,0.06);
+            text-align: left;
+            max-width: 400px;
+            flex: 1;
+            min-width: 260px;
+            opacity: 0;
+        }
+        .slide.active .journey-quote {
+            animation: fadeSlideUp 0.5s ease forwards;
+        }
+        .journey-quote-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+        }
+        .journey-quote-text {
+            font-size: 0.82rem;
+            color: #6b6560;
+            line-height: 1.5;
+            font-style: italic;
+            border-left: 3px solid;
+            padding-left: 12px;
+        }
 
-/* ============================================
-   CTA LINKS
-   ============================================ */
-.cta-link {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Red Hat Text', sans-serif;
-  font-size: 15px; font-weight: 600;
-  padding: 12px 28px; border-radius: 12px;
-  text-decoration: none; transition: all 0.3s ease;
-}
-.cta-link--primary {
-  background: #3b82f6; color: #fff; border: 1px solid #3b82f6;
-}
-.cta-link--primary:hover { background: #2563eb; box-shadow: 0 4px 20px rgba(59,130,246,0.3); }
-.cta-link--secondary {
-  background: transparent; color: #6b6560; border: 1px solid #e8e4df;
-}
-.cta-link--secondary:hover { color: #3b82f6; border-color: rgba(59,130,246,0.3); }
-.cta-link svg { width: 16px; height: 16px; }
+        /* ============================================================
+           SLIDE 8 - CTA / JOIN US
+           ============================================================ */
+        .cta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .cta-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(45,42,38,0.06);
+            opacity: 0;
+        }
+        .slide.active .cta-card {
+            animation: fadeSlideUp 0.5s ease forwards;
+        }
+        .cta-card-title {
+            font-family: 'Red Hat Display', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cta-card-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .cta-card-desc {
+            font-size: 0.82rem;
+            color: #6b6560;
+            line-height: 1.5;
+        }
+        .cta-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        .cta-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-family: 'Red Hat Display', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: transform 0.25s, box-shadow 0.25s;
+            cursor: pointer;
+            border: none;
+        }
+        .cta-link-btn:hover {
+            transform: translateY(-2px);
+        }
+        .cta-link-btn.primary {
+            background: linear-gradient(135deg, #f59e0b, #f5736c);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(245,158,11,0.3);
+        }
+        .cta-link-btn.primary:hover {
+            box-shadow: 0 8px 28px rgba(245,158,11,0.4);
+        }
+        .cta-link-btn.secondary {
+            background: #fff;
+            color: #3b82f6;
+            border: 2px solid #3b82f6;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.1);
+        }
+        .cta-link-btn.secondary:hover {
+            box-shadow: 0 4px 16px rgba(59,130,246,0.15);
+        }
 
-/* ============================================
-   LOGO & FOOTER
-   ============================================ */
-.slide-logo {
-  position: absolute; top: 24px; left: 40px;
-  display: flex; align-items: center; gap: 10px;
-  z-index: 10;
-}
-.slide-logo img { height: 28px; }
-.slide-logo span {
-  font-family: 'Red Hat Display', sans-serif;
-  font-size: 15px; font-weight: 700; color: #6b6560;
-}
-.slide-number {
-  position: absolute; bottom: 24px; left: 40px;
-  font-size: 13px; color: #a39e97; z-index: 10;
-}
+        /* Footer label */
+        .slide-footer {
+            margin-top: 24px;
+            font-size: 0.82rem;
+            color: #a09a94;
+        }
+        .slide-footer a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .slide-footer a:hover {
+            text-decoration: underline;
+        }
 
-/* ============================================
-   TITLE SLIDE HERO
-   ============================================ */
-.hero-title {
-  font-size: 68px; font-weight: 900; line-height: 1.05;
-  letter-spacing: -1.5px;
-  background: linear-gradient(135deg, #2d2a26 0%, #6b6560 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 20px;
-}
-.hero-accent {
-  background: linear-gradient(135deg, #f59e0b 0%, #f5736c 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.hero-subtitle {
-  font-size: 22px; color: #6b6560; line-height: 1.6;
-  max-width: 640px;
-}
-
-/* ============================================
-   STAT ROW
-   ============================================ */
-.stat-row { display: flex; gap: 32px; flex-wrap: wrap; }
-.stat-item { text-align: center; flex: 1; min-width: 100px; }
-.stat-num {
-  font-family: 'Red Hat Display', sans-serif;
-  font-size: 42px; font-weight: 900;
-}
-.stat-label {
-  font-size: 12px; color: #6b6560; text-transform: uppercase;
-  letter-spacing: 0.8px; margin-top: 4px;
-}
-
-/* ============================================
-   FEATURE LIST
-   ============================================ */
-.feature-list { list-style: none; padding: 0; }
-.feature-list li {
-  padding: 8px 0; display: flex; gap: 10px;
-  align-items: flex-start; font-size: 14px; line-height: 1.5;
-}
-.feature-list .bullet {
-  width: 7px; height: 7px; border-radius: 50%;
-  margin-top: 6px; flex-shrink: 0;
-}
-.bullet-amber { background: #f59e0b; }
-.bullet-blue { background: #3b82f6; }
-.bullet-green { background: #10b981; }
-.bullet-coral { background: #f5736c; }
-.bullet-purple { background: #8b5cf6; }
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 900px) {
-  .slide { padding: 40px 24px; }
-  .slide-split { grid-template-columns: 1fr; gap: 32px; }
-  .hero-title { font-size: 40px; }
-  .slide-title { font-size: 30px; }
-  .card-grid-3, .card-grid-4, .card-grid-5 { grid-template-columns: 1fr 1fr; }
-  .card-grid-2 { grid-template-columns: 1fr; }
-  .nav-arrows { bottom: 20px; right: 20px; }
-  .nav-dots { bottom: 20px; }
-  .partner-grid { grid-template-columns: repeat(3, 1fr); }
-  .journey-grid { grid-template-columns: repeat(3, 1fr); }
-  .stat-row { gap: 16px; }
-  .stat-num { font-size: 32px; }
-}
-</style>
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .slide { padding: 80px 20px 90px; }
+            .partner-split, .eco-split, .gov-split, .impact-split { flex-direction: column; gap: 20px; }
+            .cta-grid { grid-template-columns: 1fr; }
+            .hero-stat-row { gap: 16px; }
+            .timeline-canvas-wrap { height: 220px; }
+            .journey-canvas-wrap { height: 240px; }
+        }
+        @media (max-width: 480px) {
+            .nav-arrows { bottom: 16px; gap: 12px; }
+            .nav-btn { width: 40px; height: 40px; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Progress Bar -->
-<div class="progress-bar" id="progressBar" style="width: 12.5%"></div>
+<!-- PROGRESS BAR -->
+<div class="progress-bar" id="progress-bar" style="width:12.5%"></div>
 
-<!-- Navigation Arrows -->
-<div class="nav-arrows">
-  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" aria-label="Previous slide">&#8592;</button>
-  <button class="nav-btn" id="nextBtn" onclick="navigate(1)" aria-label="Next slide">&#8594;</button>
-</div>
-
-<!-- Navigation Dots -->
-<div class="nav-dots" id="navDots"></div>
-
-<!-- ==========================================
-     SLIDES VIEWPORT
-     ========================================== -->
+<!-- SLIDES VIEWPORT -->
 <div class="slides-viewport">
-<div class="slides-track" id="slidesTrack">
+    <div class="slides-track" id="slides-track">
 
-<!-- ==========================================
-     SLIDE 1: TITLE -- THE ORIGIN
-     ========================================== -->
-<div class="slide" id="slide-0">
-  <canvas id="canvas-hero" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
-  <div class="slide-content" style="text-align:center; position:relative; z-index:1;">
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="0">
-      <img src="https://llm-d.ai/img/llm-d-icon.png" alt="llm-d" style="width:80px; margin-bottom:24px; filter: drop-shadow(0 4px 12px rgba(245,158,11,0.3));">
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="200">
-      <h1 class="hero-title">15 Organizations.<br><span class="hero-accent">One Mission.</span></h1>
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="400">
-      <p class="hero-subtitle" style="margin: 0 auto 32px;">
-        From competitors to collaborators: the story of how cloud providers, hardware vendors, and researchers built a vendor-neutral platform for Kubernetes-native LLM serving -- together.
-      </p>
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="600">
-      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
-        <span class="slide-badge badge-amber">Open Source</span>
-        <span class="slide-badge badge-blue">Vendor Neutral</span>
-        <span class="slide-badge badge-green">CNCF Sandbox</span>
-        <span class="slide-badge badge-purple">Community-Driven</span>
-      </div>
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="800">
-      <div class="stat-row" style="max-width:700px; margin: 40px auto 0;">
-        <div class="stat-item">
-          <div class="stat-num" style="color:#f59e0b;" data-count="15">0</div>
-          <div class="stat-label">Organizations</div>
+        <!-- ============================================================
+             SLIDE 1: TITLE -- THE ORIGIN
+             ============================================================ -->
+        <div class="slide active" data-slide="0">
+            <div class="hero-canvas-wrap">
+                <canvas id="hero-canvas"></canvas>
+            </div>
+            <div class="slide-inner" style="position:relative;z-index:2;">
+                <div class="slide-number">Slide 1 of 8</div>
+                <div class="hero-badge">
+                    <img src="https://llm-d.ai/img/llm-d-icon.png" alt="llm-d">
+                    llm-d Community
+                </div>
+                <h1 class="slide-title hero-gradient-text">15 Organizations. One Mission.</h1>
+                <p class="slide-subtitle">From competitors to collaborators: the story of how cloud providers, hardware vendors, and researchers built a vendor-neutral platform for Kubernetes-native LLM serving, together.</p>
+                <div class="slide-body">
+                    <div class="hero-stat-row">
+                        <div class="hero-stat-item stagger-1">
+                            <div class="hero-stat-value" style="color:#f59e0b">15+</div>
+                            <div class="hero-stat-label">Organizations</div>
+                        </div>
+                        <div class="hero-stat-item stagger-2">
+                            <div class="hero-stat-value" style="color:#3b82f6">100+</div>
+                            <div class="hero-stat-label">Contributors</div>
+                        </div>
+                        <div class="hero-stat-item stagger-3">
+                            <div class="hero-stat-value" style="color:#10b981">8</div>
+                            <div class="hero-stat-label">Integrations</div>
+                        </div>
+                        <div class="hero-stat-item stagger-4">
+                            <div class="hero-stat-value" style="color:#8b5cf6">CNCF</div>
+                            <div class="hero-stat-label">Sandbox Project</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="stat-item">
-          <div class="stat-num" style="color:#3b82f6;" data-count="100">0</div>
-          <div class="stat-label">Contributors</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num" style="color:#10b981;" data-count="8">0</div>
-          <div class="stat-label">Integrations</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num" style="color:#8b5cf6;" data-count="4">0</div>
-          <div class="stat-label">Major Releases</div>
-        </div>
-      </div>
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="1100">
-      <p style="margin-top:40px; font-size:14px; color:#a39e97;">Press <kbd style="background:#f0ece7; padding:3px 8px; border-radius:4px; font-size:12px;">&#8594;</kbd> or click to navigate</p>
-    </div>
-  </div>
-  <div class="slide-number">01 / 08</div>
-</div>
 
-<!-- ==========================================
-     SLIDE 2: THE PARTNER NETWORK
-     ========================================== -->
-<div class="slide" id="slide-1">
-  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
-  <div class="slide-split">
-    <div class="slide-left">
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="0">
-        <span class="slide-badge badge-amber">Chapter 1 -- A Project Is Born</span>
-      </div>
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="150">
-        <h2 class="slide-title">The Partner<br>Network</h2>
-      </div>
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="300">
-        <p class="slide-subtitle">How 15 organizations came together around a shared vision for open-source LLM inference.</p>
-      </div>
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="450">
-        <p class="slide-body">
-          No single company should own the routing plane for LLM serving. <span class="highlight">Red Hat</span>, <span class="highlight-blue">Google Cloud</span>, and <span class="highlight-purple">IBM Research</span> co-founded llm-d with this conviction. <span class="highlight-green">NVIDIA</span> and <span class="highlight-blue">CoreWeave</span> joined as core partners, bringing GPU expertise and scale testing. Together, they built a vendor-neutral inference platform that benefits the entire Kubernetes ecosystem.
-        </p>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="600">
-        <ul class="feature-list" style="margin-top:16px;">
-          <li><span class="bullet bullet-amber"></span>3 founding partners set governance and routing/EPP framework</li>
-          <li><span class="bullet bullet-blue"></span>2 core partners contributed GPU optimization and scale testing</li>
-          <li><span class="bullet bullet-green"></span>6 ecosystem partners bring hardware and model support</li>
-          <li><span class="bullet bullet-purple"></span>3 academic/governance institutions anchor research and IP</li>
-        </ul>
-      </div>
-    </div>
-    <div class="slide-right">
-      <div class="anim-hidden" data-anim="fadeLeft" data-delay="200">
-        <div class="canvas-wrap">
-          <canvas id="canvas-network"></canvas>
+        <!-- ============================================================
+             SLIDE 2: THE PARTNER NETWORK
+             ============================================================ -->
+        <div class="slide" data-slide="1">
+            <div class="full-canvas-wrap">
+                <canvas id="slide2-bg-canvas"></canvas>
+            </div>
+            <div class="slide-inner" style="position:relative;z-index:2;">
+                <div class="slide-number">Slide 2 of 8</div>
+                <h2 class="slide-title">The Partner Network</h2>
+                <p class="slide-subtitle">No single company should own the routing plane for LLM serving. Red Hat, Google Cloud, and IBM Research co-founded llm-d with this conviction.</p>
+                <div class="slide-body">
+                    <div class="partner-split">
+                        <div class="partner-text" style="opacity:0;">
+                            <h3 style="color:#f59e0b;">How 15 Organizations Unite</h3>
+                            <ul class="partner-list">
+                                <li class="amber">3 founding partners set governance and the routing/EPP framework</li>
+                                <li class="blue">NVIDIA and CoreWeave contributed GPU optimization and scale testing</li>
+                                <li class="green">6 ecosystem partners bring hardware, models, and production workloads</li>
+                                <li class="purple">3 academic/governance institutions anchor research and IP</li>
+                            </ul>
+                        </div>
+                        <div class="partner-canvas-area">
+                            <div class="boxed-canvas-wrap">
+                                <canvas id="network-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="slide-number">02 / 08</div>
-</div>
 
-<!-- ==========================================
-     SLIDE 3: TIMELINE
-     ========================================== -->
-<div class="slide" id="slide-2">
-  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
-  <div class="slide-content">
-    <div style="text-align:center; margin-bottom: 32px;">
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="0">
-        <span class="slide-badge badge-blue">Chapter 2 -- The Journey</span>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="150">
-        <h2 class="slide-title">From Launch to CNCF Sandbox</h2>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="300">
-        <p class="slide-subtitle" style="max-width:700px; margin:0 auto;">13 months from first commit to CNCF acceptance. Every milestone built on the last.</p>
-      </div>
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="450">
-      <div class="timeline-row" id="timelineRow"></div>
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="700">
-      <div class="stat-row" style="max-width: 600px; margin: 32px auto 0;">
-        <div class="stat-item">
-          <div class="stat-num" style="color:#f59e0b;">13</div>
-          <div class="stat-label">Months to CNCF</div>
+        <!-- ============================================================
+             SLIDE 3: TIMELINE
+             ============================================================ -->
+        <div class="slide" data-slide="2">
+            <div class="full-canvas-wrap">
+                <canvas id="slide3-bg-canvas"></canvas>
+            </div>
+            <div class="slide-inner" style="position:relative;z-index:2;">
+                <div class="slide-number">Slide 3 of 8</div>
+                <h2 class="slide-title">From Launch to CNCF Sandbox</h2>
+                <p class="slide-subtitle">13 months from first commit to CNCF acceptance. Every milestone built on the last.</p>
+                <div class="slide-body">
+                    <div class="timeline-canvas-wrap">
+                        <canvas id="timeline-canvas"></canvas>
+                    </div>
+                    <div class="timeline-stat-row">
+                        <div class="timeline-stat stagger-2">
+                            <div class="timeline-stat-val" style="color:#f59e0b;">13</div>
+                            <div class="timeline-stat-label">Months to CNCF</div>
+                        </div>
+                        <div class="timeline-stat stagger-3">
+                            <div class="timeline-stat-val" style="color:#3b82f6;">6</div>
+                            <div class="timeline-stat-label">Conference Demos</div>
+                        </div>
+                        <div class="timeline-stat stagger-4">
+                            <div class="timeline-stat-val" style="color:#10b981;">4</div>
+                            <div class="timeline-stat-label">Major Releases</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="stat-item">
-          <div class="stat-num" style="color:#3b82f6;">6</div>
-          <div class="stat-label">Conference Demos</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num" style="color:#10b981;">4</div>
-          <div class="stat-label">Major Releases</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="slide-number">03 / 08</div>
-</div>
 
-<!-- ==========================================
-     SLIDE 4: THE ECOSYSTEM
-     ========================================== -->
-<div class="slide" id="slide-3">
-  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
-  <div class="slide-split">
-    <div class="slide-left">
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="0">
-        <span class="slide-badge badge-green">Chapter 3 -- The Ecosystem</span>
-      </div>
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="150">
-        <h2 class="slide-title">Cloud-Native<br>AI Landscape</h2>
-      </div>
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="300">
-        <p class="slide-subtitle">llm-d connects to the broader cloud-native AI ecosystem through 8+ integrations.</p>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="450">
-        <ul class="feature-list">
-          <li><span class="bullet bullet-blue"></span><strong>vLLM</strong> -- High-throughput inference engine with PagedAttention (v0.6+)</li>
-          <li><span class="bullet bullet-green"></span><strong>KServe</strong> -- Model serving platform on Kubernetes (v0.13+)</li>
-          <li><span class="bullet bullet-amber"></span><strong>Gateway API</strong> -- Kubernetes-native routing with Inference Extension (v1.2+)</li>
-          <li><span class="bullet bullet-purple"></span><strong>NIXL</strong> -- NVIDIA GPU-to-GPU KV cache transfer library (v0.3+)</li>
-          <li><span class="bullet bullet-blue"></span><strong>Kubernetes</strong> -- Container orchestration with CRDs and operators (v1.28+)</li>
-          <li><span class="bullet bullet-coral"></span><strong>Prometheus</strong> -- Observability, autoscaling metrics (v2.45+)</li>
-          <li><span class="bullet bullet-green"></span><strong>KEDA</strong> -- Event-driven autoscaling by queue depth (v2.12+)</li>
-          <li><span class="bullet bullet-purple"></span><strong>Envoy</strong> -- Data plane for Gateway API traffic (v1.28+)</li>
-        </ul>
-      </div>
-    </div>
-    <div class="slide-right">
-      <div class="anim-hidden" data-anim="scaleIn" data-delay="200">
-        <div class="canvas-wrap">
-          <canvas id="canvas-deps"></canvas>
+        <!-- ============================================================
+             SLIDE 4: THE ECOSYSTEM
+             ============================================================ -->
+        <div class="slide" data-slide="3">
+            <div class="full-canvas-wrap">
+                <canvas id="slide4-bg-canvas"></canvas>
+            </div>
+            <div class="slide-inner" style="position:relative;z-index:2;">
+                <div class="slide-number">Slide 4 of 8</div>
+                <h2 class="slide-title">Cloud-Native AI Landscape</h2>
+                <p class="slide-subtitle">llm-d connects to the broader cloud-native AI ecosystem through 8+ integrations.</p>
+                <div class="slide-body">
+                    <div class="eco-split">
+                        <div class="eco-text" style="opacity:0;">
+                            <ul class="eco-list">
+                                <li class="c-blue"><strong>vLLM</strong> -- High-throughput inference with PagedAttention (v0.6+)</li>
+                                <li class="c-green"><strong>KServe</strong> -- Model serving on Kubernetes (v0.13+)</li>
+                                <li class="c-amber"><strong>Gateway API</strong> -- K8s-native routing with Inference Extension (v1.2+)</li>
+                                <li class="c-purple"><strong>NIXL</strong> -- NVIDIA GPU-to-GPU KV cache transfer (v0.3+)</li>
+                                <li class="c-blue"><strong>Kubernetes</strong> -- Container orchestration with CRDs (v1.28+)</li>
+                                <li class="c-coral"><strong>Prometheus</strong> -- Observability and autoscaling metrics (v2.45+)</li>
+                                <li class="c-green"><strong>KEDA</strong> -- Event-driven autoscaling by queue depth (v2.12+)</li>
+                                <li class="c-purple"><strong>Envoy</strong> -- Data plane for Gateway API traffic (v1.28+)</li>
+                            </ul>
+                        </div>
+                        <div class="eco-canvas-area">
+                            <div class="boxed-canvas-wrap">
+                                <canvas id="deps-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="slide-number">04 / 08</div>
-</div>
 
-<!-- ==========================================
-     SLIDE 5: GOVERNANCE & METRICS
-     ========================================== -->
-<div class="slide" id="slide-4">
-  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
-  <div class="slide-content">
-    <div style="text-align:center; margin-bottom: 32px;">
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="0">
-        <span class="slide-badge badge-purple">Chapter 4 -- Governance</span>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="150">
-        <h2 class="slide-title">Vendor-Neutral by Design</h2>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="300">
-        <p class="slide-subtitle" style="max-width:750px; margin:0 auto;">CNCF governance ensures no single company controls the roadmap. Contributions flow up, governance flows down.</p>
-      </div>
-    </div>
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;">
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="400">
-        <div class="gov-stack">
-          <div class="gov-layer">
-            <div class="gov-dot" style="background:#426de1;"></div>
-            <div><div class="gov-layer-title" style="color:#426de1;">CNCF</div><div class="gov-layer-sub">Cloud Native Computing Foundation -- vendor-neutral home</div></div>
-          </div>
-          <div class="gov-layer">
-            <div class="gov-dot" style="background:#3b82f6;"></div>
-            <div><div class="gov-layer-title" style="color:#3b82f6;">Technical Oversight Committee</div><div class="gov-layer-sub">Evaluates projects, sets technical direction</div></div>
-          </div>
-          <div class="gov-layer">
-            <div class="gov-dot" style="background:#10b981;"></div>
-            <div><div class="gov-layer-title" style="color:#10b981;">CNCF Sandbox</div><div class="gov-layer-sub">Accepted March 2026 -- IP protection, CI infrastructure</div></div>
-          </div>
-          <div class="gov-layer">
-            <div class="gov-dot" style="background:#f59e0b;"></div>
-            <div><div class="gov-layer-title" style="color:#f59e0b;">Maintainers</div><div class="gov-layer-sub">Red Hat, Google Cloud, IBM Research -- merge authority</div></div>
-          </div>
-          <div class="gov-layer">
-            <div class="gov-dot" style="background:#8b5cf6;"></div>
-            <div><div class="gov-layer-title" style="color:#8b5cf6;">Contributors</div><div class="gov-layer-sub">15+ organizations -- PRs evaluated on technical merit</div></div>
-          </div>
+        <!-- ============================================================
+             SLIDE 5: GOVERNANCE
+             ============================================================ -->
+        <div class="slide" data-slide="4">
+            <div class="full-canvas-wrap">
+                <canvas id="slide5-bg-canvas"></canvas>
+            </div>
+            <div class="slide-inner" style="position:relative;z-index:2;">
+                <div class="slide-number">Slide 5 of 8</div>
+                <h2 class="slide-title">Vendor-Neutral by Design</h2>
+                <p class="slide-subtitle">CNCF governance ensures no single company controls the roadmap. Contributions flow up, governance flows down.</p>
+                <div class="slide-body">
+                    <div class="gov-split">
+                        <div class="gov-stack-col">
+                            <div class="gov-layer stagger-1">
+                                <div class="gov-dot" style="background:#426de1;"></div>
+                                <div>
+                                    <div class="gov-label" style="color:#426de1;">CNCF</div>
+                                    <div class="gov-desc">Cloud Native Computing Foundation, vendor-neutral home</div>
+                                </div>
+                            </div>
+                            <div class="gov-layer stagger-2">
+                                <div class="gov-dot" style="background:#3b82f6;"></div>
+                                <div>
+                                    <div class="gov-label" style="color:#3b82f6;">Technical Oversight Committee</div>
+                                    <div class="gov-desc">Evaluates projects, sets technical direction</div>
+                                </div>
+                            </div>
+                            <div class="gov-layer stagger-3">
+                                <div class="gov-dot" style="background:#10b981;"></div>
+                                <div>
+                                    <div class="gov-label" style="color:#10b981;">CNCF Sandbox</div>
+                                    <div class="gov-desc">Accepted March 2026, IP protection and CI infrastructure</div>
+                                </div>
+                            </div>
+                            <div class="gov-layer stagger-4">
+                                <div class="gov-dot" style="background:#f59e0b;"></div>
+                                <div>
+                                    <div class="gov-label" style="color:#f59e0b;">Maintainers</div>
+                                    <div class="gov-desc">Red Hat, Google Cloud, IBM Research, merge authority</div>
+                                </div>
+                            </div>
+                            <div class="gov-layer stagger-5">
+                                <div class="gov-dot" style="background:#8b5cf6;"></div>
+                                <div>
+                                    <div class="gov-label" style="color:#8b5cf6;">Contributors</div>
+                                    <div class="gov-desc">15+ organizations, PRs evaluated on technical merit</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gov-canvas-col">
+                            <div class="boxed-canvas-wrap">
+                                <canvas id="governance-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="anim-hidden" data-anim="fadeLeft" data-delay="500">
-        <div class="canvas-wrap" style="aspect-ratio: 1/1;">
-          <canvas id="canvas-governance"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="slide-number">05 / 08</div>
-</div>
 
-<!-- ==========================================
-     SLIDE 6: YOUR IMPACT
-     ========================================== -->
-<div class="slide" id="slide-5">
-  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
-  <div class="slide-split">
-    <div class="slide-left">
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="0">
-        <span class="slide-badge badge-coral">Chapter 5 -- Your Impact</span>
-      </div>
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="150">
-        <h2 class="slide-title">One PR.<br>Infinite Ripple.</h2>
-      </div>
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="300">
-        <p class="slide-subtitle">See how a single contribution ripples through the entire ecosystem.</p>
-      </div>
-      <div class="anim-hidden" data-anim="fadeRight" data-delay="450">
-        <p class="slide-body">
-          A single code fix is reviewed by <span class="highlight">3 maintainers</span>, merged into a release used by <span class="highlight-blue">42 organizations</span>, deployed across <span class="highlight-green">180 GPU clusters</span>, routing <span class="highlight-coral">2.4M requests per day</span>, and ultimately serving <span class="highlight-purple">12M end users</span> worldwide.
-        </p>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="600">
-        <div class="card-grid card-grid-2" style="margin-top:20px;">
-          <div class="card" style="padding:16px; text-align:center;">
-            <div style="font-size:11px; color:#6b6560; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">New Feature</div>
-            <div style="font-family:'Red Hat Display',sans-serif; font-size:28px; font-weight:900; color:#3b82f6;">Score 1,284</div>
-            <div style="font-size:11px; color:#a39e97; margin-top:4px;">65 orgs, 310 clusters, 38M users</div>
-          </div>
-          <div class="card" style="padding:16px; text-align:center;">
-            <div style="font-size:11px; color:#6b6560; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">Perf Optimization</div>
-            <div style="font-family:'Red Hat Display',sans-serif; font-size:28px; font-weight:900; color:#10b981;">Score 1,580</div>
-            <div style="font-size:11px; color:#a39e97; margin-top:4px;">72 orgs, 400 clusters, 52M users</div>
-          </div>
+        <!-- ============================================================
+             SLIDE 6: YOUR IMPACT
+             ============================================================ -->
+        <div class="slide" data-slide="5">
+            <div class="full-canvas-wrap">
+                <canvas id="slide6-bg-canvas"></canvas>
+            </div>
+            <div class="slide-inner" style="position:relative;z-index:2;">
+                <div class="slide-number">Slide 6 of 8</div>
+                <h2 class="slide-title">One PR. Infinite Ripple.</h2>
+                <p class="slide-subtitle">See how a single contribution ripples through the entire ecosystem to serve millions.</p>
+                <div class="slide-body">
+                    <div class="impact-split">
+                        <div class="impact-text" style="opacity:0;">
+                            <p style="font-size:0.95rem; color:#4a4541; line-height:1.7;">
+                                A single code fix is reviewed by <strong style="color:#f59e0b;">3 maintainers</strong>, merged into a release used by <strong style="color:#3b82f6;">42 organizations</strong>, deployed across <strong style="color:#10b981;">180 GPU clusters</strong>, routing <strong style="color:#f5736c;">2.4M requests per day</strong>, and ultimately serving <strong style="color:#8b5cf6;">12M end users</strong> worldwide.
+                            </p>
+                            <div class="impact-cards">
+                                <div class="impact-card stagger-5">
+                                    <div class="impact-card-val" style="color:#3b82f6;">Score 1,284</div>
+                                    <div class="impact-card-label">New Feature Impact</div>
+                                </div>
+                                <div class="impact-card stagger-6">
+                                    <div class="impact-card-val" style="color:#10b981;">Score 1,580</div>
+                                    <div class="impact-card-label">Perf Optimization Impact</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="impact-canvas-area">
+                            <div class="boxed-canvas-wrap">
+                                <canvas id="impact-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="slide-right">
-      <div class="anim-hidden" data-anim="scaleIn" data-delay="200">
-        <div class="canvas-wrap" style="aspect-ratio: 1/1;">
-          <canvas id="canvas-impact"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="slide-number">06 / 08</div>
-</div>
 
-<!-- ==========================================
-     SLIDE 7: CONTRIBUTOR JOURNEY
-     ========================================== -->
-<div class="slide" id="slide-6">
-  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
-  <div class="slide-content">
-    <div style="text-align:center; margin-bottom: 28px;">
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="0">
-        <span class="slide-badge badge-amber">Chapter 6 -- Your Journey</span>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="150">
-        <h2 class="slide-title">From First Issue to CNCF Contributor</h2>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="300">
-        <p class="slide-subtitle" style="max-width:750px; margin:0 auto;">Every maintainer started where you are now. Here is the path.</p>
-      </div>
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="450">
-      <div class="journey-grid">
-        <div class="journey-card">
-          <div class="journey-num">1</div>
-          <div class="journey-stage-name">First Issue</div>
-          <div class="journey-stage-time">Day 1 -- Week 1</div>
-          <div class="journey-stage-desc">Find a bug, missing doc, or feature idea. File it or comment on one. No code required.</div>
+        <!-- ============================================================
+             SLIDE 7: CONTRIBUTOR JOURNEY
+             ============================================================ -->
+        <div class="slide" data-slide="6">
+            <div class="full-canvas-wrap">
+                <canvas id="slide7-bg-canvas"></canvas>
+            </div>
+            <div class="slide-inner" style="position:relative;z-index:2;">
+                <div class="slide-number">Slide 7 of 8</div>
+                <h2 class="slide-title">From First Issue to CNCF Contributor</h2>
+                <p class="slide-subtitle">Every maintainer started where you are now. Here is the path.</p>
+                <div class="slide-body">
+                    <div class="journey-canvas-wrap">
+                        <canvas id="journey-canvas"></canvas>
+                    </div>
+                    <div class="journey-quotes">
+                        <div class="journey-quote stagger-5">
+                            <div class="journey-quote-tag" style="color:#3b82f6;">A Contributor's Story</div>
+                            <div class="journey-quote-text" style="border-color:#3b82f6;">
+                                "My first PR was a two-line fix to a config parser. The review was thorough but kind. They helped me understand the project structure along the way."
+                            </div>
+                        </div>
+                        <div class="journey-quote stagger-6">
+                            <div class="journey-quote-tag" style="color:#10b981;">Becoming a Maintainer</div>
+                            <div class="journey-quote-text" style="border-color:#10b981;">
+                                "It was not about writing the most code. It was about consistently helping others succeed and earning trust through reliable, thoughtful contributions."
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="journey-card">
-          <div class="journey-num">2</div>
-          <div class="journey-stage-name">First PR</div>
-          <div class="journey-stage-time">Week 1 -- Month 1</div>
-          <div class="journey-stage-desc">Pick a "good first issue," follow the guide, write tests, submit your first pull request.</div>
-        </div>
-        <div class="journey-card">
-          <div class="journey-num">3</div>
-          <div class="journey-stage-name">Regular Contributor</div>
-          <div class="journey-stage-time">Month 1 -- Month 6</div>
-          <div class="journey-stage-desc">Submit PRs regularly, review others' work, join community calls, build expertise.</div>
-        </div>
-        <div class="journey-card">
-          <div class="journey-num">4</div>
-          <div class="journey-stage-name">Reviewer</div>
-          <div class="journey-stage-time">Month 6 -- Year 1</div>
-          <div class="journey-stage-desc">Maintainers add you as a reviewer. You shape code quality and mentor newer contributors.</div>
-        </div>
-        <div class="journey-card">
-          <div class="journey-num">5</div>
-          <div class="journey-stage-name">Maintainer</div>
-          <div class="journey-stage-time">Year 1+</div>
-          <div class="journey-stage-desc">Merge authority and roadmap direction. Earned through sustained commitment and trust.</div>
-        </div>
-        <div class="journey-card">
-          <div class="journey-num">6</div>
-          <div class="journey-stage-name">CNCF Contributor</div>
-          <div class="journey-stage-time">Year 1+</div>
-          <div class="journey-stage-desc">Speak at KubeCon, co-author whitepapers, shape industry standards across projects.</div>
-        </div>
-      </div>
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="700">
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px;">
-        <div class="card" style="padding: 16px;">
-          <div style="font-size:12px; color:#3b82f6; font-weight:600; margin-bottom:6px;">A CONTRIBUTOR'S STORY</div>
-          <div style="font-size:13px; color:#6b6560; line-height:1.6; font-style:italic; border-left:3px solid #3b82f6; padding-left:12px;">
-            "My first PR was a two-line fix to a config parser. The review was thorough but kind. They helped me understand the project structure along the way."
-          </div>
-        </div>
-        <div class="card" style="padding: 16px;">
-          <div style="font-size:12px; color:#10b981; font-weight:600; margin-bottom:6px;">BECOMING A MAINTAINER</div>
-          <div style="font-size:13px; color:#6b6560; line-height:1.6; font-style:italic; border-left:3px solid #10b981; padding-left:12px;">
-            "It was not about writing the most code. It was about consistently helping others succeed and earning trust through reliable, thoughtful contributions."
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="slide-number">07 / 08</div>
-</div>
 
-<!-- ==========================================
-     SLIDE 8: JOIN US -- CTA
-     ========================================== -->
-<div class="slide" id="slide-7">
-  <div class="slide-logo"><img src="https://llm-d.ai/img/llm-d-icon.png" alt=""><span>llm-d</span></div>
-  <canvas id="canvas-cta" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
-  <div class="slide-content" style="position:relative; z-index:1;">
-    <div style="text-align:center; margin-bottom: 36px;">
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="0">
-        <span class="slide-badge badge-green">Chapter 7 -- Join Us</span>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="150">
-        <h2 class="slide-title">Your GPU Clusters Need Better Routing.<br>We Need Your Expertise.</h2>
-      </div>
-      <div class="anim-hidden" data-anim="fadeUp" data-delay="300">
-        <p class="slide-subtitle" style="max-width:700px; margin:0 auto;">
-          We started with 5 organizations. We are now 15+. The next contributor could be you -- and we mean it. Every PR gets reviewed. Every voice gets heard. No single company controls the roadmap.
-        </p>
-      </div>
-    </div>
-    <div class="card-grid card-grid-2" style="max-width:900px; margin: 0 auto;">
-      <div class="card anim-hidden" data-anim="bounce" data-delay="400">
-        <div class="card-icon" style="background:#fef3c7;">&#128221;</div>
-        <div class="card-title">File Your First Issue</div>
-        <div class="card-text">Found a bug? Have a feature idea? Issues are where every contribution starts. No idea is too small.</div>
-      </div>
-      <div class="card anim-hidden" data-anim="bounce" data-delay="500">
-        <div class="card-icon" style="background:#dbeafe;">&#128222;</div>
-        <div class="card-title">Join the Weekly Community Call</div>
-        <div class="card-text">Thursdays, 10am ET. Meet the maintainers, hear what is in progress, and shape the roadmap in real time.</div>
-      </div>
-      <div class="card anim-hidden" data-anim="bounce" data-delay="600">
-        <div class="card-icon" style="background:#d1fae5;">&#127919;</div>
-        <div class="card-title">Pick Up a Good First Issue</div>
-        <div class="card-text">We label beginner-friendly tasks specifically for new contributors. Real work, not busywork.</div>
-      </div>
-      <div class="card anim-hidden" data-anim="bounce" data-delay="700">
-        <div class="card-icon" style="background:#ede9fe;">&#128172;</div>
-        <div class="card-title">Share Your Production War Stories</div>
-        <div class="card-text">Running LLM inference at scale? Your hard-won lessons help shape what we build next. Join the discussion.</div>
-      </div>
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="900">
-      <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:32px;">
-        <a class="cta-link cta-link--primary" href="https://github.com/llm-d" target="_blank" rel="noopener">
-          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-          GitHub
-        </a>
-        <a class="cta-link cta-link--secondary" href="https://zoom-lfx.platform.linuxfoundation.org/meetings/llm-d" target="_blank" rel="noopener">
-          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zM0 8a8 8 0 1116 0A8 8 0 010 8zm9-3a1 1 0 00-2 0v3a1 1 0 00.293.707l2 2a1 1 0 001.414-1.414L9 7.586V5z"/></svg>
-          Community Call
-        </a>
-        <a class="cta-link cta-link--secondary" href="https://www.cncf.io/projects/llm-d/" target="_blank" rel="noopener">
-          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1.75V13.5h13V2.5H2v-.75h13.25a.75.75 0 01.75.75v11.5a.75.75 0 01-.75.75H1.25a.75.75 0 01-.75-.75V1.75a.75.75 0 01.75-.75h.75v.75zM4 5h8v1.5H4V5zm0 3h8v1.5H4V8zm0 3h5v1.5H4V11z"/></svg>
-          CNCF Listing
-        </a>
-        <a class="cta-link cta-link--secondary" href="https://llm-d.ai" target="_blank" rel="noopener">
-          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1116 0A8 8 0 010 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 005.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 01.64-1.539 6.7 6.7 0 01.597-.933A7.025 7.025 0 002.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 00-.656 2.5h2.49zM4.847 5a12.5 12.5 0 00-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 00-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 00.337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 01-.597-.933A9.268 9.268 0 014.09 12H2.255a7.024 7.024 0 003.072 2.472zM3.82 11a13.652 13.652 0 01-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0013.745 12H11.91a9.27 9.27 0 01-.64 1.539 6.688 6.688 0 01-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 01-.312 2.5zm2.802-3.5a6.959 6.959 0 00-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 00-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 00-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>
-          Website
-        </a>
-      </div>
-    </div>
-    <div class="anim-hidden" data-anim="fadeUp" data-delay="1100">
-      <p style="text-align:center; margin-top:28px; font-size:13px; color:#a39e97;">llm-d is a <a href="https://www.cncf.io/" style="color:#6b6560; text-decoration:none;">CNCF Sandbox</a> project</p>
-    </div>
-  </div>
-  <div class="slide-number">08 / 08</div>
-</div>
+        <!-- ============================================================
+             SLIDE 8: JOIN US -- CTA
+             ============================================================ -->
+        <div class="slide" data-slide="7">
+            <div class="full-canvas-wrap">
+                <canvas id="cta-canvas"></canvas>
+            </div>
+            <div class="slide-inner" style="position:relative;z-index:2;">
+                <div class="slide-number">Slide 8 of 8</div>
+                <h2 class="slide-title">Your GPU Clusters Need Better Routing.<br>We Need Your Expertise.</h2>
+                <p class="slide-subtitle">We started with 5 organizations. We are now 15+. The next contributor could be you, and we mean it. Every PR gets reviewed. Every voice gets heard.</p>
+                <div class="slide-body">
+                    <div class="cta-grid">
+                        <div class="cta-card stagger-1">
+                            <div class="cta-card-title">
+                                <div class="cta-card-icon" style="background:#fef3c7;">&#128221;</div>
+                                File Your First Issue
+                            </div>
+                            <div class="cta-card-desc">Found a bug? Have a feature idea? Issues are where every contribution starts. No idea is too small.</div>
+                        </div>
+                        <div class="cta-card stagger-2">
+                            <div class="cta-card-title">
+                                <div class="cta-card-icon" style="background:#dbeafe;">&#128222;</div>
+                                Join the Weekly Community Call
+                            </div>
+                            <div class="cta-card-desc">Thursdays, 10am ET. Meet the maintainers, hear what is in progress, and shape the roadmap.</div>
+                        </div>
+                        <div class="cta-card stagger-3">
+                            <div class="cta-card-title">
+                                <div class="cta-card-icon" style="background:#d1fae5;">&#127919;</div>
+                                Pick Up a Good First Issue
+                            </div>
+                            <div class="cta-card-desc">We label beginner-friendly tasks specifically for new contributors. Real work, not busywork.</div>
+                        </div>
+                        <div class="cta-card stagger-4">
+                            <div class="cta-card-title">
+                                <div class="cta-card-icon" style="background:#ede9fe;">&#128172;</div>
+                                Share Your Production War Stories
+                            </div>
+                            <div class="cta-card-desc">Running LLM inference at scale? Your hard-won lessons help shape what we build next.</div>
+                        </div>
+                    </div>
+                    <div class="cta-links" style="opacity:0;">
+                        <a href="https://github.com/llm-d" target="_blank" class="cta-link-btn primary">View on GitHub</a>
+                        <a href="https://zoom-lfx.platform.linuxfoundation.org/meetings/llm-d" target="_blank" class="cta-link-btn secondary">Community Call</a>
+                        <a href="https://www.cncf.io/projects/llm-d/" target="_blank" class="cta-link-btn secondary">CNCF Listing</a>
+                        <a href="https://llm-d.ai" target="_blank" class="cta-link-btn secondary">Website</a>
+                    </div>
+                    <div class="slide-footer" style="opacity:0;">
+                        Markell Rawls | AI Evangelist, Red Hat<br>
+                        llm-d is open source, CNCF Sandbox. Built by a community that believes no single company should own the LLM routing plane.
+                    </div>
+                </div>
+            </div>
+        </div>
 
-</div><!-- /slides-track -->
+    </div><!-- /slides-track -->
 </div><!-- /slides-viewport -->
 
+<!-- NAVIGATION ARROWS + DOTS -->
+<div class="nav-arrows">
+    <button class="nav-btn" id="nav-prev" disabled>
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <div class="nav-dots" id="nav-dots"></div>
+    <button class="nav-btn" id="nav-next">
+        <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"></polyline></svg>
+    </button>
+</div>
 
+<!-- ====================================================================
+     ALL JAVASCRIPT -- ZERO EXTERNAL DEPENDENCIES
+     ==================================================================== -->
 <script>
-/* ============================================
-   SLIDE NAVIGATION ENGINE
-   ============================================ */
-var TOTAL_SLIDES = 8;
-var current = 0;
-var animating = false;
+(function(){
+"use strict";
 
-var track = document.getElementById('slidesTrack');
-var progressBar = document.getElementById('progressBar');
-var dotsContainer = document.getElementById('navDots');
-var prevBtn = document.getElementById('prevBtn');
-var nextBtn = document.getElementById('nextBtn');
+/* ============================================================
+   CORE SLIDE NAVIGATION
+   ============================================================ */
+var track = document.getElementById('slides-track');
+var slides = Array.from(document.querySelectorAll('.slide'));
+var totalSlides = slides.length;
+var currentSlide = 0;
+
+var prevBtn = document.getElementById('nav-prev');
+var nextBtn = document.getElementById('nav-next');
+var progressBar = document.getElementById('progress-bar');
+var dotsContainer = document.getElementById('nav-dots');
 
 // Build dots
-for (var i = 0; i < TOTAL_SLIDES; i++) {
-  var dot = document.createElement('button');
-  dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
-  dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-  (function(idx) { dot.addEventListener('click', function() { goTo(idx); }); })(i);
-  dotsContainer.appendChild(dot);
+slides.forEach(function(_, i){
+    var dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', function(){ goToSlide(i); });
+    dotsContainer.appendChild(dot);
+});
+var dots = Array.from(dotsContainer.querySelectorAll('.nav-dot'));
+
+function goToSlide(idx){
+    if(idx < 0 || idx >= totalSlides) return;
+    slides[currentSlide].classList.remove('active');
+    currentSlide = idx;
+    track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+    slides[currentSlide].classList.add('active');
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === currentSlide); });
+    progressBar.style.width = ((currentSlide + 1) / totalSlides * 100) + '%';
+    prevBtn.disabled = currentSlide === 0;
+    nextBtn.disabled = currentSlide === totalSlides - 1;
+    triggerSlideAnimation(currentSlide);
 }
 
-function goTo(index) {
-  if (animating || index === current || index < 0 || index >= TOTAL_SLIDES) return;
-  animating = true;
-  current = index;
-  track.style.transform = 'translateX(-' + (current * 100) + '%)';
-  progressBar.style.width = ((current + 1) / TOTAL_SLIDES * 100) + '%';
-  updateDots();
-  updateArrows();
-  setTimeout(function() {
-    animating = false;
-    triggerSlideAnimations(current);
-  }, 650);
-}
+prevBtn.addEventListener('click', function(){ goToSlide(currentSlide - 1); });
+nextBtn.addEventListener('click', function(){ goToSlide(currentSlide + 1); });
 
-function navigate(dir) {
-  goTo(current + dir);
-}
-
-function updateDots() {
-  var dots = dotsContainer.querySelectorAll('.nav-dot');
-  for (var i = 0; i < dots.length; i++) {
-    dots[i].classList.toggle('active', i === current);
-  }
-}
-
-function updateArrows() {
-  prevBtn.classList.toggle('disabled', current === 0);
-  nextBtn.classList.toggle('disabled', current === TOTAL_SLIDES - 1);
-}
-
-// Keyboard
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); navigate(1); }
-  if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+// Keyboard navigation
+document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goToSlide(currentSlide + 1); }
+    if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goToSlide(currentSlide - 1); }
 });
 
 // Touch swipe
 var touchStartX = 0;
-document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
-document.addEventListener('touchend', function(e) {
-  var dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 60) navigate(dx < 0 ? 1 : -1);
+document.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 60) goToSlide(currentSlide + (dx < 0 ? 1 : -1));
 });
 
-/* ============================================
-   STAGGERED ENTRANCE ANIMATIONS
-   ============================================ */
-var animatedSlides = {};
-
-function triggerSlideAnimations(slideIndex) {
-  if (animatedSlides[slideIndex]) return;
-  animatedSlides[slideIndex] = true;
-  var slide = document.getElementById('slide-' + slideIndex);
-  if (!slide) return;
-  var els = slide.querySelectorAll('[data-anim]');
-  for (var i = 0; i < els.length; i++) {
-    (function(el) {
-      var delay = parseInt(el.dataset.delay || '0', 10);
-      var anim = el.dataset.anim;
-      setTimeout(function() {
-        el.classList.remove('anim-hidden');
-        el.classList.add('anim-' + anim);
-      }, delay);
-    })(els[i]);
-  }
-
-  // Trigger canvas animations per slide
-  if (slideIndex === 0) { startHeroCanvas(); startCountUp(); }
-  if (slideIndex === 1) startNetworkCanvas();
-  if (slideIndex === 2) buildTimeline();
-  if (slideIndex === 3) startDepsCanvas();
-  if (slideIndex === 4) startGovernanceCanvas();
-  if (slideIndex === 5) startImpactCanvas();
-  if (slideIndex === 7) startCtaCanvas();
+/* ============================================================
+   UTILITY
+   ============================================================ */
+var dpr = window.devicePixelRatio || 1;
+function sizeCanvas(canvas, w, h){
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    var ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    return ctx;
 }
+function lerp(a,b,t){ return a + (b-a)*t; }
+function easeOutCubic(t){ return 1 - Math.pow(1-t, 3); }
 
-// Initial load
-updateArrows();
-setTimeout(function() { triggerSlideAnimations(0); }, 300);
-
-/* ============================================
-   CANVAS UTILITIES
-   ============================================ */
-function setupCanvas(id) {
-  var c = document.getElementById(id);
-  if (!c) return null;
-  var rect = c.parentElement ? c.parentElement.getBoundingClientRect() : c.getBoundingClientRect();
-  var dpr = window.devicePixelRatio || 1;
-  c.width = rect.width * dpr;
-  c.height = rect.height * dpr;
-  c.style.width = rect.width + 'px';
-  c.style.height = rect.height + 'px';
-  var ctx = c.getContext('2d');
-  ctx.scale(dpr, dpr);
-  return { ctx: ctx, w: rect.width, h: rect.height, c: c };
+var _rafIds = [];
+function safeRAF(fn){
+    var id = requestAnimationFrame(fn);
+    _rafIds.push(id);
+    return id;
 }
+document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ while(_rafIds.length) cancelAnimationFrame(_rafIds.pop()); }
+});
 
-function lerp(a, b, t) { return a + (b - a) * t; }
-
-/* ============================================
-   SLIDE 1: HERO PARTICLES
-   ============================================ */
-function startHeroCanvas() {
-  var setup = setupCanvas('canvas-hero');
-  if (!setup) return;
-  var ctx = setup.ctx, w = setup.w, h = setup.h;
-  var particles = [];
-  var colors = ['#f59e0b', '#f5736c', '#3b82f6', '#10b981', '#8b5cf6'];
-  for (var i = 0; i < 70; i++) {
-    particles.push({
-      x: Math.random() * w, y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
-      r: Math.random() * 2.5 + 0.8,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      alpha: Math.random() * 0.25 + 0.08
-    });
-  }
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    for (var i = 0; i < particles.length; i++) {
-      var p = particles[i];
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > w) p.vx *= -1;
-      if (p.y < 0 || p.y > h) p.vy *= -1;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = p.alpha;
-      ctx.fill();
+/* ============================================================
+   TRIGGER ANIMATIONS PER SLIDE
+   ============================================================ */
+function triggerSlideAnimation(idx){
+    // Slide 2: partner text
+    if(idx === 1){
+        var pt = slides[1].querySelector('.partner-text');
+        if(pt) { pt.style.opacity = '0'; pt.style.animation = 'slideInLeft 0.6s 0.5s ease forwards'; }
     }
-    ctx.globalAlpha = 0.03;
-    ctx.strokeStyle = '#6b6560';
-    ctx.lineWidth = 1;
-    for (var i = 0; i < particles.length; i++) {
-      for (var j = i + 1; j < particles.length; j++) {
-        var dx = particles[i].x - particles[j].x;
-        var dy = particles[i].y - particles[j].y;
-        if (dx * dx + dy * dy < 12000) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
+    // Slide 4: eco text
+    if(idx === 3){
+        var et = slides[3].querySelector('.eco-text');
+        if(et) { et.style.opacity = '0'; et.style.animation = 'slideInLeft 0.6s 0.5s ease forwards'; }
+    }
+    // Slide 6: impact text
+    if(idx === 5){
+        var it = slides[5].querySelector('.impact-text');
+        if(it) { it.style.opacity = '0'; it.style.animation = 'slideInLeft 0.6s 0.5s ease forwards'; }
+    }
+    // Slide 8: links and footer
+    if(idx === 7){
+        var links = slides[7].querySelector('.cta-links');
+        var footer = slides[7].querySelector('.slide-footer');
+        if(links) { links.style.opacity = '0'; links.style.animation = 'fadeSlideUp 0.5s 1.3s ease forwards'; }
+        if(footer) { footer.style.opacity = '0'; footer.style.animation = 'fadeSlideUp 0.5s 1.5s ease forwards'; }
+    }
+}
+
+/* ============================================================
+   HELPER: CREATE FLOATING PARTICLE SET
+   ============================================================ */
+function createFloatingParticles(count, W, H){
+    var particles = [];
+    var colors = ['rgba(245,158,11,','rgba(245,115,108,','rgba(59,130,246,','rgba(16,185,129,','rgba(139,92,246,'];
+    for(var i = 0; i < count; i++){
+        particles.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            size: 1.5 + Math.random() * 3.5,
+            speedX: (Math.random() - 0.5) * 0.4,
+            speedY: (Math.random() - 0.5) * 0.3,
+            color: colors[Math.floor(Math.random()*colors.length)],
+            alpha: 0.08 + Math.random() * 0.18
+        });
+    }
+    return particles;
+}
+
+function drawFloatingParticles(ctx, particles, W, H, connectDist){
+    connectDist = connectDist || 120;
+    for(var i = 0; i < particles.length; i++){
+        var p = particles[i];
+        p.x += p.speedX;
+        p.y += p.speedY;
+        if(p.x < -10) p.x = W + 10;
+        if(p.x > W + 10) p.x = -10;
+        if(p.y < -10) p.y = H + 10;
+        if(p.y > H + 10) p.y = -10;
+
+        // Glow
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI*2);
+        ctx.fillStyle = p.color + (p.alpha * 0.25) + ')';
+        ctx.fill();
+
+        // Core
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+        ctx.fillStyle = p.color + p.alpha + ')';
+        ctx.fill();
+    }
+
+    // Connection lines
+    for(var i = 0; i < particles.length; i++){
+        for(var j = i+1; j < particles.length; j++){
+            var dx = particles[i].x - particles[j].x;
+            var dy = particles[i].y - particles[j].y;
+            var dist = Math.sqrt(dx*dx + dy*dy);
+            if(dist < connectDist){
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = 'rgba(212,207,201,' + (0.12 * (1 - dist/connectDist)) + ')';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
         }
-      }
     }
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(draw);
-  }
-  draw();
 }
 
-/* ============================================
-   SLIDE 1: COUNT-UP ANIMATION
-   ============================================ */
-function startCountUp() {
-  var els = document.querySelectorAll('[data-count]');
-  for (var i = 0; i < els.length; i++) {
-    (function(el) {
-      var target = parseInt(el.dataset.count, 10);
-      var suffix = target >= 15 && target !== 100 ? '+' : target === 100 ? '+' : '';
-      var dur = 1400;
-      var start = performance.now();
-      function step(now) {
-        var p = Math.min((now - start) / dur, 1);
-        var ease = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(ease * target) + suffix;
-        if (p < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    })(els[i]);
-  }
-}
+/* ============================================================
+   SLIDE 1: HERO CANVAS -- Dense particle network
+   ============================================================ */
+(function heroCanvas(){
+    var canvas = document.getElementById('hero-canvas');
+    if(!canvas) return;
+    var W, H, ctx, particles;
+    function resize(){
+        W = window.innerWidth;
+        H = window.innerHeight;
+        ctx = sizeCanvas(canvas, W, H);
+        particles = createFloatingParticles(65, W, H);
+    }
+    resize();
+    window.addEventListener('resize', resize);
 
-/* ============================================
-   SLIDE 2: PARTNER NETWORK CANVAS
-   ============================================ */
-function startNetworkCanvas() {
-  var setup = setupCanvas('canvas-network');
-  if (!setup) return;
-  var ctx = setup.ctx, w = setup.w, h = setup.h;
+    function draw(){
+        ctx.clearRect(0,0,W,H);
+        drawFloatingParticles(ctx, particles, W, H, 150);
+        if(!document.hidden) safeRAF(draw);
+    }
+    safeRAF(draw);
+})();
 
-  var orgs = [
-    { id: 'redhat', label: 'Red Hat', letter: 'R', color: '#ee0000', r: 22 },
-    { id: 'google', label: 'Google', letter: 'G', color: '#4285f4', r: 22 },
-    { id: 'ibm', label: 'IBM', letter: 'I', color: '#0f62fe', r: 22 },
-    { id: 'nvidia', label: 'NVIDIA', letter: 'N', color: '#76b900', r: 19 },
-    { id: 'coreweave', label: 'CoreWeave', letter: 'C', color: '#00d4aa', r: 19 },
-    { id: 'amd', label: 'AMD', letter: 'A', color: '#ed1c24', r: 14 },
-    { id: 'cisco', label: 'Cisco', letter: 'Ci', color: '#049fd9', r: 14 },
-    { id: 'hf', label: 'HuggingFace', letter: 'HF', color: '#ffcd00', r: 14 },
-    { id: 'intel', label: 'Intel', letter: 'In', color: '#0071c5', r: 14 },
-    { id: 'lambda', label: 'Lambda', letter: 'L', color: '#8b5cf6', r: 14 },
-    { id: 'mistral', label: 'Mistral', letter: 'M', color: '#f97316', r: 14 },
-    { id: 'berkeley', label: 'Berkeley', letter: 'B', color: '#003262', r: 15 },
-    { id: 'uchicago', label: 'UChicago', letter: 'U', color: '#800000', r: 15 },
-    { id: 'cncf', label: 'CNCF', letter: 'CN', color: '#426de1', r: 18 }
-  ];
+/* ============================================================
+   SLIDE 2 BACKGROUND: Floating particles
+   ============================================================ */
+(function(){
+    var canvas = document.getElementById('slide2-bg-canvas');
+    if(!canvas) return;
+    var W, H, ctx, particles;
+    function resize(){
+        W = window.innerWidth; H = window.innerHeight;
+        ctx = sizeCanvas(canvas, W, H);
+        particles = createFloatingParticles(40, W, H);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    function draw(){
+        ctx.clearRect(0,0,W,H);
+        drawFloatingParticles(ctx, particles, W, H, 100);
+        if(!document.hidden) safeRAF(draw);
+    }
+    safeRAF(draw);
+})();
 
-  var edges = [
-    { s: 0, t: 1, c: '#3b82f6' }, { s: 0, t: 2, c: '#3b82f6' }, { s: 0, t: 3, c: '#3b82f6' },
-    { s: 0, t: 4, c: '#3b82f6' }, { s: 1, t: 2, c: '#3b82f6' },
-    { s: 3, t: 0, c: '#10b981' }, { s: 3, t: 4, c: '#10b981' },
-    { s: 5, t: 0, c: '#10b981' }, { s: 8, t: 0, c: '#10b981' },
-    { s: 11, t: 0, c: '#8b5cf6' }, { s: 11, t: 2, c: '#8b5cf6' },
-    { s: 12, t: 0, c: '#8b5cf6' }, { s: 12, t: 2, c: '#8b5cf6' },
-    { s: 13, t: 0, c: '#f59e0b' }, { s: 13, t: 1, c: '#f59e0b' }, { s: 13, t: 2, c: '#f59e0b' },
-    { s: 7, t: 0, c: '#6b7280' }, { s: 6, t: 0, c: '#6b7280' },
-    { s: 9, t: 0, c: '#6b7280' }, { s: 10, t: 0, c: '#6b7280' },
-    { s: 3, t: 11, c: '#8b5cf6' }, { s: 9, t: 3, c: '#10b981' },
-    { s: 7, t: 10, c: '#6b7280' }
-  ];
+/* ============================================================
+   SLIDE 2: NETWORK CANVAS -- Force-directed partner graph
+   ============================================================ */
+(function networkCanvas(){
+    var canvas = document.getElementById('network-canvas');
+    if(!canvas) return;
+    var W, H, ctx;
+    var animTime = 0;
 
-  var nodes = [];
-  var cx = w / 2, cy = h / 2;
-  var flowParts = [];
-  var breathTime = 0;
-  var hovered = null;
+    function resize(){
+        var rect = canvas.parentElement.getBoundingClientRect();
+        W = rect.width; H = rect.height || 380;
+        ctx = sizeCanvas(canvas, W, H);
+    }
+    resize();
+    window.addEventListener('resize', resize);
 
-  // Init nodes in circular layout
-  for (var i = 0; i < orgs.length; i++) {
-    var a = (i / orgs.length) * Math.PI * 2 - Math.PI / 2;
-    var rad = Math.min(w, h) * 0.33;
-    nodes.push({
-      x: cx + Math.cos(a) * rad + (Math.random() - 0.5) * 30,
-      y: cy + Math.sin(a) * rad + (Math.random() - 0.5) * 30,
-      vx: 0, vy: 0, r: orgs[i].r, baseR: orgs[i].r
+    var orgs = [
+        { label: 'Red Hat', letter: 'R', color: '#ee0000', r: 22 },
+        { label: 'Google', letter: 'G', color: '#4285f4', r: 22 },
+        { label: 'IBM', letter: 'I', color: '#0f62fe', r: 22 },
+        { label: 'NVIDIA', letter: 'N', color: '#76b900', r: 19 },
+        { label: 'CoreWeave', letter: 'C', color: '#00d4aa', r: 19 },
+        { label: 'AMD', letter: 'A', color: '#ed1c24', r: 14 },
+        { label: 'Cisco', letter: 'Ci', color: '#049fd9', r: 14 },
+        { label: 'HuggingFace', letter: 'HF', color: '#ffcd00', r: 14 },
+        { label: 'Intel', letter: 'In', color: '#0071c5', r: 14 },
+        { label: 'Lambda', letter: 'L', color: '#8b5cf6', r: 14 },
+        { label: 'Mistral', letter: 'M', color: '#f97316', r: 14 },
+        { label: 'Berkeley', letter: 'B', color: '#003262', r: 15 },
+        { label: 'UChicago', letter: 'U', color: '#800000', r: 15 },
+        { label: 'CNCF', letter: 'CN', color: '#426de1', r: 18 }
+    ];
+
+    var edges = [
+        {s:0,t:1,c:'#3b82f6'},{s:0,t:2,c:'#3b82f6'},{s:0,t:3,c:'#3b82f6'},
+        {s:0,t:4,c:'#3b82f6'},{s:1,t:2,c:'#3b82f6'},
+        {s:3,t:0,c:'#10b981'},{s:3,t:4,c:'#10b981'},
+        {s:5,t:0,c:'#10b981'},{s:8,t:0,c:'#10b981'},
+        {s:11,t:0,c:'#8b5cf6'},{s:11,t:2,c:'#8b5cf6'},
+        {s:12,t:0,c:'#8b5cf6'},{s:12,t:2,c:'#8b5cf6'},
+        {s:13,t:0,c:'#f59e0b'},{s:13,t:1,c:'#f59e0b'},{s:13,t:2,c:'#f59e0b'},
+        {s:7,t:0,c:'#6b7280'},{s:6,t:0,c:'#6b7280'},
+        {s:9,t:0,c:'#6b7280'},{s:10,t:0,c:'#6b7280'},
+        {s:3,t:11,c:'#8b5cf6'},{s:9,t:3,c:'#10b981'},{s:7,t:10,c:'#6b7280'}
+    ];
+
+    var nodes = [];
+    var cx, cy;
+    var flowParts = [];
+
+    function initNodes(){
+        cx = W/2; cy = H/2;
+        nodes = [];
+        for(var i = 0; i < orgs.length; i++){
+            var a = (i / orgs.length) * Math.PI * 2 - Math.PI / 2;
+            var rad = Math.min(W, H) * 0.33;
+            nodes.push({
+                x: cx + Math.cos(a) * rad + (Math.random() - 0.5) * 30,
+                y: cy + Math.sin(a) * rad + (Math.random() - 0.5) * 30,
+                vx: 0, vy: 0, r: orgs[i].r, baseR: orgs[i].r
+            });
+        }
+        flowParts = [];
+        for(var ei = 0; ei < edges.length; ei++){
+            for(var fi = 0; fi < 3; fi++){
+                flowParts.push({
+                    edge: ei, t: Math.random(),
+                    sp: 0.003 + Math.random() * 0.005,
+                    sz: 1.2 + Math.random() * 1.2
+                });
+            }
+        }
+    }
+    initNodes();
+
+    function sim(){
+        for(var i = 0; i < nodes.length; i++){
+            for(var j = i+1; j < nodes.length; j++){
+                var dx = nodes[j].x - nodes[i].x, dy = nodes[j].y - nodes[i].y;
+                var d = Math.sqrt(dx*dx+dy*dy) || 1;
+                var f = 2500 / (d*d);
+                nodes[i].vx -= dx/d*f; nodes[i].vy -= dy/d*f;
+                nodes[j].vx += dx/d*f; nodes[j].vy += dy/d*f;
+            }
+        }
+        for(var ei = 0; ei < edges.length; ei++){
+            var e = edges[ei], a = nodes[e.s], b = nodes[e.t];
+            var dx = b.x-a.x, dy = b.y-a.y;
+            var d = Math.sqrt(dx*dx+dy*dy) || 1;
+            var disp = d - Math.min(W,H)*0.22;
+            var f = 0.004 * disp;
+            a.vx += dx/d*f; a.vy += dy/d*f;
+            b.vx -= dx/d*f; b.vy -= dy/d*f;
+        }
+        for(var i = 0; i < nodes.length; i++){
+            var n = nodes[i];
+            n.vx += (cx-n.x)*0.0003; n.vy += (cy-n.y)*0.0003;
+            n.vx *= 0.88; n.vy *= 0.88;
+            n.x += n.vx; n.y += n.vy;
+            var pad = n.r + 8;
+            n.x = Math.max(pad, Math.min(W-pad, n.x));
+            n.y = Math.max(pad, Math.min(H-pad, n.y));
+        }
+    }
+
+    function draw(){
+        animTime += 0.016;
+        ctx.clearRect(0,0,W,H);
+
+        // Breathing
+        for(var i = 0; i < nodes.length; i++){
+            nodes[i].r = nodes[i].baseR + Math.sin(animTime*1.2 + i*0.4) * 1.5;
+        }
+
+        // Edges
+        for(var ei = 0; ei < edges.length; ei++){
+            var e = edges[ei], a = nodes[e.s], b = nodes[e.t];
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = e.c; ctx.globalAlpha = 0.15; ctx.lineWidth = 1;
+            ctx.stroke(); ctx.globalAlpha = 1;
+        }
+
+        // Flow particles along edges with trails
+        for(var fi = 0; fi < flowParts.length; fi++){
+            var fp = flowParts[fi];
+            fp.t += fp.sp; if(fp.t > 1) fp.t -= 1;
+            var e = edges[fp.edge], a = nodes[e.s], b = nodes[e.t];
+            var px = a.x + (b.x-a.x)*fp.t;
+            var py = a.y + (b.y-a.y)*fp.t;
+            var alpha = Math.sin(fp.t * Math.PI);
+
+            // Trail (3 dots behind)
+            for(var tr = 1; tr <= 3; tr++){
+                var tt = fp.t - tr * 0.03;
+                if(tt < 0) tt += 1;
+                var tx = a.x + (b.x-a.x)*tt;
+                var ty = a.y + (b.y-a.y)*tt;
+                ctx.beginPath(); ctx.arc(tx, ty, fp.sz * (1 - tr*0.2), 0, Math.PI*2);
+                ctx.fillStyle = e.c;
+                ctx.globalAlpha = alpha * 0.1 * (1 - tr*0.25);
+                ctx.fill(); ctx.globalAlpha = 1;
+            }
+
+            // Glow
+            ctx.beginPath(); ctx.arc(px, py, fp.sz*2.5, 0, Math.PI*2);
+            ctx.fillStyle = e.c; ctx.globalAlpha = alpha*0.15; ctx.fill(); ctx.globalAlpha = 1;
+
+            // Core
+            ctx.beginPath(); ctx.arc(px, py, fp.sz, 0, Math.PI*2);
+            ctx.fillStyle = e.c; ctx.globalAlpha = alpha*0.6; ctx.fill(); ctx.globalAlpha = 1;
+        }
+
+        // Nodes with glow
+        for(var i = 0; i < orgs.length; i++){
+            var o = orgs[i], n = nodes[i];
+
+            // Outer glow
+            ctx.beginPath(); ctx.arc(n.x, n.y, n.r + 8, 0, Math.PI*2);
+            ctx.fillStyle = o.color; ctx.globalAlpha = 0.08 + 0.04*Math.sin(animTime*2+i);
+            ctx.fill(); ctx.globalAlpha = 1;
+
+            // Node
+            ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+            ctx.fillStyle = o.color; ctx.fill();
+
+            // Letter
+            ctx.font = 'bold ' + (n.r * 0.72) + 'px "Red Hat Display",sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'rgba(255,255,255,0.92)';
+            ctx.fillText(o.letter, n.x, n.y + 1);
+
+            // Label
+            ctx.font = '500 9px "Red Hat Text",sans-serif';
+            ctx.textBaseline = 'top';
+            ctx.fillStyle = 'rgba(45,42,38,0.55)';
+            ctx.fillText(o.label, n.x, n.y + n.r + 5);
+        }
+
+        sim();
+        if(!document.hidden) safeRAF(draw);
+    }
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   SLIDE 3 BACKGROUND: Floating particles
+   ============================================================ */
+(function(){
+    var canvas = document.getElementById('slide3-bg-canvas');
+    if(!canvas) return;
+    var W, H, ctx, particles;
+    function resize(){ W = window.innerWidth; H = window.innerHeight; ctx = sizeCanvas(canvas, W, H); particles = createFloatingParticles(35, W, H); }
+    resize(); window.addEventListener('resize', resize);
+    function draw(){ ctx.clearRect(0,0,W,H); drawFloatingParticles(ctx, particles, W, H, 90); if(!document.hidden) safeRAF(draw); }
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   SLIDE 3: TIMELINE CANVAS -- Animated milestone path
+   ============================================================ */
+(function timelineCanvas(){
+    var canvas = document.getElementById('timeline-canvas');
+    if(!canvas) return;
+    var W, H, ctx;
+    var animTime = 0;
+    var progress = 0;
+
+    function resize(){
+        var rect = canvas.parentElement.getBoundingClientRect();
+        W = rect.width; H = rect.height || 300;
+        ctx = sizeCanvas(canvas, W, H);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var milestones = [
+        { label: 'May 2025', title: 'Project Launch', color: '#f59e0b' },
+        { label: 'Jun 2025', title: 'First External PRs', color: '#3b82f6' },
+        { label: 'Aug 2025', title: 'KubeCon Demo', color: '#f5736c' },
+        { label: 'Nov 2025', title: 'v0.2 Release', color: '#8b5cf6' },
+        { label: 'Jan 2026', title: 'CNCF Submission', color: '#3b82f6' },
+        { label: 'Mar 2026', title: 'CNCF Accepted', color: '#10b981' },
+        { label: 'Jun 2026', title: 'Growing Ecosystem', color: '#10b981', now: true }
+    ];
+
+    var flowDots = [];
+    for(var i = 0; i < 20; i++){
+        flowDots.push({
+            t: Math.random(),
+            speed: 0.002 + Math.random()*0.004,
+            size: 2 + Math.random()*2,
+            yOff: (Math.random()-0.5)*16
+        });
+    }
+
+    // Observe active
+    var tlSlide = slides[2];
+    var observer = new MutationObserver(function(){
+        if(tlSlide.classList.contains('active')){ progress = 0; }
     });
-  }
+    observer.observe(tlSlide, {attributes:true, attributeFilter:['class']});
 
-  // Flow particles
-  for (var ei = 0; ei < edges.length; ei++) {
-    for (var fi = 0; fi < 2; fi++) {
-      flowParts.push({
-        edge: ei, t: Math.random(),
-        sp: 0.003 + Math.random() * 0.004,
-        sz: 1.2 + Math.random() * 0.6
-      });
+    function draw(){
+        animTime += 0.016;
+        if(slides[2].classList.contains('active')){
+            progress = Math.min(1, progress + 0.008);
+        }
+        var t = easeOutCubic(progress);
+
+        ctx.clearRect(0,0,W,H);
+
+        var pad = 60;
+        var lineY = H * 0.45;
+        var startX = pad;
+        var endX = W - pad;
+        var range = endX - startX;
+
+        // Main path line
+        ctx.beginPath();
+        ctx.moveTo(startX, lineY);
+        ctx.lineTo(startX + range * t, lineY);
+        ctx.strokeStyle = 'rgba(212,207,201,0.5)';
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        // Gradient overlay on line
+        var lineGrad = ctx.createLinearGradient(startX, 0, endX, 0);
+        lineGrad.addColorStop(0, 'rgba(245,158,11,0.3)');
+        lineGrad.addColorStop(0.5, 'rgba(59,130,246,0.3)');
+        lineGrad.addColorStop(1, 'rgba(16,185,129,0.3)');
+        ctx.beginPath();
+        ctx.moveTo(startX, lineY);
+        ctx.lineTo(startX + range * t, lineY);
+        ctx.strokeStyle = lineGrad;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Flow dots along the path
+        for(var di = 0; di < flowDots.length; di++){
+            var fd = flowDots[di];
+            fd.t += fd.speed;
+            if(fd.t > 1) fd.t = 0;
+            if(fd.t > t) continue;
+            var fx = startX + range * fd.t;
+            var fy = lineY + fd.yOff + Math.sin(fd.t * Math.PI * 4 + animTime*2) * 4;
+            var fa = Math.sin(fd.t * Math.PI) * 0.5;
+
+            // Glow
+            ctx.beginPath();
+            ctx.arc(fx, fy, fd.size * 2.5, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(245,158,11,' + (fa*0.15) + ')';
+            ctx.fill();
+
+            // Core
+            ctx.beginPath();
+            ctx.arc(fx, fy, fd.size, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(245,158,11,' + (fa*0.6) + ')';
+            ctx.fill();
+        }
+
+        // Milestones
+        for(var i = 0; i < milestones.length; i++){
+            var m = milestones[i];
+            var mx = startX + (i / (milestones.length - 1)) * range;
+            var mProgress = t * milestones.length - i;
+            if(mProgress < 0) continue;
+            mProgress = Math.min(1, mProgress);
+            var mp = easeOutCubic(mProgress);
+
+            // Vertical connector
+            ctx.beginPath();
+            ctx.moveTo(mx, lineY);
+            ctx.lineTo(mx, lineY - 20 * mp);
+            ctx.strokeStyle = m.color;
+            ctx.globalAlpha = mp * 0.4;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+
+            // Pulsing glow for dot
+            var pulseR = m.now ? (10 + Math.sin(animTime*3)*3) : 8;
+            ctx.beginPath();
+            ctx.arc(mx, lineY, pulseR * mp, 0, Math.PI*2);
+            ctx.fillStyle = m.color;
+            ctx.globalAlpha = mp * 0.12;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+
+            // Dot
+            ctx.beginPath();
+            ctx.arc(mx, lineY, 6 * mp, 0, Math.PI*2);
+            ctx.fillStyle = m.color;
+            ctx.globalAlpha = mp;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+
+            // NOW indicator
+            if(m.now && mp > 0.5){
+                ctx.font = '700 8px "Red Hat Display",sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#10b981';
+                ctx.globalAlpha = mp;
+                ctx.fillText('NOW', mx, lineY + 55);
+                ctx.globalAlpha = 1;
+            }
+
+            // Date label
+            if(mp > 0.3){
+                ctx.font = '500 9px "Red Hat Text",sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = m.color;
+                ctx.globalAlpha = mp;
+                ctx.fillText(m.label, mx, lineY + 22);
+                ctx.globalAlpha = 1;
+            }
+
+            // Title
+            if(mp > 0.5){
+                ctx.font = '700 10px "Red Hat Display",sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#2d2a26';
+                ctx.globalAlpha = mp;
+                ctx.fillText(m.title, mx, lineY - 26);
+                ctx.globalAlpha = 1;
+            }
+
+            // Subtitle (below date)
+            if(mp > 0.5){
+                ctx.font = '400 9px "Red Hat Text",sans-serif';
+                ctx.fillStyle = '#a09a94';
+                ctx.globalAlpha = mp * 0.8;
+                ctx.fillText(m.title === 'Growing Ecosystem' ? '15+ partners' : '', mx, lineY + 40);
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        if(!document.hidden) safeRAF(draw);
     }
-  }
+    safeRAF(draw);
+})();
 
-  function sim() {
-    for (var i = 0; i < nodes.length; i++) {
-      for (var j = i + 1; j < nodes.length; j++) {
-        var dx = nodes[j].x - nodes[i].x, dy = nodes[j].y - nodes[i].y;
-        var d = Math.sqrt(dx * dx + dy * dy) || 1;
-        var f = 2500 / (d * d);
-        nodes[i].vx -= dx / d * f; nodes[i].vy -= dy / d * f;
-        nodes[j].vx += dx / d * f; nodes[j].vy += dy / d * f;
-      }
+/* ============================================================
+   SLIDE 4 BACKGROUND: Floating particles
+   ============================================================ */
+(function(){
+    var canvas = document.getElementById('slide4-bg-canvas');
+    if(!canvas) return;
+    var W, H, ctx, particles;
+    function resize(){ W = window.innerWidth; H = window.innerHeight; ctx = sizeCanvas(canvas, W, H); particles = createFloatingParticles(35, W, H); }
+    resize(); window.addEventListener('resize', resize);
+    function draw(){ ctx.clearRect(0,0,W,H); drawFloatingParticles(ctx, particles, W, H, 90); if(!document.hidden) safeRAF(draw); }
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   SLIDE 4: DEPENDENCIES CANVAS -- Radial hub-spoke with data flow
+   ============================================================ */
+(function depsCanvas(){
+    var canvas = document.getElementById('deps-canvas');
+    if(!canvas) return;
+    var W, H, ctx;
+    var animTime = 0;
+
+    function resize(){
+        var rect = canvas.parentElement.getBoundingClientRect();
+        W = rect.width; H = rect.height || 400;
+        ctx = sizeCanvas(canvas, W, H);
     }
-    for (var ei = 0; ei < edges.length; ei++) {
-      var e = edges[ei], a = nodes[e.s], b = nodes[e.t];
-      var dx = b.x - a.x, dy = b.y - a.y;
-      var d = Math.sqrt(dx * dx + dy * dy) || 1;
-      var disp = d - Math.min(w, h) * 0.22;
-      var f = 0.004 * disp;
-      a.vx += dx / d * f; a.vy += dy / d * f;
-      b.vx -= dx / d * f; b.vy -= dy / d * f;
+    resize();
+    window.addEventListener('resize', resize);
+
+    var deps = [
+        { label: 'vLLM', color: '#3b82f6', ver: 'v0.6+' },
+        { label: 'KServe', color: '#10b981', ver: 'v0.13+' },
+        { label: 'Gateway API', color: '#f59e0b', ver: 'v1.2+' },
+        { label: 'NIXL', color: '#76b900', ver: 'v0.3+' },
+        { label: 'Kubernetes', color: '#326ce5', ver: 'v1.28+' },
+        { label: 'Prometheus', color: '#e6522c', ver: 'v2.45+' },
+        { label: 'KEDA', color: '#06b6d4', ver: 'v2.12+' },
+        { label: 'Envoy', color: '#ac6fce', ver: 'v1.28+' }
+    ];
+
+    var cxc, cyc, rad, pos;
+    function calcPositions(){
+        cxc = W/2; cyc = H/2;
+        rad = Math.min(W, H) * 0.36;
+        pos = [];
+        for(var i = 0; i < deps.length; i++){
+            var a = (i / deps.length) * Math.PI * 2 - Math.PI / 2;
+            pos.push({ x: cxc + Math.cos(a)*rad, y: cyc + Math.sin(a)*rad });
+        }
     }
-    for (var i = 0; i < nodes.length; i++) {
-      var n = nodes[i];
-      n.vx += (cx - n.x) * 0.0003; n.vy += (cy - n.y) * 0.0003;
-      n.vx *= 0.88; n.vy *= 0.88;
-      n.x += n.vx; n.y += n.vy;
-      var pad = n.r + 8;
-      n.x = Math.max(pad, Math.min(w - pad, n.x));
-      n.y = Math.max(pad, Math.min(h - pad, n.y));
-    }
-  }
+    calcPositions();
 
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    breathTime += 0.015;
-
-    for (var i = 0; i < nodes.length; i++) {
-      nodes[i].r = nodes[i].baseR + Math.sin(breathTime + i * 0.4) * 1.5;
-    }
-
-    // Edges
-    for (var ei = 0; ei < edges.length; ei++) {
-      var e = edges[ei], a = nodes[e.s], b = nodes[e.t];
-      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-      ctx.strokeStyle = e.c;
-      ctx.globalAlpha = 0.15; ctx.lineWidth = 1;
-      ctx.stroke(); ctx.globalAlpha = 1;
-    }
-
-    // Flow particles
-    for (var fi = 0; fi < flowParts.length; fi++) {
-      var fp = flowParts[fi];
-      fp.t += fp.sp; if (fp.t > 1) fp.t -= 1;
-      var e = edges[fp.edge], a = nodes[e.s], b = nodes[e.t];
-      var px = a.x + (b.x - a.x) * fp.t;
-      var py = a.y + (b.y - a.y) * fp.t;
-      ctx.beginPath(); ctx.arc(px, py, fp.sz, 0, 6.28);
-      ctx.fillStyle = e.c; ctx.globalAlpha = 0.35; ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-
-    // Nodes
-    for (var i = 0; i < orgs.length; i++) {
-      var o = orgs[i], n = nodes[i];
-      ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 6.28);
-      ctx.fillStyle = o.color; ctx.fill();
-      ctx.font = 'bold ' + (n.r * 0.72) + 'px "Red Hat Display",sans-serif';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillStyle = 'rgba(255,255,255,0.92)';
-      ctx.fillText(o.letter, n.x, n.y + 1);
-      ctx.font = '500 9px "Red Hat Text",sans-serif';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(45,42,38,0.6)';
-      ctx.fillText(o.label, n.x, n.y + n.r + 5);
-    }
-
-    sim();
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-/* ============================================
-   SLIDE 3: BUILD TIMELINE
-   ============================================ */
-function buildTimeline() {
-  var milestones = [
-    { d: 'May 2025', t: 'Project Launch', desc: 'Announced with Red Hat, Google Cloud, IBM Research, CoreWeave, NVIDIA. Initial EPP routing framework.' },
-    { d: 'Jun 2025', t: 'First External PRs', desc: 'Community contributors beyond founders submit first pull requests. Contribution guidelines established.' },
-    { d: 'Aug 2025', t: 'KubeCon NA Demo', desc: 'Live demo at KubeCon showcasing multi-model routing across heterogeneous GPU pools.' },
-    { d: 'Nov 2025', t: 'v0.2 Release', desc: 'EPP v2, improved scheduling, NVIDIA Dynamo integration, enhanced prefix-aware routing.' },
-    { d: 'Jan 2026', t: 'CNCF Submission', desc: 'IBM, Red Hat, Google jointly submit to CNCF Sandbox. Multi-vendor sponsorship underscores neutrality.' },
-    { d: 'Mar 2026', t: 'CNCF Accepted', desc: 'Accepted into CNCF Sandbox. IP transferred to foundation. Vendor-neutral governance established.' },
-    { d: 'Jun 2026', t: 'Growing Ecosystem', desc: '15+ partners, 100+ contributors, multiple production deployments. Expanding support.', now: true }
-  ];
-  var row = document.getElementById('timelineRow');
-  if (!row || row.children.length > 0) return;
-  for (var i = 0; i < milestones.length; i++) {
-    var m = milestones[i];
-    var item = document.createElement('div');
-    item.className = 'tl-item' + (m.now ? ' tl-now' : '');
-    var extra = m.now ? '<div class="tl-now-tag">NOW</div>' : '';
-    item.innerHTML = '<div class="tl-dot-wrap"><div class="tl-dot"></div></div>' +
-      '<div class="tl-date">' + m.d + '</div>' +
-      '<div class="tl-label">' + m.t + '</div>' +
-      extra +
-      '<div class="tl-desc">' + m.desc + '</div>';
-    (function(el) {
-      el.addEventListener('click', function() {
-        var was = el.classList.contains('active');
-        var items = row.querySelectorAll('.tl-item');
-        for (var j = 0; j < items.length; j++) items[j].classList.remove('active');
-        if (!was) el.classList.add('active');
-      });
-    })(item);
-    row.appendChild(item);
-  }
-}
-
-/* ============================================
-   SLIDE 4: DEPENDENCY MAP CANVAS
-   ============================================ */
-function startDepsCanvas() {
-  var setup = setupCanvas('canvas-deps');
-  if (!setup) return;
-  var ctx = setup.ctx, w = setup.w, h = setup.h;
-
-  var deps = [
-    { label: 'vLLM', color: '#3b82f6', ver: 'v0.6+' },
-    { label: 'KServe', color: '#10b981', ver: 'v0.13+' },
-    { label: 'Gateway API', color: '#f59e0b', ver: 'v1.2+' },
-    { label: 'NIXL', color: '#76b900', ver: 'v0.3+' },
-    { label: 'Kubernetes', color: '#326ce5', ver: 'v1.28+' },
-    { label: 'Prometheus', color: '#e6522c', ver: 'v2.45+' },
-    { label: 'KEDA', color: '#06b6d4', ver: 'v2.12+' },
-    { label: 'Envoy', color: '#ac6fce', ver: 'v1.28+' }
-  ];
-
-  var cxc = w / 2, cyc = h / 2;
-  var rad = Math.min(w, h) * 0.36;
-  var pos = [];
-  for (var i = 0; i < deps.length; i++) {
-    var a = (i / deps.length) * 6.28 - 1.57;
-    pos.push({ x: cxc + Math.cos(a) * rad, y: cyc + Math.sin(a) * rad });
-  }
-
-  var dParts = [];
-  for (var i = 0; i < deps.length; i++) {
-    for (var j = 0; j < 3; j++) {
-      dParts.push({ idx: i, t: Math.random(), sp: 0.003 + Math.random() * 0.005, sz: 1 + Math.random() * 0.8 });
-    }
-  }
-
-  var dOff = 0, pulse = 0;
-
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    dOff -= 0.4; pulse += 0.025;
-    var cR = 36 + Math.sin(pulse) * 3;
-
-    // Lines
-    for (var i = 0; i < pos.length; i++) {
-      var p = pos[i];
-      ctx.save(); ctx.setLineDash([6, 4]); ctx.lineDashOffset = dOff;
-      ctx.beginPath(); ctx.moveTo(cxc, cyc); ctx.lineTo(p.x, p.y);
-      ctx.strokeStyle = deps[i].color; ctx.globalAlpha = 0.2; ctx.lineWidth = 1.5;
-      ctx.stroke(); ctx.restore();
-    }
-
-    // Flow particles
-    for (var i = 0; i < dParts.length; i++) {
-      var dp = dParts[i];
-      dp.t += dp.sp; if (dp.t > 1) dp.t -= 1;
-      var p = pos[dp.idx];
-      var px = cxc + (p.x - cxc) * dp.t;
-      var py = cyc + (p.y - cyc) * dp.t;
-      ctx.beginPath(); ctx.arc(px, py, dp.sz, 0, 6.28);
-      ctx.fillStyle = deps[dp.idx].color; ctx.globalAlpha = 0.3; ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-
-    // Center node
-    var g = ctx.createRadialGradient(cxc, cyc, cR * 0.35, cxc, cyc, cR + 16);
-    g.addColorStop(0, 'rgba(59,130,246,.25)'); g.addColorStop(0.6, 'rgba(59,130,246,.06)'); g.addColorStop(1, 'rgba(59,130,246,0)');
-    ctx.beginPath(); ctx.arc(cxc, cyc, cR + 16, 0, 6.28); ctx.fillStyle = g; ctx.fill();
-    ctx.beginPath(); ctx.arc(cxc, cyc, cR, 0, 6.28); ctx.fillStyle = '#3b82f6'; ctx.fill();
-    ctx.font = '900 14px "Red Hat Display",sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#fff'; ctx.fillText('llm-d', cxc, cyc);
-
-    // Outer nodes
-    for (var i = 0; i < pos.length; i++) {
-      var p = pos[i], d = deps[i];
-      ctx.beginPath(); ctx.arc(p.x, p.y, 28, 0, 6.28);
-      ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.fill();
-      ctx.strokeStyle = d.color; ctx.globalAlpha = 0.7; ctx.lineWidth = 2; ctx.stroke();
-      ctx.globalAlpha = 1;
-      ctx.font = '700 10px "Red Hat Display",sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillStyle = d.color; ctx.fillText(d.label, p.x, p.y - 4);
-      ctx.font = '400 8px "Red Hat Text",sans-serif'; ctx.fillStyle = 'rgba(87,83,78,0.5)';
-      ctx.fillText(d.ver, p.x, p.y + 8);
+    // Flow particles: 4 per spoke
+    var dParts = [];
+    for(var i = 0; i < deps.length; i++){
+        for(var j = 0; j < 4; j++){
+            dParts.push({
+                idx: i, t: Math.random(),
+                sp: 0.003 + Math.random()*0.005,
+                sz: 1.2 + Math.random()*1.2
+            });
+        }
     }
 
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
+    var dOff = 0;
 
-/* ============================================
-   SLIDE 5: GOVERNANCE CANVAS (flow animation)
-   ============================================ */
-function startGovernanceCanvas() {
-  var setup = setupCanvas('canvas-governance');
-  if (!setup) return;
-  var ctx = setup.ctx, w = setup.w, h = setup.h;
+    function draw(){
+        animTime += 0.016;
+        ctx.clearRect(0,0,W,H);
+        calcPositions();
+        dOff -= 0.5;
+        var cR = 36 + Math.sin(animTime*1.5)*3;
 
-  var upParts = [], downParts = [];
-  for (var i = 0; i < 15; i++) {
-    upParts.push({ t: Math.random(), sp: 0.003 + Math.random() * 0.004, x: w * 0.3 + Math.random() * w * 0.08, sz: 1.2 + Math.random() });
-    downParts.push({ t: Math.random(), sp: 0.003 + Math.random() * 0.004, x: w * 0.62 + Math.random() * w * 0.08, sz: 1.2 + Math.random() });
-  }
+        // Dashed lines with animated offset
+        for(var i = 0; i < pos.length; i++){
+            var p = pos[i];
+            ctx.save();
+            ctx.setLineDash([6, 4]);
+            ctx.lineDashOffset = dOff;
+            ctx.beginPath(); ctx.moveTo(cxc, cyc); ctx.lineTo(p.x, p.y);
+            ctx.strokeStyle = deps[i].color;
+            ctx.globalAlpha = 0.2; ctx.lineWidth = 1.5;
+            ctx.stroke(); ctx.restore();
+        }
 
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    var topY = 30, botY = h - 30;
+        // Flow particles with trails
+        for(var i = 0; i < dParts.length; i++){
+            var dp = dParts[i];
+            dp.t += dp.sp; if(dp.t > 1) dp.t -= 1;
+            var p = pos[dp.idx];
+            var px = cxc + (p.x-cxc)*dp.t;
+            var py = cyc + (p.y-cyc)*dp.t;
+            var alpha = Math.sin(dp.t * Math.PI);
 
-    // Vertical lines
-    ctx.beginPath(); ctx.moveTo(w * 0.35, topY); ctx.lineTo(w * 0.35, botY);
-    ctx.strokeStyle = 'rgba(139,92,246,0.08)'; ctx.lineWidth = 1; ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(w * 0.65, topY); ctx.lineTo(w * 0.65, botY);
-    ctx.strokeStyle = 'rgba(245,158,11,0.08)'; ctx.lineWidth = 1; ctx.stroke();
+            // Trail
+            for(var tr = 1; tr <= 3; tr++){
+                var tt = dp.t - tr*0.025;
+                if(tt < 0) tt += 1;
+                var tx = cxc + (p.x-cxc)*tt;
+                var ty = cyc + (p.y-cyc)*tt;
+                ctx.beginPath(); ctx.arc(tx, ty, dp.sz*(1-tr*0.25), 0, Math.PI*2);
+                ctx.fillStyle = deps[dp.idx].color;
+                ctx.globalAlpha = alpha * 0.08 * (1-tr*0.3);
+                ctx.fill(); ctx.globalAlpha = 1;
+            }
 
-    // Up particles (contributions)
-    for (var i = 0; i < upParts.length; i++) {
-      var p = upParts[i];
-      p.t += p.sp; if (p.t > 1) p.t -= 1;
-      var py = botY - (botY - topY) * p.t;
-      var a = Math.sin(p.t * 3.14) * 0.5 + 0.1;
-      ctx.beginPath(); ctx.arc(p.x, py, p.sz, 0, 6.28);
-      ctx.fillStyle = '#8b5cf6'; ctx.globalAlpha = a; ctx.fill(); ctx.globalAlpha = 1;
+            // Glow
+            ctx.beginPath(); ctx.arc(px, py, dp.sz*2.5, 0, Math.PI*2);
+            ctx.fillStyle = deps[dp.idx].color;
+            ctx.globalAlpha = alpha*0.15; ctx.fill(); ctx.globalAlpha = 1;
+
+            // Core
+            ctx.beginPath(); ctx.arc(px, py, dp.sz, 0, Math.PI*2);
+            ctx.fillStyle = deps[dp.idx].color;
+            ctx.globalAlpha = alpha*0.5; ctx.fill(); ctx.globalAlpha = 1;
+        }
+
+        // Center node glow
+        var g = ctx.createRadialGradient(cxc, cyc, cR*0.35, cxc, cyc, cR+20);
+        g.addColorStop(0, 'rgba(59,130,246,.2)');
+        g.addColorStop(0.6, 'rgba(59,130,246,.05)');
+        g.addColorStop(1, 'rgba(59,130,246,0)');
+        ctx.beginPath(); ctx.arc(cxc, cyc, cR+20, 0, Math.PI*2);
+        ctx.fillStyle = g; ctx.fill();
+
+        // Center node
+        ctx.beginPath(); ctx.arc(cxc, cyc, cR, 0, Math.PI*2);
+        ctx.fillStyle = '#3b82f6'; ctx.fill();
+        ctx.font = '900 14px "Red Hat Display",sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#fff'; ctx.fillText('llm-d', cxc, cyc);
+
+        // Outer nodes with glow
+        for(var i = 0; i < pos.length; i++){
+            var p = pos[i], d = deps[i];
+
+            // Outer glow
+            ctx.beginPath(); ctx.arc(p.x, p.y, 36, 0, Math.PI*2);
+            ctx.fillStyle = d.color; ctx.globalAlpha = 0.06 + 0.03*Math.sin(animTime*2+i); ctx.fill();
+            ctx.globalAlpha = 1;
+
+            // Circle
+            ctx.beginPath(); ctx.arc(p.x, p.y, 28, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.fill();
+            ctx.strokeStyle = d.color; ctx.globalAlpha = 0.7; ctx.lineWidth = 2; ctx.stroke();
+            ctx.globalAlpha = 1;
+
+            // Label
+            ctx.font = '700 10px "Red Hat Display",sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillStyle = d.color; ctx.fillText(d.label, p.x, p.y - 4);
+
+            // Version
+            ctx.font = '400 8px "Red Hat Text",sans-serif';
+            ctx.fillStyle = 'rgba(87,83,78,0.5)';
+            ctx.fillText(d.ver, p.x, p.y + 8);
+        }
+
+        if(!document.hidden) safeRAF(draw);
+    }
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   SLIDE 5 BACKGROUND: Floating particles
+   ============================================================ */
+(function(){
+    var canvas = document.getElementById('slide5-bg-canvas');
+    if(!canvas) return;
+    var W, H, ctx, particles;
+    function resize(){ W = window.innerWidth; H = window.innerHeight; ctx = sizeCanvas(canvas, W, H); particles = createFloatingParticles(30, W, H); }
+    resize(); window.addEventListener('resize', resize);
+    function draw(){ ctx.clearRect(0,0,W,H); drawFloatingParticles(ctx, particles, W, H, 80); if(!document.hidden) safeRAF(draw); }
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   SLIDE 5: GOVERNANCE CANVAS -- Bidirectional flow animation
+   ============================================================ */
+(function govCanvas(){
+    var canvas = document.getElementById('governance-canvas');
+    if(!canvas) return;
+    var W, H, ctx;
+
+    function resize(){
+        var rect = canvas.parentElement.getBoundingClientRect();
+        W = rect.width; H = rect.height || 380;
+        ctx = sizeCanvas(canvas, W, H);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Up particles (contributions) and down particles (governance)
+    var upParts = [], downParts = [];
+    for(var i = 0; i < 25; i++){
+        upParts.push({ t: Math.random(), sp: 0.003+Math.random()*0.005, x: 0.25+Math.random()*0.15, sz: 1.5+Math.random()*1.5 });
+        downParts.push({ t: Math.random(), sp: 0.003+Math.random()*0.005, x: 0.6+Math.random()*0.15, sz: 1.5+Math.random()*1.5 });
     }
 
-    // Down particles (governance)
-    for (var i = 0; i < downParts.length; i++) {
-      var p = downParts[i];
-      p.t += p.sp; if (p.t > 1) p.t -= 1;
-      var py = topY + (botY - topY) * p.t;
-      var a = Math.sin(p.t * 3.14) * 0.5 + 0.1;
-      ctx.beginPath(); ctx.arc(p.x, py, p.sz, 0, 6.28);
-      ctx.fillStyle = '#f59e0b'; ctx.globalAlpha = a; ctx.fill(); ctx.globalAlpha = 1;
+    // Ambient particles
+    var ambient = [];
+    for(var i = 0; i < 20; i++){
+        ambient.push({
+            x: Math.random()*1000, y: Math.random()*1000,
+            vx: (Math.random()-0.5)*0.3, vy: (Math.random()-0.5)*0.3,
+            sz: 1+Math.random()*2, color: Math.random() > 0.5 ? '#8b5cf6' : '#f59e0b',
+            alpha: 0.05+Math.random()*0.1
+        });
     }
 
-    // Labels
-    ctx.font = '500 10px "Red Hat Text",sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(139,92,246,0.5)';
-    ctx.fillText('Contributions flow up', w * 0.35, h - 10);
-    ctx.fillStyle = 'rgba(245,158,11,0.5)';
-    ctx.fillText('Governance flows down', w * 0.65, h - 10);
+    function draw(){
+        ctx.clearRect(0,0,W,H);
+        var topY = 30, botY = H - 30;
 
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
+        // Ambient particles
+        for(var i = 0; i < ambient.length; i++){
+            var ap = ambient[i];
+            ap.x += ap.vx; ap.y += ap.vy;
+            if(ap.x < 0 || ap.x > W) ap.vx *= -1;
+            if(ap.y < 0 || ap.y > H) ap.vy *= -1;
+            ctx.beginPath(); ctx.arc(ap.x, ap.y, ap.sz*2, 0, Math.PI*2);
+            ctx.fillStyle = ap.color; ctx.globalAlpha = ap.alpha*0.3; ctx.fill();
+            ctx.beginPath(); ctx.arc(ap.x, ap.y, ap.sz, 0, Math.PI*2);
+            ctx.globalAlpha = ap.alpha; ctx.fill(); ctx.globalAlpha = 1;
+        }
 
-/* ============================================
-   SLIDE 6: IMPACT RIPPLE CANVAS
-   ============================================ */
-function startImpactCanvas() {
-  var setup = setupCanvas('canvas-impact');
-  if (!setup) return;
-  var ctx = setup.ctx, w = setup.w, h = setup.h;
+        // Vertical lanes
+        ctx.beginPath(); ctx.moveTo(W*0.33, topY); ctx.lineTo(W*0.33, botY);
+        ctx.strokeStyle = 'rgba(139,92,246,0.08)'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(W*0.67, topY); ctx.lineTo(W*0.67, botY);
+        ctx.strokeStyle = 'rgba(245,158,11,0.08)'; ctx.lineWidth = 1.5; ctx.stroke();
 
-  var cxc = w / 2, cyc = h / 2;
-  var stages = [
-    { label: '1 PR Submitted', maxR: 25, delay: 0 },
-    { label: '3 maintainers review', maxR: 55, delay: 30 },
-    { label: '42 organizations', maxR: 90, delay: 60 },
-    { label: '180 GPU clusters', maxR: 130, delay: 90 },
-    { label: '2.4M req/day', maxR: 170, delay: 120 },
-    { label: '12M end users', maxR: 210, delay: 150 }
-  ];
-  var ripples = [];
-  var frame = 0;
+        // Up particles (purple, contributions)
+        for(var i = 0; i < upParts.length; i++){
+            var p = upParts[i];
+            p.t += p.sp; if(p.t > 1) p.t -= 1;
+            var px = W * p.x;
+            var py = botY - (botY-topY)*p.t;
+            var a = Math.sin(p.t * Math.PI);
 
-  function draw() {
-    frame++;
-    ctx.clearRect(0, 0, w, h);
+            // Trail
+            for(var tr = 1; tr <= 4; tr++){
+                var tt = p.t - tr*0.02;
+                if(tt < 0) tt += 1;
+                var ty = botY - (botY-topY)*tt;
+                ctx.beginPath(); ctx.arc(px, ty, p.sz*(1-tr*0.2), 0, Math.PI*2);
+                ctx.fillStyle = '#8b5cf6'; ctx.globalAlpha = a*0.06*(1-tr*0.2); ctx.fill();
+            }
 
-    // Ripple rings
-    for (var i = stages.length - 1; i >= 0; i--) {
-      var s = stages[i];
-      if (frame < s.delay) continue;
-      var prog = Math.min((frame - s.delay) / 60, 1);
-      var ease = 1 - Math.pow(1 - prog, 3);
-      var r = ease * s.maxR;
-      var ringAlpha = Math.max(0, (1 - i * 0.12)) * ease * 0.2;
+            ctx.beginPath(); ctx.arc(px, py, p.sz*2, 0, Math.PI*2);
+            ctx.fillStyle = '#8b5cf6'; ctx.globalAlpha = a*0.15; ctx.fill();
+            ctx.beginPath(); ctx.arc(px, py, p.sz, 0, Math.PI*2);
+            ctx.globalAlpha = a*0.5; ctx.fill(); ctx.globalAlpha = 1;
+        }
 
-      ctx.beginPath(); ctx.arc(cxc, cyc, r, 0, 6.28);
-      ctx.strokeStyle = 'rgba(59,130,246,' + ringAlpha + ')';
-      ctx.lineWidth = 2 - i * 0.2; ctx.stroke();
+        // Down particles (amber, governance)
+        for(var i = 0; i < downParts.length; i++){
+            var p = downParts[i];
+            p.t += p.sp; if(p.t > 1) p.t -= 1;
+            var px = W * p.x;
+            var py = topY + (botY-topY)*p.t;
+            var a = Math.sin(p.t * Math.PI);
 
-      var g = ctx.createRadialGradient(cxc, cyc, r * 0.7, cxc, cyc, r);
-      g.addColorStop(0, 'rgba(59,130,246,0)');
-      g.addColorStop(1, 'rgba(59,130,246,' + (ringAlpha * 0.3) + ')');
-      ctx.beginPath(); ctx.arc(cxc, cyc, r, 0, 6.28);
-      ctx.fillStyle = g; ctx.fill();
+            // Trail
+            for(var tr = 1; tr <= 4; tr++){
+                var tt = p.t - tr*0.02;
+                if(tt < 0) tt += 1;
+                var ty = topY + (botY-topY)*tt;
+                ctx.beginPath(); ctx.arc(px, ty, p.sz*(1-tr*0.2), 0, Math.PI*2);
+                ctx.fillStyle = '#f59e0b'; ctx.globalAlpha = a*0.06*(1-tr*0.2); ctx.fill();
+            }
 
-      if (ease > 0.4) {
-        var angle = -Math.PI / 2 + i * 0.55;
-        var lx = cxc + Math.cos(angle) * (r + 5);
-        var ly = cyc + Math.sin(angle) * (r + 5);
-        var tx = lx + (lx > cxc ? 12 : -12);
-        ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(tx + (lx > cxc ? 50 : -50), ly);
-        ctx.strokeStyle = 'rgba(59,130,246,' + (ease * 0.25) + ')';
-        ctx.lineWidth = 1; ctx.stroke();
-        ctx.font = '600 10px "Red Hat Text",sans-serif';
-        ctx.textAlign = lx > cxc ? 'left' : 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillStyle = 'rgba(45,42,38,' + (ease * 0.8) + ')';
-        ctx.fillText(s.label, tx + (lx > cxc ? 55 : -55), ly);
-      }
+            ctx.beginPath(); ctx.arc(px, py, p.sz*2, 0, Math.PI*2);
+            ctx.fillStyle = '#f59e0b'; ctx.globalAlpha = a*0.15; ctx.fill();
+            ctx.beginPath(); ctx.arc(px, py, p.sz, 0, Math.PI*2);
+            ctx.globalAlpha = a*0.5; ctx.fill(); ctx.globalAlpha = 1;
+        }
+
+        // Labels
+        ctx.font = '500 10px "Red Hat Text",sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(139,92,246,0.5)';
+        ctx.fillText('Contributions flow up', W*0.33, H-10);
+        ctx.fillStyle = 'rgba(245,158,11,0.5)';
+        ctx.fillText('Governance flows down', W*0.67, H-10);
+
+        if(!document.hidden) safeRAF(draw);
+    }
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   SLIDE 6 BACKGROUND: Floating particles
+   ============================================================ */
+(function(){
+    var canvas = document.getElementById('slide6-bg-canvas');
+    if(!canvas) return;
+    var W, H, ctx, particles;
+    function resize(){ W = window.innerWidth; H = window.innerHeight; ctx = sizeCanvas(canvas, W, H); particles = createFloatingParticles(35, W, H); }
+    resize(); window.addEventListener('resize', resize);
+    function draw(){ ctx.clearRect(0,0,W,H); drawFloatingParticles(ctx, particles, W, H, 90); if(!document.hidden) safeRAF(draw); }
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   SLIDE 6: IMPACT CANVAS -- Ripple effect with particle bursts
+   ============================================================ */
+(function impactCanvas(){
+    var canvas = document.getElementById('impact-canvas');
+    if(!canvas) return;
+    var W, H, ctx;
+    var frame = 0;
+
+    function resize(){
+        var rect = canvas.parentElement.getBoundingClientRect();
+        W = rect.width; H = rect.height || 380;
+        ctx = sizeCanvas(canvas, W, H);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var stages = [
+        { label: '1 PR Submitted', maxR: 25, delay: 0, color: '#f59e0b' },
+        { label: '3 maintainers review', maxR: 55, delay: 30, color: '#3b82f6' },
+        { label: '42 organizations', maxR: 90, delay: 60, color: '#3b82f6' },
+        { label: '180 GPU clusters', maxR: 130, delay: 90, color: '#10b981' },
+        { label: '2.4M req/day', maxR: 165, delay: 120, color: '#f5736c' },
+        { label: '12M end users', maxR: 200, delay: 150, color: '#8b5cf6' }
+    ];
+
+    var ripples = [];
+
+    function draw(){
+        frame++;
+        ctx.clearRect(0,0,W,H);
+        var cxc = W/2, cyc = H/2;
+        var scale = Math.min(W,H) / 420;
+
+        // Ripple rings
+        for(var i = stages.length - 1; i >= 0; i--){
+            var s = stages[i];
+            if(frame < s.delay) continue;
+            var prog = Math.min((frame - s.delay) / 60, 1);
+            var ease = easeOutCubic(prog);
+            var r = ease * s.maxR * scale;
+            var ringAlpha = Math.max(0, (1 - i*0.12)) * ease;
+
+            // Gradient fill
+            var g = ctx.createRadialGradient(cxc, cyc, r*0.7, cxc, cyc, r);
+            g.addColorStop(0, s.color.replace(')', ',0)').replace('rgb', 'rgba').replace('#', ''));
+            g.addColorStop(1, 'rgba(59,130,246,' + (ringAlpha*0.06) + ')');
+            ctx.beginPath(); ctx.arc(cxc, cyc, r, 0, Math.PI*2);
+            ctx.fillStyle = g; ctx.fill();
+
+            // Ring stroke
+            ctx.beginPath(); ctx.arc(cxc, cyc, r, 0, Math.PI*2);
+            ctx.strokeStyle = s.color; ctx.globalAlpha = ringAlpha * 0.2;
+            ctx.lineWidth = 2 - i*0.2; ctx.stroke(); ctx.globalAlpha = 1;
+
+            // Label
+            if(ease > 0.4){
+                var angle = -Math.PI/2 + i * 0.55;
+                var lx = cxc + Math.cos(angle) * (r + 5);
+                var ly = cyc + Math.sin(angle) * (r + 5);
+                var tx = lx + (lx > cxc ? 12 : -12);
+                ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(tx + (lx > cxc ? 50 : -50), ly);
+                ctx.strokeStyle = s.color; ctx.globalAlpha = ease*0.25;
+                ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1;
+                ctx.font = '600 10px "Red Hat Text",sans-serif';
+                ctx.textAlign = lx > cxc ? 'left' : 'right';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#2d2a26'; ctx.globalAlpha = ease*0.8;
+                ctx.fillText(s.label, tx + (lx > cxc ? 55 : -55), ly);
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        // Center pulse
+        var cPulse = Math.sin(frame * 0.05) * 2;
+        ctx.beginPath(); ctx.arc(cxc, cyc, 7+cPulse, 0, Math.PI*2);
+        ctx.fillStyle = '#f59e0b'; ctx.fill();
+        var cg = ctx.createRadialGradient(cxc, cyc, 5, cxc, cyc, 15+cPulse);
+        cg.addColorStop(0, 'rgba(245,158,11,.3)'); cg.addColorStop(1, 'rgba(245,158,11,0)');
+        ctx.beginPath(); ctx.arc(cxc, cyc, 15+cPulse, 0, Math.PI*2); ctx.fillStyle = cg; ctx.fill();
+
+        // Scatter particles
+        if(frame % 5 === 0 && frame < 250){
+            for(var rr = 0; rr < 4; rr++){
+                var ra = Math.random() * Math.PI * 2;
+                ripples.push({
+                    x: cxc, y: cyc,
+                    vx: Math.cos(ra) * (1 + Math.random()*1.5),
+                    vy: Math.sin(ra) * (1 + Math.random()*1.5),
+                    life: 1, sz: 1.5 + Math.random()*1.5,
+                    color: ['#f59e0b','#3b82f6','#10b981','#8b5cf6'][Math.floor(Math.random()*4)]
+                });
+            }
+        }
+        for(var ri = ripples.length - 1; ri >= 0; ri--){
+            var rp = ripples[ri];
+            rp.x += rp.vx; rp.y += rp.vy; rp.life -= 0.007;
+            if(rp.life <= 0){ ripples.splice(ri, 1); continue; }
+
+            // Trail
+            ctx.beginPath(); ctx.arc(rp.x - rp.vx*2, rp.y - rp.vy*2, rp.sz*rp.life*0.6, 0, Math.PI*2);
+            ctx.fillStyle = rp.color; ctx.globalAlpha = rp.life*0.1; ctx.fill();
+
+            // Glow
+            ctx.beginPath(); ctx.arc(rp.x, rp.y, rp.sz*rp.life*2, 0, Math.PI*2);
+            ctx.globalAlpha = rp.life*0.15; ctx.fill();
+
+            // Core
+            ctx.beginPath(); ctx.arc(rp.x, rp.y, rp.sz*rp.life, 0, Math.PI*2);
+            ctx.globalAlpha = rp.life*0.5; ctx.fill(); ctx.globalAlpha = 1;
+        }
+
+        if(frame > 350){ frame = 0; ripples = []; }
+        if(!document.hidden) safeRAF(draw);
+    }
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   SLIDE 7 BACKGROUND: Floating particles
+   ============================================================ */
+(function(){
+    var canvas = document.getElementById('slide7-bg-canvas');
+    if(!canvas) return;
+    var W, H, ctx, particles;
+    function resize(){ W = window.innerWidth; H = window.innerHeight; ctx = sizeCanvas(canvas, W, H); particles = createFloatingParticles(30, W, H); }
+    resize(); window.addEventListener('resize', resize);
+    function draw(){ ctx.clearRect(0,0,W,H); drawFloatingParticles(ctx, particles, W, H, 80); if(!document.hidden) safeRAF(draw); }
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   SLIDE 7: CONTRIBUTOR JOURNEY CANVAS -- Animated stage path
+   ============================================================ */
+(function journeyCanvas(){
+    var canvas = document.getElementById('journey-canvas');
+    if(!canvas) return;
+    var W, H, ctx;
+    var animTime = 0;
+
+    function resize(){
+        var rect = canvas.parentElement.getBoundingClientRect();
+        W = rect.width; H = rect.height || 320;
+        ctx = sizeCanvas(canvas, W, H);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var stages = [
+        { title: 'First Issue', time: 'Day 1', color: '#10b981', desc: 'Bug report or idea' },
+        { title: 'First PR', time: 'Week 1', color: '#3b82f6', desc: 'Good first issue' },
+        { title: 'Regular', time: 'Month 1-6', color: '#3b82f6', desc: 'Consistent PRs' },
+        { title: 'Reviewer', time: 'Month 6+', color: '#8b5cf6', desc: 'Code review role' },
+        { title: 'Maintainer', time: 'Year 1+', color: '#f59e0b', desc: 'Merge authority' },
+        { title: 'CNCF Speaker', time: 'Year 1+', color: '#f5736c', desc: 'KubeCon talks' }
+    ];
+
+    // Flow particles along the journey path
+    var pathDots = [];
+    for(var i = 0; i < 30; i++){
+        pathDots.push({
+            t: Math.random(),
+            speed: 0.002 + Math.random()*0.003,
+            size: 1.5 + Math.random()*2,
+            yOff: (Math.random()-0.5)*12
+        });
     }
 
-    // Center pulse
-    var cPulse = Math.sin(frame * 0.05) * 2;
-    ctx.beginPath(); ctx.arc(cxc, cyc, 7 + cPulse, 0, 6.28);
-    ctx.fillStyle = '#3b82f6'; ctx.fill();
-    var cg = ctx.createRadialGradient(cxc, cyc, 5, cxc, cyc, 13 + cPulse);
-    cg.addColorStop(0, 'rgba(59,130,246,.25)'); cg.addColorStop(1, 'rgba(59,130,246,0)');
-    ctx.beginPath(); ctx.arc(cxc, cyc, 13 + cPulse, 0, 6.28);
-    ctx.fillStyle = cg; ctx.fill();
+    function draw(){
+        animTime += 0.016;
+        ctx.clearRect(0,0,W,H);
 
-    // Scatter particles
-    if (frame % 6 === 0 && frame < 250) {
-      for (var rr = 0; rr < 3; rr++) {
-        var ra = Math.random() * 6.28;
-        ripples.push({ x: cxc, y: cyc, vx: Math.cos(ra) * (1 + Math.random() * 1.2), vy: Math.sin(ra) * (1 + Math.random() * 1.2), life: 1, sz: 1.2 + Math.random() });
-      }
+        var pad = 50;
+        var lineY = H * 0.5;
+        var startX = pad;
+        var endX = W - pad;
+        var range = endX - startX;
+
+        // Draw connecting path
+        ctx.beginPath();
+        ctx.moveTo(startX, lineY);
+        ctx.lineTo(endX, lineY);
+        var lineGrad = ctx.createLinearGradient(startX, 0, endX, 0);
+        lineGrad.addColorStop(0, 'rgba(16,185,129,0.3)');
+        lineGrad.addColorStop(0.3, 'rgba(59,130,246,0.3)');
+        lineGrad.addColorStop(0.6, 'rgba(139,92,246,0.3)');
+        lineGrad.addColorStop(0.8, 'rgba(245,158,11,0.3)');
+        lineGrad.addColorStop(1, 'rgba(245,115,108,0.3)');
+        ctx.strokeStyle = lineGrad;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        // Flow particles along path
+        for(var di = 0; di < pathDots.length; di++){
+            var fd = pathDots[di];
+            fd.t += fd.speed;
+            if(fd.t > 1) fd.t = 0;
+            var fx = startX + range * fd.t;
+            var fy = lineY + fd.yOff + Math.sin(fd.t * Math.PI * 6 + animTime*2) * 5;
+            var fa = Math.sin(fd.t * Math.PI) * 0.5;
+
+            // Determine color based on position
+            var segColors = ['#10b981','#3b82f6','#3b82f6','#8b5cf6','#f59e0b','#f5736c'];
+            var segIdx = Math.floor(fd.t * segColors.length);
+            if(segIdx >= segColors.length) segIdx = segColors.length - 1;
+            var dotColor = segColors[segIdx];
+
+            // Trail
+            for(var tr = 1; tr <= 3; tr++){
+                var tt = fd.t - tr*0.008;
+                if(tt < 0) tt += 1;
+                var tx = startX + range * tt;
+                var ty = lineY + fd.yOff + Math.sin(tt * Math.PI * 6 + animTime*2) * 5;
+                ctx.beginPath(); ctx.arc(tx, ty, fd.size*(1-tr*0.25), 0, Math.PI*2);
+                ctx.fillStyle = dotColor; ctx.globalAlpha = fa*0.08*(1-tr*0.3); ctx.fill();
+            }
+
+            // Glow
+            ctx.beginPath(); ctx.arc(fx, fy, fd.size*2.5, 0, Math.PI*2);
+            ctx.fillStyle = dotColor; ctx.globalAlpha = fa*0.12; ctx.fill();
+
+            // Core
+            ctx.beginPath(); ctx.arc(fx, fy, fd.size, 0, Math.PI*2);
+            ctx.globalAlpha = fa*0.5; ctx.fill(); ctx.globalAlpha = 1;
+        }
+
+        // Stage nodes
+        for(var i = 0; i < stages.length; i++){
+            var s = stages[i];
+            var nx = startX + (i / (stages.length - 1)) * range;
+            var pulse = Math.sin(animTime*2 + i*0.7) * 2;
+
+            // Connector line
+            ctx.beginPath();
+            ctx.moveTo(nx, lineY);
+            ctx.lineTo(nx, lineY - 25);
+            ctx.strokeStyle = s.color;
+            ctx.globalAlpha = 0.3;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+
+            // Outer glow
+            ctx.beginPath(); ctx.arc(nx, lineY, 16+pulse, 0, Math.PI*2);
+            ctx.fillStyle = s.color; ctx.globalAlpha = 0.08+0.03*Math.sin(animTime*2+i);
+            ctx.fill(); ctx.globalAlpha = 1;
+
+            // Node circle
+            ctx.beginPath(); ctx.arc(nx, lineY, 10, 0, Math.PI*2);
+            ctx.fillStyle = s.color; ctx.fill();
+
+            // Number
+            ctx.font = '700 8px "Red Hat Display",sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#fff';
+            ctx.fillText((i+1).toString(), nx, lineY+1);
+
+            // Title above
+            ctx.font = '700 10px "Red Hat Display",sans-serif';
+            ctx.textBaseline = 'bottom';
+            ctx.fillStyle = '#2d2a26';
+            ctx.fillText(s.title, nx, lineY - 30);
+
+            // Description
+            ctx.font = '400 8px "Red Hat Text",sans-serif';
+            ctx.textBaseline = 'bottom';
+            ctx.fillStyle = '#a09a94';
+            ctx.fillText(s.desc, nx, lineY - 42);
+
+            // Time below
+            ctx.font = '500 9px "Red Hat Text",sans-serif';
+            ctx.textBaseline = 'top';
+            ctx.fillStyle = s.color;
+            ctx.fillText(s.time, nx, lineY + 18);
+        }
+
+        // Arrow at the end
+        ctx.beginPath();
+        ctx.moveTo(endX+5, lineY-5);
+        ctx.lineTo(endX+12, lineY);
+        ctx.lineTo(endX+5, lineY+5);
+        ctx.fillStyle = 'rgba(245,115,108,0.4)'; ctx.fill();
+
+        if(!document.hidden) safeRAF(draw);
     }
-    for (var ri = ripples.length - 1; ri >= 0; ri--) {
-      var rp = ripples[ri];
-      rp.x += rp.vx; rp.y += rp.vy; rp.life -= 0.008;
-      if (rp.life <= 0) { ripples.splice(ri, 1); continue; }
-      ctx.beginPath(); ctx.arc(rp.x, rp.y, rp.sz * rp.life, 0, 6.28);
-      ctx.fillStyle = 'rgba(59,130,246,' + rp.life * 0.45 + ')'; ctx.fill();
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   SLIDE 8: CTA CANVAS -- Dense celebration particles
+   ============================================================ */
+(function ctaCanvas(){
+    var canvas = document.getElementById('cta-canvas');
+    if(!canvas) return;
+    var W, H, ctx;
+    var animTime = 0;
+
+    function resize(){
+        W = window.innerWidth; H = window.innerHeight;
+        ctx = sizeCanvas(canvas, W, H);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var particles = [];
+    var colors = ['rgba(245,158,11,','rgba(245,115,108,','rgba(59,130,246,','rgba(16,185,129,','rgba(139,92,246,'];
+    for(var i = 0; i < 60; i++){
+        particles.push({
+            x: Math.random() * 2000,
+            y: Math.random() * 1200,
+            size: 1.5 + Math.random() * 3,
+            speedX: (Math.random() - 0.5) * 0.5,
+            speedY: (Math.random() - 0.5) * 0.4,
+            color: colors[Math.floor(Math.random()*colors.length)],
+            alpha: 0.06 + Math.random() * 0.14,
+            phase: Math.random() * Math.PI * 2
+        });
     }
 
-    // Loop animation every ~350 frames
-    if (frame > 350) { frame = 0; ripples = []; }
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
+    function draw(){
+        animTime += 0.016;
+        ctx.clearRect(0,0,W,H);
 
-/* ============================================
-   SLIDE 8: CTA PARTICLES
-   ============================================ */
-function startCtaCanvas() {
-  var setup = setupCanvas('canvas-cta');
-  if (!setup) return;
-  var ctx = setup.ctx, w = setup.w, h = setup.h;
-  var particles = [];
-  var colors = ['#f59e0b', '#3b82f6', '#10b981', '#8b5cf6'];
-  for (var i = 0; i < 45; i++) {
-    particles.push({
-      x: Math.random() * w, y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-      r: Math.random() * 2 + 0.5,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      alpha: Math.random() * 0.12 + 0.04
-    });
-  }
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    for (var i = 0; i < particles.length; i++) {
-      var p = particles[i];
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > w) p.vx *= -1;
-      if (p.y < 0 || p.y > h) p.vy *= -1;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.fill();
+        for(var i = 0; i < particles.length; i++){
+            var p = particles[i];
+            p.x += p.speedX;
+            p.y += p.speedY + Math.sin(animTime + p.phase) * 0.15;
+            if(p.x < -10) p.x = W + 10;
+            if(p.x > W + 10) p.x = -10;
+            if(p.y < -10) p.y = H + 10;
+            if(p.y > H + 10) p.y = -10;
+
+            var flicker = 0.8 + 0.2 * Math.sin(animTime*3 + p.phase);
+
+            // Glow
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI*2);
+            ctx.fillStyle = p.color + (p.alpha * 0.2 * flicker) + ')';
+            ctx.fill();
+
+            // Core
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+            ctx.fillStyle = p.color + (p.alpha * flicker) + ')';
+            ctx.fill();
+        }
+
+        // Connection lines
+        for(var i = 0; i < particles.length; i++){
+            for(var j = i+1; j < particles.length; j++){
+                var dx = particles[i].x - particles[j].x;
+                var dy = particles[i].y - particles[j].y;
+                var dist = Math.sqrt(dx*dx + dy*dy);
+                if(dist < 120){
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = 'rgba(212,207,201,' + (0.1 * (1 - dist/120)) + ')';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        if(!document.hidden) safeRAF(draw);
     }
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
+    safeRAF(draw);
+})();
+
+/* ============================================================
+   INITIAL TRIGGER FOR SLIDE 1
+   ============================================================ */
+triggerSlideAnimation(0);
+
+})(); // end IIFE
 </script>
 </body>
 </html>
